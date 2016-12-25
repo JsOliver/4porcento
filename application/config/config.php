@@ -23,7 +23,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
+$where = getcwd();
+if ($where == 'C:\Program Files (x86)\EasyPHP-DevServer-14.1VC9\data\localweb\projects\4porcento'):
+
+$config['base_url'] = 'http://127.0.0.1:8080/projects/4porcento/';
+    else:
+        $config['base_url'] = 'http://4porcento.com.br/';
+    endif;
 
 /*
 |--------------------------------------------------------------------------

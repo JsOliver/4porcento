@@ -12,17 +12,40 @@ class Pages extends CI_Controller {
 
     public function index()
     {
-        $this->load->library('funcoes');
-        $log = $this->funcoes->logVer();
-
-
-        $this->load->helper('form');
-        $this->load->helper('html');
-        $dados['reportData'] = '';
-        $dados['errorLog'] = '';
-        $dados['formerror'] = '';
+        $this->load->library('functions');
+        $log = $this->functions->logVer();
+        $dados['status'] = $log;
+        $dados['page'] = 'home';
         $this->load->view('home',$dados);
 
+    }
+
+    public function sala(){
+
+        $this->load->library('functions');
+        $log = $this->functions->logVer();
+        $dados['status'] = $log;
+        $dados['page'] = 'sala';
+        $this->load->view('sala',$dados);
+
+    }
+
+    public function configure(){
+
+        $this->load->library('functions');
+        $log = $this->functions->logVer();
+        $dados['status'] = $log;
+        $dados['page'] = 'configure';
+        $this->load->view('sala',$dados);
+
+    }
+    public function login(){
+
+        $this->load->library('functions');
+        $log = $this->functions->logVer();
+        $dados['status'] = $log;
+        $dados['page'] = 'login';
+        $this->load->view('home',$dados);
 
     }
 
