@@ -48,14 +48,5 @@ class Pages extends CI_Controller {
         $this->load->view('home',$dados);
 
     }
-    public function register(){
-
-        $this->load->library('functions');
-        $log = $this->functions->logVer();
-        $dados['status'] = $log;
-        $dados['page'] = 'register';
-        $this->load->view('home',$dados);
-
-    }
 
 }

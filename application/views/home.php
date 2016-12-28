@@ -254,18 +254,43 @@ if($page == 'home'):
 </div>
 <!--=== End Slider ===-->
 
-<!--=== Inicio - Leilões ===-->
+<!--=== Product Content ===-->
 <div class="container content-md">
-
-
-
-    <!--===Inicio - Leilões que o usuario pode entrar  ===-->
+    <!--=== Illustration v1 ===-->
+    <div class="row margin-bottom-60">
+        <div class="col-md-6 md-margin-bottom-30">
+            <div class="overflow-h">
+                <div class="illustration-v1 illustration-img1">
+                    <div class="illustration-bg">
+                        <div class="illustration-ads ad-details-v1">
+                            <h3>NEW YEAR <strong>SALE</strong> 30% - 60% <strong>off</strong></h3>
+                            <a class="btn-u btn-brd btn-brd-hover btn-u-light" href="#">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="overflow-h">
+                <a class="illustration-v1 illustration-img2" href="#">
+					<span class="illustration-bg">
+						<span class="illustration-ads ad-details-v2">
+							<span class="item-time">Spring 2014</span>
+							<span class="item-name">Lacoste</span>
+						</span>
+					</span>
+                </a>
+            </div>
+        </div>
+    </div><!--/end row-->
+    <!--=== End Illustration v1 ===-->
 
     <div class="heading heading-v1 margin-bottom-20">
-        <h2>Leilões disponiveis</h2>
-
+        <h2>Featured products</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed odio elit, ultrices vel cursus sed, placerat ut leo. Phasellus in magna erat. Etiam gravida convallis augue non tincidunt. Nunc lobortis dapibus neque quis lacinia. Nam dapibus tellus sit amet odio venenatis</p>
     </div>
 
+    <!--=== Illustration v2 ===-->
     <div class="illustration-v2 margin-bottom-60">
         <div class="customNavigation margin-bottom-25">
             <a class="owl-btn prev rounded-x"><i class="fa fa-angle-left"></i></a>
@@ -273,155 +298,588 @@ if($page == 'home'):
         </div>
 
         <ul class="list-inline owl-slider">
-            <?php
-
-            for($i=0;$i<=19;$i++):
-            ?>
             <li class="item">
                 <div class="product-img">
-                    <a href="<?php echo base_url('sala?='.$i.'');?>"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
-                    <a class="product-review" href="<?php echo base_url('sala?='.$i.'');?>">0 pessoas online</a>
+                    <a href="shop-ui-inner.html"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
+                    <a class="product-review" href="shop-ui-inner.html">Quick review</a>
+                    <a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                 </div>
                 <div class="product-description product-description-brd">
                     <div class="overflow-h margin-bottom-5">
                         <div class="pull-left">
-                            <h4 class="title-price"><a href="<?php echo base_url('sala?='.$i.'');?>">Nome do leilão</a></h4>
-                            <span class="gender text-uppercase">Cidade</span>
-                            <span class="gender">Adicionado por: ---------</span>
+                            <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
+                            <span class="gender text-uppercase">Men</span>
+                            <span class="gender">Suits - Blazers</span>
                         </div>
                         <div class="product-price">
-                            <!--Inicio - Preço atual -->
-                            <span class="title-price">R$ 5.00</span>
-                            <!--Fim - Preço atual -->
-
+                            <span class="title-price">$95.00</span>
                         </div>
                     </div>
+                    <ul class="list-inline product-ratings">
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li class="like-icon"><a data-original-title="Add to wishlist" data-toggle="tooltip" data-placement="left" class="tooltips" href="#"><i class="fa fa-heart"></i></a></li>
+                    </ul>
                 </div>
             </li>
-
-                <?php endfor;?>
-
-        </ul>
-    </div>
-
-    <!--===Fim - Leilões que o usuario pode entrar  ===-->
-
-
-
-    <!--===Inicio - Leilões que o usuario pode entrar  ===-->
-
-    <div class="heading heading-v1 margin-bottom-20">
-        <h2>Proximos leilões</h2>
-
-    </div>
-
-    <div class="illustration-v2 margin-bottom-60">
-        <div class="customNavigation margin-bottom-25">
-            <a class="owl-btn prev rounded-x"><i class="fa fa-angle-left"></i></a>
-            <a class="owl-btn next rounded-x"><i class="fa fa-angle-right"></i></a>
-        </div>
-
-        <ul class="list-inline owl-slider">
-            <?php
-
-            for($w=0;$w<=19;$w++):
-                ?>
-                <li class="item">
-                    <div class="product-img">
-                        <a href="<?php echo base_url('sala?='.$i.'');?>"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
-                        <a class="product-review"  href="<?php echo base_url('sala?='.$i.'');?>"><b>Começa em:</b> <span id="start<?php echo $w;?>"></span></a>
-                    </div>
-                    <div class="product-description product-description-brd">
-                        <div class="overflow-h margin-bottom-5">
-                            <div class="pull-left">
-                                <h4 class="title-price"><a href="<?php echo base_url('sala?='.$i.'');?>">Nome do leilão</a></h4>
-                                <span class="gender text-uppercase">Valor inicial: <b>R$ 5.00</b></span>
-                            </div>
-                            <div class="product-price">
-                                <!--Inicio - Preço atual -->
-                                <!--Fim - Preço atual -->
-
-                            </div>
+            <li class="item">
+                <div class="product-img">
+                    <a href="shop-ui-inner.html"><img class="full-width img-responsive" src="assets/img/blog/26.jpg" alt=""></a>
+                    <a class="product-review" href="shop-ui-inner.html">Quick review</a>
+                    <a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                </div>
+                <div class="product-description product-description-brd">
+                    <div class="overflow-h margin-bottom-5">
+                        <div class="pull-left">
+                            <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
+                            <span class="gender text-uppercase">Women</span>
+                            <span class="gender">Suits - Blazers</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="title-price">$60.00</span>
+                            <span class="title-price line-through">$95.00</span>
                         </div>
                     </div>
-                </li>
-                <script type="text/javascript">
-                    $("#start<?php echo $w; ?>")
-                        .countdown("2016/12/27 18:14:49", function(event) {
-                            $(this).text(
-                                event.strftime('%D dias %H:%M:%S')
-                            );
-                        });
-                </script>
-
-
-
-
-            <?php endfor;?>
-
+                    <ul class="list-inline product-ratings">
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li class="like-icon"><a data-original-title="Add to wishlist" data-toggle="tooltip" data-placement="left" class="tooltips" href="#"><i class="fa fa-heart"></i></a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="item">
+                <div class="product-img">
+                    <a href="shop-ui-inner.html"><img class="full-width img-responsive" src="assets/img/blog/11.jpg" alt=""></a>
+                    <a class="product-review" href="shop-ui-inner.html">Quick review</a>
+                    <a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                    <div class="shop-rgba-red rgba-banner">Out of stock</div>
+                </div>
+                <div class="product-description product-description-brd">
+                    <div class="overflow-h margin-bottom-5">
+                        <div class="pull-left">
+                            <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
+                            <span class="gender text-uppercase">Men</span>
+                            <span class="gender">Suits - Blazers</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="title-price">$95.00</span>
+                        </div>
+                    </div>
+                    <ul class="list-inline product-ratings">
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li class="like-icon"><a data-original-title="Add to wishlist" data-toggle="tooltip" data-placement="left" class="tooltips" href="#"><i class="fa fa-heart"></i></a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="item">
+                <div class="product-img">
+                    <a href="shop-ui-inner.html"><img class="full-width img-responsive" src="assets/img/blog/12.jpg" alt=""></a>
+                    <a class="product-review" href="shop-ui-inner.html">Quick review</a>
+                    <a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                    <div class="shop-rgba-dark-green rgba-banner">New</div>
+                </div>
+                <div class="product-description product-description-brd">
+                    <div class="overflow-h margin-bottom-5">
+                        <div class="pull-left">
+                            <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
+                            <span class="gender text-uppercase">Women</span>
+                            <span class="gender">Suits - Blazers</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="title-price">$95.00</span>
+                        </div>
+                    </div>
+                    <ul class="list-inline product-ratings">
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li class="like-icon"><a data-original-title="Add to wishlist" data-toggle="tooltip" data-placement="left" class="tooltips" href="#"><i class="fa fa-heart"></i></a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="item">
+                <div class="product-img">
+                    <a href="shop-ui-inner.html"><img class="full-width img-responsive" src="assets/img/blog/10.jpg" alt=""></a>
+                    <a class="product-review" href="shop-ui-inner.html">Quick review</a>
+                    <a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                </div>
+                <div class="product-description product-description-brd">
+                    <div class="overflow-h margin-bottom-5">
+                        <div class="pull-left">
+                            <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
+                            <span class="gender text-uppercase">Women</span>
+                            <span class="gender">Suits - Blazers</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="title-price">$95.00</span>
+                        </div>
+                    </div>
+                    <ul class="list-inline product-ratings">
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li class="like-icon"><a data-original-title="Add to wishlist" data-toggle="tooltip" data-placement="left" class="tooltips" href="#"><i class="fa fa-heart"></i></a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="item">
+                <div class="product-img">
+                    <a href="shop-ui-inner.html"><img class="full-width img-responsive" src="assets/img/blog/11.jpg" alt=""></a>
+                    <a class="product-review" href="shop-ui-inner.html">Quick review</a>
+                    <a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                    <div class="shop-rgba-red rgba-banner">Out of stock</div>
+                </div>
+                <div class="product-description product-description-brd">
+                    <div class="overflow-h margin-bottom-5">
+                        <div class="pull-left">
+                            <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
+                            <span class="gender text-uppercase">Men</span>
+                            <span class="gender">Suits - Blazers</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="title-price">$95.00</span>
+                        </div>
+                    </div>
+                    <ul class="list-inline product-ratings">
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating-selected fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li><i class="rating fa fa-star"></i></li>
+                        <li class="like-icon"><a data-original-title="Add to wishlist" data-toggle="tooltip" data-placement="left" class="tooltips" href="#"><i class="fa fa-heart"></i></a></li>
+                    </ul>
+                </div>
+            </li>
         </ul>
     </div>
+    <!--=== End Illustration v2 ===-->
 
-
-    <!--===Fim - Leilões que o usuario pode entrar  ===-->
-
-
-    <!--=== Inicio Leilões Finalizados ===-->
-
+    <!--=== Illustration v3 ===-->
+    <div class="row margin-bottom-50">
+        <div class="col-md-4 md-margin-bottom-30">
+            <div class="overflow-h">
+                <a class="illustration-v3 illustration-img1" href="#">
+					<span class="illustration-bg">
+						<span class="illustration-ads">
+							<span class="illustration-v3-category">
+								<span class="product-category">Men</span>
+								<span class="product-amount">56 Items</span>
+							</span>
+						</span>
+					</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4 md-margin-bottom-30">
+            <div class="overflow-h">
+                <a class="illustration-v3 illustration-img2" href="#">
+					<span class="illustration-bg">
+						<span class="illustration-ads">
+							<span class="illustration-v3-category">
+								<span class="product-category">Women</span>
+								<span class="product-amount">56 Items</span>
+							</span>
+						</span>
+					</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="overflow-h">
+                <a class="illustration-v3 illustration-img3" href="#">
+					<span class="illustration-bg">
+						<span class="illustration-ads">
+							<span class="illustration-v3-category">
+								<span class="product-category">Children</span>
+								<span class="product-amount">56 Items</span>
+							</span>
+						</span>
+					</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--=== End Illustration v3 ===-->
 
     <div class="heading heading-v1 margin-bottom-40">
-        <h2>Leilões finalizados</h2>
+        <h2>Latest products</h2>
     </div>
 
-    <div class="illustration-v2 margin-bottom-60">
-        <div class="customNavigation margin-bottom-25">
-            <a class="owl-btn prev rounded-x"><i class="fa fa-angle-left"></i></a>
-            <a class="owl-btn next rounded-x"><i class="fa fa-angle-right"></i></a>
+    <!--=== Illustration v2 ===-->
+    <div class="row illustration-v2">
+        <div class="col-md-3 col-sm-6 md-margin-bottom-30">
+            <div class="product-img">
+                <a href="shop-ui-inner.html"><img class="full-width img-responsive" src="assets/img/blog/25.jpg" alt=""></a>
+                <a class="product-review" href="shop-ui-inner.html">Quick review</a>
+                <a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+            </div>
+            <div class="product-description product-description-brd">
+                <div class="overflow-h margin-bottom-5">
+                    <div class="pull-left">
+                        <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
+                        <span class="gender text-uppercase">Woman</span>
+                        <span class="gender">Suits - Blazers</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="title-price">$95.00</span>
+                    </div>
+                </div>
+                <ul class="list-inline product-ratings">
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating fa fa-star"></i></li>
+                    <li><i class="rating fa fa-star"></i></li>
+                    <li class="like-icon"><a data-original-title="Add to wishlist" data-toggle="tooltip" data-placement="left" class="tooltips" href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 md-margin-bottom-30">
+            <div class="product-img">
+                <a href="shop-ui-inner.html"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
+                <a class="product-review" href="shop-ui-inner.html">Quick review</a>
+                <a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+            </div>
+            <div class="product-description product-description-brd">
+                <div class="overflow-h margin-bottom-5">
+                    <div class="pull-left">
+                        <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
+                        <span class="gender text-uppercase">Men</span>
+                        <span class="gender">Suits - Blazers</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="title-price">$60.00</span>
+                        <span class="title-price line-through">$95.00</span>
+                    </div>
+                </div>
+                <ul class="list-inline product-ratings">
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating fa fa-star"></i></li>
+                    <li><i class="rating fa fa-star"></i></li>
+                    <li class="like-icon"><a data-original-title="Add to wishlist" data-toggle="tooltip" data-placement="left" class="tooltips" href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 md-margin-bottom-30">
+            <div class="product-img">
+                <a href="shop-ui-inner.html"><img class="full-width img-responsive" src="assets/img/blog/10.jpg" alt=""></a>
+                <a class="product-review" href="shop-ui-inner.html">Quick review</a>
+                <a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                <div class="shop-rgba-red rgba-banner">Out of stock</div>
+            </div>
+            <div class="product-description product-description-brd">
+                <div class="overflow-h margin-bottom-5">
+                    <div class="pull-left">
+                        <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
+                        <span class="gender text-uppercase">Women</span>
+                        <span class="gender">Suits - Blazers</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="title-price">$95.00</span>
+                    </div>
+                </div>
+                <ul class="list-inline product-ratings">
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating fa fa-star"></i></li>
+                    <li><i class="rating fa fa-star"></i></li>
+                    <li class="like-icon"><a data-original-title="Add to wishlist" data-toggle="tooltip" data-placement="left" class="tooltips" href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 md-margin-bottom-30">
+            <div class="product-img">
+                <a href="shop-ui-inner.html"><img class="full-width img-responsive" src="assets/img/blog/11.jpg" alt=""></a>
+                <a class="product-review" href="shop-ui-inner.html">Quick review</a>
+                <a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                <div class="shop-rgba-dark-green rgba-banner">New</div>
+            </div>
+            <div class="product-description product-description-brd">
+                <div class="overflow-h margin-bottom-5">
+                    <div class="pull-left">
+                        <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
+                        <span class="gender text-uppercase">Men</span>
+                        <span class="gender">Suits - Blazers</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="title-price">$95.00</span>
+                    </div>
+                </div>
+                <ul class="list-inline product-ratings">
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating-selected fa fa-star"></i></li>
+                    <li><i class="rating fa fa-star"></i></li>
+                    <li><i class="rating fa fa-star"></i></li>
+                    <li class="like-icon"><a data-original-title="Add to wishlist" data-toggle="tooltip" data-placement="left" class="tooltips" href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--=== End Illustration v2 ===-->
+</div>
+<!--=== End Product Content ===-->
+
+<!--=== Twitter-Block ===-->
+<div class="parallaxBg twitter-block margin-bottom-60">
+    <div class="container">
+        <div class="heading heading-v1 margin-bottom-20">
+            <h2>Latest Tweets</h2>
         </div>
 
-        <ul class="list-inline owl-slider">
-            <?php
+        <div id="carousel-example-generic-v5" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li class="active rounded-x" data-target="#carousel-example-generic-v5" data-slide-to="0"></li>
+                <li class="rounded-x" data-target="#carousel-example-generic-v5" data-slide-to="1"></li>
+                <li class="rounded-x" data-target="#carousel-example-generic-v5" data-slide-to="2"></li>
+            </ol>
 
-            for($i=0;$i<=19;$i++):
-                ?>
-                <li class="item">
-                    <div class="product-img">
-                        <a href="<?php echo base_url('sala?='.$i.'');?>"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
-                        <a class="product-review" href="<?php echo base_url('sala?='.$i.'');?>">Arrematado</a>
-                    </div>
-                    <div class="product-description product-description-brd">
-                        <div class="overflow-h margin-bottom-5">
-                            <div class="pull-left">
-                                <h4 class="title-price"><a href="<?php echo base_url('sala?='.$i.'');?>">Nome do leilão</a></h4>
-                                <span class="gender">Vencedor: <b>Jonhcash</b></span>
-                            </div>
-                            <div class="product-price">
-                                <!--Inicio - Preço atual -->
-                                <span class="title-price" ><small>R$ 255.00</small></span>
-                                <!--Fim - Preço atual -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <p>Unify has reached 10000 plus sales and we just want to thank you to our all customers for being part of the Unify Template success <a href="http://bit.ly/1c0UN3Y">http://bit.ly/1c0UN3Y</a><p>
+                    <p><a href="https://twitter.com/htmlstream">@htmlstream</a></p>
+                    <ul class="list-inline twitter-icons">
+                        <li><a href="#"><i class="fa fa-reply"></i></a></li>
+                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                        <li><a href="#"><i class="fa fa-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="item">
+                    <p>the majority have suffered #alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum</p>
+                    <p><a href="https://twitter.com/htmlstream">@twbootstrap</a></p>
+                    <ul class="list-inline twitter-icons">
+                        <li><a href="#"><i class="fa fa-reply"></i></a></li>
+                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                        <li><a href="#"><i class="fa fa-star"></i></a></li>
+                    </ul>
+                </div>
+                <div class="item">
+                    <p>New 100% Free Stock Photos. Every. Single. Day. Everything you need for your creative projects. <a href="#">http://publicdomainarchive.com</a></p>
+                    <p><a href="https://twitter.com/htmlstream">@wrapbootstrap</a></p>
+                    <ul class="list-inline twitter-icons">
+                        <li><a href="#"><i class="fa fa-reply"></i></a></li>
+                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                        <li><a href="#"><i class="fa fa-star"></i></a></li>
+                    </ul>
+                </div>
+            </div>
 
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-            <?php endfor;?>
-
-        </ul>
+            <div class="carousel-arrow">
+                <a class="left carousel-control" href="#carousel-example-generic-v5" data-slide="prev">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic-v5" data-slide="next">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+        </div>
     </div>
-
-    <!--=== Fim Leilões Finalizados ===-->
-
 </div>
-    <!--=== Fim - Leilões ===-->
+<!--=== End Twitter-Block ===-->
 
+<div class="container">
+    <!--=== Product Service ===-->
+    <div class="row margin-bottom-60">
+        <div class="col-md-4 product-service md-margin-bottom-30">
+            <div class="product-service-heading">
+                <i class="fa fa-truck"></i>
+            </div>
+            <div class="product-service-in">
+                <h3>Free Delivery</h3>
+                <p>Integer mattis lacinia felis vel molestie. Ut eu euismod erat, tincidunt pulvinar semper veliUt porta, leo...</p>
+                <a href="#">+Read More</a>
+            </div>
+        </div>
+        <div class="col-md-4 product-service md-margin-bottom-30">
+            <div class="product-service-heading">
+                <i class="icon-earphones-alt"></i>
+            </div>
+            <div class="product-service-in">
+                <h3>Customer Service</h3>
+                <p>Integer mattis lacinia felis vel molestie. Ut eu euismod erat, tincidunt pulvinar semper veliUt porta, leo...</p>
+                <a href="#">+Read More</a>
+            </div>
+        </div>
+        <div class="col-md-4 product-service">
+            <div class="product-service-heading">
+                <i class="icon-refresh"></i>
+            </div>
+            <div class="product-service-in">
+                <h3>Free Returns</h3>
+                <p>Integer mattis lacinia felis vel molestie. Ut eu euismod erat, tincidunt pulvinar semper veliUt porta, leo...</p>
+                <a href="#">+Read More</a>
+            </div>
+        </div>
+    </div><!--/end row-->
+    <!--=== End Product Service ===-->
 
+    <!--=== Illustration v4 ===-->
+    <div class="row illustration-v4 margin-bottom-40">
+        <div class="col-md-4">
+            <div class="heading heading-v1 margin-bottom-20">
+                <h2>Top Rated</h2>
+            </div>
+            <div class="thumb-product">
+                <img class="thumb-product-img" src="assets/img/thumb/08.jpg" alt="">
+                <div class="thumb-product-in">
+                    <h4><a href="shop-ui-inner.html">Yuketen</a> – <a href="shop-ui-inner.html">Derby Shoe</a></h4>
+                    <span class="thumb-product-type">Footwear - Oxfords</span>
+                </div>
+                <ul class="list-inline overflow-h">
+                    <li class="thumb-product-price line-through">$75.00</li>
+                    <li class="thumb-product-price">$65.00</li>
+                    <li class="thumb-product-purchase"><a href="#"><i class="fa fa-shopping-cart"></i></a> | <a href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+            <div class="thumb-product">
+                <img class="thumb-product-img" src="assets/img/thumb/09.jpg" alt="">
+                <div class="thumb-product-in">
+                    <h4><a href="shop-ui-inner.html">Yuketen</a> – <a href="shop-ui-inner.html">Derby Shoe</a></h4>
+                    <span class="thumb-product-type">Footwear - Oxfords</span>
+                </div>
+                <ul class="list-inline overflow-h">
+                    <li class="thumb-product-price">$75.00</li>
+                    <li class="thumb-product-purchase"><a href="#"><i class="fa fa-shopping-cart"></i></a> | <a href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+            <div class="thumb-product">
+                <img class="thumb-product-img" src="assets/img/thumb/03.jpg" alt="">
+                <div class="thumb-product-in">
+                    <h4><a href="shop-ui-inner.html">Yuketen</a> – <a href="shop-ui-inner.html">Derby Shoe</a></h4>
+                    <span class="thumb-product-type">Footwear - Oxfords</span>
+                </div>
+                <ul class="list-inline overflow-h">
+                    <li class="thumb-product-price">$75.00</li>
+                    <li class="thumb-product-purchase"><a href="#"><i class="fa fa-shopping-cart"></i></a> | <a href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="heading heading-v1 margin-bottom-20">
+                <h2>Best Sellers</h2>
+            </div>
+            <div class="thumb-product">
+                <img class="thumb-product-img" src="assets/img/thumb/02.jpg" alt="">
+                <div class="thumb-product-in">
+                    <h4><a href="shop-ui-inner.html">Yuketen</a> – <a href="shop-ui-inner.html">Derby Shoe</a></h4>
+                    <span class="thumb-product-type">Footwear - Oxfords</span>
+                </div>
+                <ul class="list-inline overflow-h">
+                    <li class="thumb-product-price">$75.00</li>
+                    <li class="thumb-product-purchase"><a href="#"><i class="fa fa-shopping-cart"></i></a> | <a href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+            <div class="thumb-product">
+                <img class="thumb-product-img" src="assets/img/thumb/10.jpg" alt="">
+                <div class="thumb-product-in">
+                    <h4><a href="shop-ui-inner.html">Yuketen</a> – <a href="shop-ui-inner.html">Derby Shoe</a></h4>
+                    <span class="thumb-product-type">Footwear - Oxfords</span>
+                </div>
+                <ul class="list-inline overflow-h">
+                    <li class="thumb-product-price">$75.00</li>
+                    <li class="thumb-product-purchase"><a href="#"><i class="fa fa-shopping-cart"></i></a> | <a href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+            <div class="thumb-product">
+                <img class="thumb-product-img" src="assets/img/thumb/06.jpg" alt="">
+                <div class="thumb-product-in">
+                    <h4><a href="shop-ui-inner.html">Yuketen</a> – <a href="shop-ui-inner.html">Derby Shoe</a></h4>
+                    <span class="thumb-product-type">Footwear - Oxfords</span>
+                </div>
+                <ul class="list-inline overflow-h">
+                    <li class="thumb-product-price line-through">$75.00</li>
+                    <li class="thumb-product-price">$65.00</li>
+                    <li class="thumb-product-purchase"><a href="#"><i class="fa fa-shopping-cart"></i></a> | <a href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4 padding">
+            <div class="heading heading-v1 margin-bottom-20">
+                <h2>Sale Items</h2>
+            </div>
+            <div class="thumb-product">
+                <img class="thumb-product-img" src="assets/img/thumb/07.jpg" alt="">
+                <div class="thumb-product-in">
+                    <h4><a href="shop-ui-inner.html">Yuketen</a> – <a href="shop-ui-inner.html">Derby Shoe</a></h4>
+                    <span class="thumb-product-type">Footwear - Oxfords</span>
+                </div>
+                <ul class="list-inline overflow-h">
+                    <li class="thumb-product-price line-through">$75.00</li>
+                    <li class="thumb-product-price">$65.00</li>
+                    <li class="thumb-product-purchase"><a href="#"><i class="fa fa-shopping-cart"></i></a> | <a href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+            <div class="thumb-product">
+                <img class="thumb-product-img" src="assets/img/thumb/04.jpg" alt="">
+                <div class="thumb-product-in">
+                    <h4><a href="shop-ui-inner.html">Yuketen</a> – <a href="shop-ui-inner.html">Derby Shoe</a></h4>
+                    <span class="thumb-product-type">Footwear - Oxfords</span>
+                </div>
+                <ul class="list-inline overflow-h">
+                    <li class="thumb-product-price">$75.00</li>
+                    <li class="thumb-product-purchase"><a href="#"><i class="fa fa-shopping-cart"></i></a> | <a href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+            <div class="thumb-product">
+                <img class="thumb-product-img" src="assets/img/thumb/05.jpg" alt="">
+                <div class="thumb-product-in">
+                    <h4><a href="shop-ui-inner.html">Yuketen</a> – <a href="shop-ui-inner.html">Derby Shoe</a></h4>
+                    <span class="thumb-product-type">Footwear - Oxfords</span>
+                </div>
+                <ul class="list-inline overflow-h">
+                    <li class="thumb-product-price">$75.00</li>
+                    <li class="thumb-product-purchase"><a href="#"><i class="fa fa-shopping-cart"></i></a> | <a href="#"><i class="fa fa-heart"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div><!--/end row-->
+    <!--=== End Illustration v4 ===-->
+</div><!--/end cotnainer-->
 
+<!--=== Collection Banner ===-->
+<div class="collection-banner">
+    <div class="container">
+        <div class="col-md-7 md-margin-bottom-50">
+            <h2>Makeup collection</h2>
+            <p>Duis in posuere risus. Vivamus sed dignissim tellus. In vehicula justo tempor commodo. <br> Nunc lobortis dapibus neque quis lacinia</p><br>
+            <a href="#" class="btn-u btn-brd btn-brd-hover btn-u-light">Shop Now</a>
+        </div>
+        <div class="col-md-5">
+            <div class="overflow-h">
+                <span class="percent-numb">50</span>
+                <div class="percent-off">
+                    <span class="discount-percent">%</span>
+                    <span class="discount-off">off</span>
+                </div>
+                <div class="new-offers shop-bg-green rounded-x">
+                    <p>new</p>
+                    <span>Products</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--=== End Collection Banner ===-->
 
-
-
-
-<!--=== Sponsors
+<!--=== Sponsors ===-->
 <div class="container content">
     <div class="heading heading-v1 margin-bottom-40">
         <h2>Sponsors</h2>
@@ -465,13 +923,29 @@ if($page == 'home'):
         <li class="item">
             <img src="assets/img/clients/12.png" alt="">
         </li>
-    </ul>
+    </ul><!--/end owl-carousel-->
 </div>
 <!--=== End Sponsors ===-->
 
-
-
-
+<!--=== Shop Suvbscribe ===-->
+<div class="shop-subscribe">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 md-margin-bottom-20">
+                <h2>subscribe to our weekly <strong>newsletter</strong></h2>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Email your email...">
+                    <span class="input-group-btn">
+							<button class="btn" type="button"><i class="fa fa-envelope-o"></i></button>
+						</span>
+                </div>
+            </div>
+        </div>
+    </div><!--/end container-->
+</div>
+<!--=== End Shop Suvbscribe ===-->
 <?php endif;?>
 
 <?php
@@ -479,24 +953,6 @@ if($page == 'home'):
 if($page == 'login'):
 
 ?>
-    <div class="modal fade" id="recuperar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel"></h4>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!--=== Breadcrumbs v4 ===-->
     <div class="breadcrumbs-v4">
         <div class="container">
@@ -510,13 +966,23 @@ if($page == 'login'):
     </div>
     <!--=== End Breadcrumbs v4 ===-->
 
+    <?php
 
+    $this->db->from('templates');
+    $this->db->where('atribuicao',1);
+    $this->order_by('id','desc');
+    $query = $this->db->get();
+    ?>
     <!--=== Login ===-->
     <div class="log-reg-v3 content-md">
         <div class="container">
             <div class="row">
 
+                <?php
+    if($query->num_rows() > 0):
+        $result = $query->result_array();
 
+                ?>
                 <div class="col-md-7 md-margin-bottom-50">
                     <h2 class="welcome-title"></h2>
                     <p>Suspendisse et tincidunt ipsum, et dignissim urna. Vestibulum nisl tortor, gravida at magna et, suscipit vehicula massa.</p><br>
@@ -543,16 +1009,17 @@ if($page == 'login'):
                     </div>
                 </div>
 
+        <?php endif;?>
 
                 <div class="col-md-5">
                     <form id="sky-form1" class="log-reg-block sky-form">
-                        <h2>Entrar na minha conta</h2>
+                        <h2>Log in to your account</h2>
 
                         <section>
                             <label class="input login-input">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="email" placeholder="Email" name="email" class="form-control">
+                                    <input type="email" placeholder="Email Address" name="email" class="form-control">
                                 </div>
                             </label>
                         </section>
@@ -560,24 +1027,24 @@ if($page == 'login'):
                             <label class="input login-input no-border-top">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                    <input type="password" placeholder="Senha" name="password" class="form-control">
+                                    <input type="password" placeholder="Password" name="password" class="form-control">
                                 </div>
                             </label>
                         </section>
                         <div class="row margin-bottom-5">
                             <div class="col-xs-6">
-                             <br>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="checkbox"/>
+                                    <i></i>
+                                    Remember me
+                                </label>
                             </div>
                             <div class="col-xs-6 text-right">
-                                <a  data-toggle="modal" data-target="#recuperar">Esqueceu sua senha?</a>
+                                <a href="#">Forget your Password?</a>
                             </div>
                         </div>
-
-
-
-                        <!-- Modal -->
                         <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20" type="submit">Log in</button>
-<!--
+
                         <div class="border-wings">
                             <span>or</span>
                         </div>
@@ -590,177 +1057,35 @@ if($page == 'login'):
                                 <button type="button" class="btn-u btn-u-md btn-u-tw btn-block"><i class="fa fa-twitter"></i> Twitter Log In</button>
                             </div>
                         </div>
-
-                        -->
                     </form>
 
                     <div class="margin-bottom-20"></div>
-                    <p class="text-center">Não tem uma conta?  <a href="<?php echo base_url('cadastro');?>">Cadastre-se aqui</a>.</p>
+                    <p class="text-center">Don't have account yet? Learn more and <a href="shop-ui-register.html">Sign Up</a></p>
                 </div>
             </div><!--/end row-->
         </div><!--/end container-->
     </div>
     <!--=== End Login ===-->
 
-
-
-<?php endif;?>
-
-
-<?php
-if($page == 'register'):
-?>
-
-    <!--=== Breadcrumbs v4 ===-->
-    <div class="breadcrumbs-v4">
-        <div class="container">
-            <span class="page-name">Cadastrar</span>
-            <h1>Cadastrar no <span class="shop-green">4</span> porcento</h1>
-            <ul class="breadcrumb-v4-in">
-                <li><a href="<?php echo base_url('home');?>">Inicio</a></li>
-                <li class="active">Cadastrar</li>
-            </ul>
-        </div><!--/end container-->
-    </div>
-    <!--=== End Breadcrumbs v4 ===-->
-
-    <!--=== Registre ===-->
-    <div class="log-reg-v3 content-md margin-bottom-30">
+    <!--=== Shop Suvbscribe ===-->
+    <div class="shop-subscribe">
         <div class="container">
             <div class="row">
-                <div class="col-md-7 md-margin-bottom-50">
-                    <h2 class="welcome-title">Bem vindo ao 4 porcento</h2>
-                    <p><cite>Aqui sera um texto explicativo.</cite></p><br>
-                    <div class="row margin-bottom-50">
-                        <div class="col-sm-4 md-margin-bottom-20">
-                            <div class="site-statistics">
-                                <span>0</span>
-                                <small>Leilões</small>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 md-margin-bottom-20">
-                            <div class="site-statistics">
-                                <span>0</span>
-                                <small>Finalizados</small>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="site-statistics">
-                                <span>0</span>
-                                <small>Usuarios</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="members-number">
-                        <h3>Junte-se, somos  <span class="shop-green"><cite>0</cite></span> membros. </h3>
-                        <img class="img-responsive" src="assets/img/map.png" alt="">
+                <div class="col-md-8 md-margin-bottom-20">
+                    <h2>subscribe to our weekly <strong>newsletter</strong></h2>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Email your email...">
+                        <span class="input-group-btn">
+								<button class="btn" type="button"><i class="fa fa-envelope-o"></i></button>
+							</span>
                     </div>
                 </div>
-
-                <div class="col-md-5">
-                    <form id="sky-form4" class="log-reg-block sky-form">
-                        <h2>Criar uma nova conta</h2>
-
-                        <div class="login-input reg-input">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <section>
-                                        <label class="input">
-                                            <input type="text" name="firstname" placeholder="Nome" class="form-control">
-                                        </label>
-                                    </section>
-                                </div>
-                                <div class="col-sm-6">
-                                    <section>
-                                        <label class="input">
-                                            <input type="text" name="lastname" placeholder="Sobrenome" class="form-control">
-                                        </label>
-                                    </section>
-                                </div>
-                            </div>
-                            <label class="select margin-bottom-15">
-                                <select name="gender" class="form-control">
-                                    <option value="0" selected disabled>Sexo</option>
-                                    <option value="1">Masculino</option>
-                                    <option value="2">Feminino</option>
-                                    <option value="3">Outro</option>
-                                </select>
-                            </label>
-                            <div class="row margin-bottom-10">
-                                <div class="col-xs-6">
-                                    <label class="select">
-                                        <select name="month" class="form-control">
-                                            <option disabled="" selected="" value="0">Mês</option>
-                                            <option value="1">Janeiro</option>
-                                            <option value="2">Fevereiro</option>
-                                            <option value="3">Março</option>
-                                            <option value="4">Abril</option>
-                                            <option value="5">Maio</option>
-                                            <option value="6">Junho</option>
-                                            <option value="7">Julho</option>
-                                            <option value="8">Agosto</option>
-                                            <option value="9">Setembro</option>
-                                            <option value="10">Outubro</option>
-                                            <option value="11">Novembro</option>
-                                            <option value="12">Dezembro</option>
-                                        </select>
-                                    </label>
-                                </div>
-                                <script>
-                                    $(document).ready(function(){
-                                        $('#day').mask('00');
-                                        $('#year').mask('0000');
-                                    });
-                                    </script>
-                                <div class="col-xs-3">
-                                    <input type="text" id="day" name="day" placeholder="Dia" class="form-control">
-                                </div>
-                                <div class="col-xs-3">
-                                    <input type="text" id="year" name="year" placeholder="Ano" class="form-control">
-                                </div>
-                            </div>
-                            <section>
-                                <label class="input">
-                                    <input type="text" name="username" placeholder="Username" class="form-control">
-                                </label>
-                            </section>
-                            <section>
-                                <label class="input">
-                                    <input type="email" name="email" placeholder="Email address" class="form-control">
-                                </label>
-                            </section>
-                            <section>
-                                <label class="input">
-                                    <input type="password" name="password" placeholder="Password" id="password" class="form-control">
-                                </label>
-                            </section>
-                            <section>
-                                <label class="input">
-                                    <input type="password" name="passwordConfirm" placeholder="Confirm password" class="form-control">
-                                </label>
-                            </section>
-                        </div>
-
-                        <label class="checkbox margin-bottom-10">
-                            <input type="checkbox" name="checkbox"/>
-                            <i></i>
-                            Subscribe to our newsletter to get the latest offers
-                        </label>
-                        <label class="checkbox margin-bottom-20">
-                            <input type="checkbox" name="checkbox"/>
-                            <i></i>
-                            I have read agreed with the <a href="#">terms &amp; conditions</a>
-                        </label>
-                        <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20" type="submit">Create Account</button>
-                    </form>
-
-                    <div class="margin-bottom-20"></div>
-                    <p class="text-center">Already you have an account? <a href="shop-ui-login.html">Sign In</a></p>
-                </div>
-            </div><!--/end row-->
+            </div>
         </div><!--/end container-->
     </div>
-    <!--=== End Registre ===-->
+    <!--=== End Shop Suvbscribe ===-->
 
 
 <?php endif;?>
