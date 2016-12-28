@@ -54,3 +54,6 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['home'] = 'pages/index';
 $route['login'] = 'pages/login';
+$route['cadastro'] = 'pages/register';
+$route['sala'] = 'pages/sala';
+$route['leiloes'] = 'pages/sala';

@@ -52,6 +52,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url();?>/assets/css/css-rtl/pages/log-reg-v3-rtl.css">
 
     <?php endif;?>
+
+    <?php
+
+    if($page == 'register'):
+    ?>
+
+        <!-- CSS Page Styles -->
+        <link rel="stylesheet" href="assets/css/pages/log-reg-v3.css">
+
+        <!-- Style Switcher -->
+        <link rel="stylesheet" href="assets/css/plugins/style-switcher.css">
+
+        <!-- CSS Theme -->
+        <link rel="stylesheet" href="assets/css/theme-colors/default.css" id="style_color">
+
+        <!-- CSS Customization -->
+        <link rel="stylesheet" href="assets/css/custom.css">
+
+
+    <?php endif;?>
+
+    <?php if($page == 'home'):?>
+    <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url();?>/assets/js/plugins/countdown.js"></script>
+    <?php endif;?>
+
+    <?php if($page == 'register'):?>
+        <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery.min.js"></script>
+        <script src="<?php echo base_url();?>/assets/js/plugins/jquery.mask.js"></script>
+
+<?php endif;?>
 </head>
 
 <body class="header-fixed">
