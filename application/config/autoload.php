@@ -39,8 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |  $autoload['packages'] = array(APPPATH.'third_party', '/usr/local/shared');
 |
 */
-$autoload['libraries'] = array('database', 'session','upload');
-$autoload['helper'] = array('url', 'form','string','download');
+$autoload['packages'] = array();
 
 /*
 | -------------------------------------------------------------------

@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mysql.4porcento.com.br',
-	'username' => '4porcento ',
-	'password' => '2154dd',
-	'database' => '4porcento',
+	'hostname' => 'localhost',
+	'username' => '',
+	'password' => '',
+	'database' => '',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
