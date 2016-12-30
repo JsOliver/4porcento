@@ -12,17 +12,49 @@ class Pages extends CI_Controller {
 
     public function index()
     {
-        $this->load->library('funcoes');
-        $log = $this->funcoes->logVer();
+        $this->load->library('functions');
+        $log = $this->functions->logVer();
+        $dados['status'] = $log;
+        $dados['page'] = 'home';
+        $this->load->view('pages/user/home',$dados);
 
+    }
 
-        $this->load->helper('form');
-        $this->load->helper('html');
-        $dados['reportData'] = '';
-        $dados['errorLog'] = '';
-        $dados['formerror'] = '';
-        $this->load->view('home',$dados);
+    public function sala(){
 
+        $this->load->library('functions');
+        $log = $this->functions->logVer();
+        $dados['status'] = $log;
+        $dados['page'] = 'sala';
+        $this->load->view('pages/user/sala',$dados);
+
+    }
+
+    public function configure(){
+
+        $this->load->library('functions');
+        $log = $this->functions->logVer();
+        $dados['status'] = $log;
+        $dados['page'] = 'configure';
+        $this->load->view('pages/user/sala',$dados);
+
+    }
+    public function login(){
+
+        $this->load->library('functions');
+        $log = $this->functions->logVer();
+        $dados['status'] = $log;
+        $dados['page'] = 'login';
+        $this->load->view('pages/user/acess/login',$dados);
+
+    }
+    public function register(){
+
+        $this->load->library('functions');
+        $log = $this->functions->logVer();
+        $dados['status'] = $log;
+        $dados['page'] = 'register';
+        $this->load->view('pages/user/acess/register',$dados);
 
     }
 
