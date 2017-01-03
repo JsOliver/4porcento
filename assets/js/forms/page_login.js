@@ -27,12 +27,12 @@ var Login = function () {
 	            {
 	                email:
 	                {
-	                    required: 'Please enter your email address',
-	                    email: 'Please enter a VALID email address'
+	                    required: 'Informe o email',
+	                    email: 'Email inválido'
 	                },
 	                password:
 	                {
-	                    required: 'Please enter your password'
+	                    required: 'informe sua senha'
 	                }
 	            },                  
 	            
@@ -40,7 +40,25 @@ var Login = function () {
 	            errorPlacement: function(error, element)
 	            {
 	                error.insertAfter(element.parent());
-	            }
+	            }, submitHandler: function(error, element) {
+
+					var email = document.getElementById('email').value;
+
+					var pass = document.getElementById('pass').value;
+
+					$.post("logar",{log:true,email:email,pass:pass},function (res) {
+
+						if (res == 11)
+						{
+window.location.reload();
+						}else{
+
+							$("#resposta").html(res);
+						}
+
+
+					});
+				}
 	        });
         }
 

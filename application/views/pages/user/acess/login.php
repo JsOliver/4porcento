@@ -8,6 +8,7 @@ $this->load->view('fixed_files/user/header');
 if($page == 'login'):
 
     ?>
+
     <div class="modal fade" id="recuperar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -48,40 +49,42 @@ if($page == 'login'):
 
                 <div class="col-md-7 md-margin-bottom-50">
                     <h2 class="welcome-title"></h2>
-                    <p>Suspendisse et tincidunt ipsum, et dignissim urna. Vestibulum nisl tortor, gravida at magna et, suscipit vehicula massa.</p><br>
+
                     <div class="info-block-v2">
                         <i class="icon icon-layers"></i>
                         <div class="info-block-in">
-                            <h3>Pellentesque vulputate</h3>
-                            <p>Vestibulum non ex volutpat, sodales diam sit amet, semper nunc. Integer sed nibh commodo, tincidunt nisi.</p>
+                            <h3>Dispute produtos</h3>
+                            <p>Produtos incriveis com um preço exelente e com a confiança de uma boa compra</p>
                         </div>
                     </div>
                     <div class="info-block-v2">
-                        <i class="icon icon-settings"></i>
+                        <i class="fa fa-trophy"></i>
                         <div class="info-block-in">
-                            <h3>Curabitur tincidunt</h3>
-                            <p>Vestibulum non ex volutpat, sodales diam sit amet, semper nunc. Integer sed nibh commodo, tincidunt nisi.</p>
+                            <h3>Você não perde</h3>
+                            <p>Acumule seus créditos para trocar por produtos em nossa <a href="#">loja virtual</a>.</p>
                         </div>
                     </div>
                     <div class="info-block-v2">
                         <i class="icon icon-paper-plane"></i>
                         <div class="info-block-in">
-                            <h3>Aenean condimentum</h3>
-                            <p>Vestibulum non ex volutpat, sodales diam sit amet, semper nunc. Integer sed nibh commodo, tincidunt nisi.</p>
+                            <h3>Pague somente 4%</h3>
+                            <p>Você ira pagar somente 4% para participar do leilão e não ira pagar mais nada.</p>
                         </div>
                     </div>
                 </div>
 
 
                 <div class="col-md-5">
-                    <form id="sky-form1" class="log-reg-block sky-form">
+
+                    <?php if(!isset($_GET['recover'])):?>
+                    <form id="sky-form1" class="log-reg-block sky-form" >
                         <h2>Entrar na minha conta</h2>
 
                         <section>
                             <label class="input login-input">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="email" placeholder="Email" name="email" class="form-control">
+                                    <input id="email" type="email" placeholder="Email" name="email" class="form-control">
                                 </div>
                             </label>
                         </section>
@@ -89,7 +92,7 @@ if($page == 'login'):
                             <label class="input login-input no-border-top">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                    <input type="password" placeholder="Senha" name="password" class="form-control">
+                                    <input id="pass" type="password" placeholder="Senha" name="password" class="form-control">
                                 </div>
                             </label>
                         </section>
@@ -98,15 +101,15 @@ if($page == 'login'):
                                 <br>
                             </div>
                             <div class="col-xs-6 text-right">
-                                <a  data-toggle="modal" data-target="#recuperar">Esqueceu sua senha?</a>
+                                <a href="<?php echo base_url('login?recover');?>">Esqueceu sua senha?</a>
                             </div>
                         </div>
-
+<b id="resposta"></b>
 
 
                         <!-- Modal -->
-                        <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20" type="submit">Log in</button>
-                        <!--
+                        <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20">Entrar</button>
+<!--
                                                 <div class="border-wings">
                                                     <span>or</span>
                                                 </div>
@@ -118,11 +121,28 @@ if($page == 'login'):
                                                     <div class="col-lg-6">
                                                         <button type="button" class="btn-u btn-u-md btn-u-tw btn-block"><i class="fa fa-twitter"></i> Twitter Log In</button>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
-                                                -->
+
                     </form>
+<?php else: ?>
 
+                        <form id="sky-form1" class="log-reg-block sky-form" action="javascript:func();">
+                            <h2>Recuperar</h2>
+
+                            <section>
+                                <label class="input login-input">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        <input type="email" placeholder="Email" name="email" class="form-control">
+                                    </div>
+                                </label>
+                            </section>
+                            <!-- Modal -->
+                            <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20" type="submit">Recuperar</button>
+
+                        </form>
+    <?php endif;?>
                     <div class="margin-bottom-20"></div>
                     <p class="text-center">Não tem uma conta?  <a href="<?php echo base_url('cadastro');?>">Cadastre-se aqui</a>.</p>
                 </div>

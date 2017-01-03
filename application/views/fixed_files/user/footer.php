@@ -29,7 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="col-md-6">
                     <p>
                         <?php echo date('Y');?> &copy; Todos os direitos reservados.
-                        Desenvolvido por <a href="http://rjcriacaodesites.com.br">RJ Criação de Sites</a>
+                        Desenvolvido por <a href="http://rjcriacaodesites.com.br" target="_blank">RJ Criação de Sites</a>
                     </p>
                 </div>
                 <div class="col-md-6">
@@ -69,7 +69,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 </div>
 <!-- End Wait Block -->
+<?php
 
+if($page == 'sala'):
+?>
+
+    <!-- JS Global Compulsory -->
+    <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery-migrate.min.js"></script>
+    <script src="<?php echo base_url();?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- JS Implementing Plugins -->
+    <script src="<?php echo base_url();?>/assets/plugins/back-to-top.js"></script>
+    <script src="<?php echo base_url();?>/assets/plugins/smoothScroll.js"></script>
+    <script src="<?php echo base_url();?>/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js"></script>
+    <script src="<?php echo base_url();?>/assets/plugins/scrollbar/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- Master Slider -->
+    <script src="<?php echo base_url();?>/assets/plugins/master-slider/masterslider/masterslider.min.js"></script>
+    <script src="<?php echo base_url();?>/assets/plugins/master-slider/masterslider/jquery.easing.min.js"></script>
+    <!-- JS Customization -->
+    <script src="<?php echo base_url();?>/assets/js/custom.js"></script>
+    <!-- JS Page Level -->
+    <script src="<?php echo base_url();?>/assets/js/shop.app.js"></script>
+    <script src="<?php echo base_url();?>/assets/js/plugins/owl-carousel.js"></script>
+    <script src="<?php echo base_url();?>/assets/js/plugins/master-slider.js"></script>
+    <script src="<?php echo base_url();?>/assets/js/forms/product-quantity.js"></script>
+    <script src="<?php echo base_url();?>/assets/js/plugins/style-switcher.js"></script>
+    <script>
+        jQuery(document).ready(function() {
+            App.init();
+            App.initScrollBar();
+            OwlCarousel.initOwlCarousel();
+            StyleSwitcher.initStyleSwitcher();
+            MasterSliderShowcase2.initMasterSliderShowcase2();
+        });
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="<?php echo base_url();?>/assets/plugins/respond.js"></script>
+    <script src="<?php echo base_url();?>/assets/plugins/html5shiv.js"></script>
+    <script src="<?php echo base_url();?>/assets/js/plugins/placeholder-IE-fixes.js"></script>
+    <![endif]-->
+
+<?php endif;?>
 <?php if($page == 'home'):?>
 <!-- JS Global Compulsory -->
 <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery-migrate.min.js"></script>
@@ -116,10 +156,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 if($page == 'login'):
 
 ?>
+
     <!-- JS Global Compulsory -->
     <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery-migrate.min.js"></script>
-    <script src="vassets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="<?php echo base_url();?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
     <!-- JS Implementing Plugins -->
     <script src="<?php echo base_url();?>/assets/plugins/back-to-top.js"></script>
     <script src="<?php echo base_url();?>/assets/plugins/smoothScroll.js"></script>
@@ -131,7 +172,7 @@ if($page == 'login'):
     <!-- JS Page Level -->
     <script src="<?php echo base_url();?>/assets/js/shop.app.js"></script>
     <script src="<?php echo base_url();?>/assets/js/forms/page_login.js"></script>
-    <script src="<?php echo base_url();?>/assets/js/plugins/style-switcher-rtl.js"></script>
+    <script src="<?php echo base_url();?>/assets/js/plugins/style-switcher.js"></script>
     <script src="<?php echo base_url();?>/assets/js/forms/page_contact_form.js"></script>
     <script>
         jQuery(document).ready(function() {
@@ -142,13 +183,17 @@ if($page == 'login'):
             PageContactForm.initPageContactForm();
         });
     </script>
-  <script src="<?php echo base_url();?>/assets/plugins/respond.js"></script>
+
+    <script src="<?php echo base_url();?>/assets/plugins/respond.js"></script>
     <script src="<?php echo base_url();?>/assets/plugins/html5shiv.js"></script>
     <script src="<?php echo base_url();?>/assets/js/plugins/placeholder-IE-fixes.js"></script>
     <script src="<?php echo base_url();?>/assets/plugins/sky-forms-pro/skyforms/js/sky-forms-ie8.js"></script>
 
 
     <script src="<?php echo base_url();?>/assets/plugins/sky-forms-pro/skyforms/js/jquery.placeholder.min.js"></script>
+
+
+
 
 
 <?php endif;?>
@@ -180,6 +225,38 @@ if($page == 'register'):
         StyleSwitcher.initStyleSwitcher();
     });
 </script>
+<?php endif;?>
+
+
+<?php
+
+if($page == 'leiloes'):
+
+?>
+    <!-- JS Global Compulsory -->
+    <script src="<?php echo base_url();?>assets/plugins/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url();?>assets/plugins/jquery/jquery-migrate.min.js"></script>
+    <script src="<?php echo base_url();?>assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- JS Implementing Plugins -->
+    <script src="<?php echo base_url();?>assets/plugins/back-to-top.js"></script>
+    <script src="<?php echo base_url();?>assets/plugins/smoothScroll.js"></script>
+    <script src="<?php echo base_url();?>assets/plugins/noUiSlider/jquery.nouislider.all.min.js"></script>
+    <script src="<?php echo base_url();?>assets/plugins/scrollbar/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- JS Customization -->
+    <script src="<?php echo base_url();?>assets/js/custom.js"></script>
+    <!-- JS Page Level -->
+    <script src="<?php echo base_url();?>assets/js/shop.app.js"></script>
+    <script src="<?php echo base_url();?>assets/js/plugins/mouse-wheel.js"></script>
+    <script src="assets/js/plugins/style-switcher.js"></script>
+    <script>
+        jQuery(document).ready(function() {
+            App.init();
+            App.initScrollBar();
+            MouseWheel.initMouseWheel();
+            StyleSwitcher.initStyleSwitcher();
+        });
+    </script>
+
 <?php endif;?>
 </body>
 </html>

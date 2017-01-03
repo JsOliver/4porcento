@@ -45,6 +45,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- CSS Customization -->
     <link rel="stylesheet" href="<?php echo base_url();?>/assets/css/custom.css">
 
+<?php
+
+if($page == 'sala'):
+?>
+    <link rel="stylesheet" href="<?php echo base_url();?>/assets/plugins/animate.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>/assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>/assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>/assets/plugins/scrollbar/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>/assets/plugins/owl-carousel/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>/assets/plugins/master-slider/masterslider/style/masterslider.css">
+    <link rel='stylesheet' href="<?php echo base_url();?>/assets/plugins/master-slider/masterslider/skins/default/style.css">
+
+    <?php endif;?>
+    <?php
+    if($page == 'leiloes'):
+    ?>
+        <link rel="stylesheet" href="<?php echo base_url();?>/assets/plugins/noUiSlider/jquery.nouislider.min.css">
+        <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery.min.js"></script>
+        <script src="<?php echo base_url();?>/assets/js/plugins/countdown.js"></script>
+    <?php endif;?>
+
+    <?php
+    if($page == 'sala'):
+    ?>
+        <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery.min.js"></script>
+        <script src="<?php echo base_url();?>/assets/js/plugins/countdown.js"></script>
+    <?php endif;?>
+
 
     <?php
     if($page == 'login'):
@@ -146,7 +176,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="<?php echo base_url('home');?>">
-                        <img id="logo-header" src="assets/img/logo.png" alt="Logo">
+                        <img id="logo-header" src="<?php echo base_url();?>assets/img/logo.png" alt="Logo">
                     </a>
                 </div>
 
@@ -173,11 +203,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <li class="dropdown-submenu">
                                     <a href="javascript:void(0);">Salas</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="<?php echo base_url('leiloes/disponiveis');?>">Disponíveis</a></li>
-                                        <li><a href="<?php echo base_url('leiloes/finalizados');?>">Finalizados</a></li>
+                                        <li><a href="<?php echo base_url('leiloes?t=disponiveis');?>">Disponíveis</a></li>
+                                        <li><a href="<?php echo base_url('leiloes?t=proximos');?>">Próximos</a></li>
 
                                         <!-- Inicio - Aparece para quem tem créditos -->
-                                        <li><a href="<?php echo base_url('leiloes/gratuitos');?>">Gratuitos</a></li>
+                                        <li><a href="<?php echo base_url('leiloes?t=finalizados');?>">Finalizados</a></li>
                                         <!-- Fim - Aparece para quem tem créditos -->
 
 
@@ -187,7 +217,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <a href="javascript:void(0);">Adicionar</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="<?php echo base_url('adicionar/creditos');?>">Créditos</a></li>
-                                        <li><a href="<?php echo base_url('leiloes/leiloes');?>">Leilões</a></li>
+                                       <!-- <li><a href="<?php echo base_url('leiloes/leiloes');?>">Leilões</a></li> -->
                                     </ul>
                                 </li>
                             </ul>
@@ -225,10 +255,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </li>
                         <!-- End Gifts -->
 
+<?php
 
+if($status == true):
+
+?>
                         <!-- Main Demo -->
-                        <li><a href="../index.html">Sair</a></li>
+                        <li><a href="<?php echo base_url('pages/logout');?>">Sair</a></li>
                         <!-- Main Demo -->
+
+                        <?php endif;?>
                     </ul>
                     <!-- End Nav Menu -->
                 </div>

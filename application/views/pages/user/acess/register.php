@@ -6,6 +6,11 @@ $this->load->view('fixed_files/user/header');
 if($page == 'register'):
     ?>
 
+    <script>
+
+
+
+        </script>
     <!--=== Breadcrumbs v4 ===-->
     <div class="breadcrumbs-v4">
         <div class="container">
@@ -19,6 +24,12 @@ if($page == 'register'):
     </div>
     <!--=== End Breadcrumbs v4 ===-->
 
+    <?php
+
+    $this->db->from('user');
+    $queryu = $this->db->get();
+    $users = $queryu->num_rows();
+    ?>
     <!--=== Registre ===-->
     <div class="log-reg-v3 content-md margin-bottom-30">
         <div class="container">
@@ -41,7 +52,7 @@ if($page == 'register'):
                         </div>
                         <div class="col-sm-4">
                             <div class="site-statistics">
-                                <span>0</span>
+                                <span><?php echo number_format($users);?></span>
                                 <small>Usuarios</small>
                             </div>
                         </div>
@@ -61,30 +72,30 @@ if($page == 'register'):
                                 <div class="col-sm-6">
                                     <section>
                                         <label class="input">
-                                            <input type="text" name="firstname" placeholder="Nome" class="form-control">
+                                            <input id="firstname" type="text" name="firstname" placeholder="Nome" class="form-control">
                                         </label>
                                     </section>
                                 </div>
                                 <div class="col-sm-6">
                                     <section>
                                         <label class="input">
-                                            <input type="text" name="lastname" placeholder="Sobrenome" class="form-control">
+                                            <input id="lastname" type="text" name="lastname" placeholder="Sobrenome" class="form-control">
                                         </label>
                                     </section>
                                 </div>
                             </div>
                             <label class="select margin-bottom-15">
-                                <select name="gender" class="form-control">
+                                <select id="sexo" name="gender" class="form-control">
                                     <option value="0" selected disabled>Sexo</option>
                                     <option value="1">Masculino</option>
                                     <option value="2">Feminino</option>
                                     <option value="3">Outro</option>
                                 </select>
                             </label>
-                            <div class="row margin-bottom-10">
+                            <div class="row margin-bottom-10" style="display: none;">
                                 <div class="col-xs-6">
                                     <label class="select">
-                                        <select name="month" class="form-control">
+                                        <select  name="month" id="syn_list" class="form-control">
                                             <option disabled="" selected="" value="0">Mês</option>
                                             <option value="1">Janeiro</option>
                                             <option value="2">Fevereiro</option>
@@ -105,6 +116,7 @@ if($page == 'register'):
                                     $(document).ready(function(){
                                         $('#day').mask('00');
                                         $('#year').mask('0000');
+                                        $('#cpf').mask('000.000.000-00');
                                     });
                                 </script>
                                 <div class="col-xs-3">
@@ -114,43 +126,51 @@ if($page == 'register'):
                                     <input type="text" id="year" name="year" placeholder="Ano" class="form-control">
                                 </div>
                             </div>
+
+
                             <section>
                                 <label class="input">
-                                    <input type="text" name="username" placeholder="Username" class="form-control">
+                                    <input id="username" type="text" name="username" placeholder="Username" class="form-control">
                                 </label>
                             </section>
                             <section>
                                 <label class="input">
-                                    <input type="email" name="email" placeholder="Email address" class="form-control">
+                                    <input id="email" type="email" name="email" placeholder="E-mail" class="form-control">
                                 </label>
                             </section>
                             <section>
                                 <label class="input">
-                                    <input type="password" name="password" placeholder="Password" id="password" class="form-control">
+                                    <input id="cpf" type="text" name="cpf" placeholder="CPF" class="form-control">
                                 </label>
                             </section>
                             <section>
                                 <label class="input">
-                                    <input type="password" name="passwordConfirm" placeholder="Confirm password" class="form-control">
+                                    <input  type="password" name="password" placeholder="Senha" id="password" class="form-control">
                                 </label>
                             </section>
+                            <section>
+                                <label class="input">
+                                    <input id="passwordConfirm" type="password" name="passwordConfirm" placeholder="Confirmar senha" class="form-control">
+                                </label>
+                            </section>
+                            <b id="resposta"></b>
                         </div>
 
-                        <label class="checkbox margin-bottom-10">
+                       <!-- <label class="checkbox margin-bottom-10">
                             <input type="checkbox" name="checkbox"/>
                             <i></i>
                             Subscribe to our newsletter to get the latest offers
-                        </label>
+                        </label> -->
                         <label class="checkbox margin-bottom-20">
                             <input type="checkbox" name="checkbox"/>
                             <i></i>
-                            I have read agreed with the <a href="#">terms &amp; conditions</a>
+                            Eu aceito os <a href="#">termos &amp; condições</a>
                         </label>
-                        <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20" type="submit">Create Account</button>
+                        <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20" onclick="register();">Criar conta</button>
                     </form>
 
                     <div class="margin-bottom-20"></div>
-                    <p class="text-center">Already you have an account? <a href="shop-ui-login.html">Sign In</a></p>
+                    <p class="text-center">Já tem uma conta? <a href="<?php echo base_url('login');?>">Logar</a></p>
                 </div>
             </div><!--/end row-->
         </div><!--/end container-->

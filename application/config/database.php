@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mysql.4porcento.com.br',
-	'username' => '4porcento ',
-	'password' => '2154dd',
+	'hostname' => 'localhost',
+	'username' => 'root',
+	'password' => '',
 	'database' => '4porcento',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -94,3 +94,4 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
