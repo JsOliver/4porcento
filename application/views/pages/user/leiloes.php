@@ -208,7 +208,7 @@ $this->load->view('fixed_files/user/header');
                             <div class="product-description product-description-brd margin-bottom-30">
                                 <div class="overflow-h margin-bottom-5">
                                     <div class="pull-left">
-                                        <h4 class="title-price"><a href="<?php echo base_url('sala?='.$i.'');?>">Nome do leilão</a></h4>
+                                        <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$i.'');?>">Nome do leilão</a></h4>
                                         <span class="gender text-uppercase">Cidade</span>
                                         <span class="gender">Adicionado por: ---------</span>
                                     </div>
@@ -235,12 +235,12 @@ $this->load->view('fixed_files/user/header');
                         <div class="col-md-4">
                             <div class="product-img product-img-brd">
                                 <a href="#"><img class="full-width img-responsive" src="assets/img/blog/16.jpg" alt=""></a>
-                                <a class="product-review"  href="<?php echo base_url('sala?='.$w.'');?>"><b>Começa em:</b> <span id="start<?php echo $w;?>"></span></a>
+                                <a class="product-review"  href="<?php echo base_url('sala?p='.$w.'');?>"><b>Começa em:</b> <span id="start<?php echo $w;?>"></span></a>
                             </div>
                             <div class="product-description product-description-brd margin-bottom-30">
                                 <div class="overflow-h margin-bottom-5">
                                     <div class="pull-left">
-                                        <h4 class="title-price"><a href="<?php echo base_url('sala?='.$w.'');?>">Nome do leilão</a></h4>
+                                        <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$w.'');?>">Nome do leilão</a></h4>
                                         <span class="gender text-uppercase">Valor inicial: <b>R$ 5.00</b></span>
                                     </div>
 
@@ -272,7 +272,7 @@ $this->load->view('fixed_files/user/header');
                             <div class="product-description product-description-brd margin-bottom-30">
                                 <div class="overflow-h margin-bottom-5">
                                     <div class="pull-left">
-                                        <h4 class="title-price"><a href="<?php echo base_url('sala?='.$n.'');?>">Nome do leilão</a></h4>
+                                        <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$n.'');?>">Nome do leilão</a></h4>
                                         <span class="gender">Vencedor: <b>Jonhcash</b></span>
                                     </div>
                                     <div class="product-price">

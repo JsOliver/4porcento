@@ -60,3 +60,6 @@ $route['leiloes'] = 'pages/leiloes';
 $route['adicionar/creditos'] = 'pages/compra';
 $route['cadastrar'] = 'pages/cadastro';
 $route['logar'] = 'pages/logar';
+$route['admin'] = 'pages/admin/home';
+$route['adm/clientes'] = 'pages/clients';
+$route['adm/leiloes'] = 'pages/leilao';

@@ -6,6 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 if($page == 'sala'):
     $this->load->view('fixed_files/user/header');
+
     ?>
 
 

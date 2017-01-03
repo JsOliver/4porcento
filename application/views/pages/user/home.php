@@ -277,13 +277,13 @@ if($page == 'home'):
                     ?>
                     <li class="item">
                         <div class="product-img">
-                            <a href="<?php echo base_url('sala?='.$i.'');?>"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
-                            <a class="product-review" href="<?php echo base_url('sala?='.$i.'');?>">0 pessoas online</a>
+                            <a href="<?php echo base_url('sala?p='.$i.'');?>"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
+                            <a class="product-review" href="<?php echo base_url('sala?p='.$i.'');?>">0 pessoas online</a>
                         </div>
                         <div class="product-description product-description-brd">
                             <div class="overflow-h margin-bottom-5">
                                 <div class="pull-left">
-                                    <h4 class="title-price"><a href="<?php echo base_url('sala?='.$i.'');?>">Nome do leilão</a></h4>
+                                    <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$i.'');?>">Nome do leilão</a></h4>
                                     <span class="gender text-uppercase">Cidade</span>
                                     <span class="gender">Adicionado por: ---------</span>
                                 </div>
@@ -326,13 +326,13 @@ if($page == 'home'):
                     ?>
                     <li class="item">
                         <div class="product-img">
-                            <a href="<?php echo base_url('sala?='.$w.'');?>"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
-                            <a class="product-review"  href="<?php echo base_url('sala?='.$w.'');?>"><b>Começa em:</b> <span id="start<?php echo $w;?>"></span></a>
+                            <a href="<?php echo base_url('sala?p='.$w.'');?>"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
+                            <a class="product-review"  href="<?php echo base_url('sala?p='.$w.'');?>"><b>Começa em:</b> <span id="start<?php echo $w;?>"></span></a>
                         </div>
                         <div class="product-description product-description-brd">
                             <div class="overflow-h margin-bottom-5">
                                 <div class="pull-left">
-                                    <h4 class="title-price"><a href="<?php echo base_url('sala?='.$w.'');?>">Nome do leilão</a></h4>
+                                    <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$w.'');?>">Nome do leilão</a></h4>
                                     <span class="gender text-uppercase">Valor inicial: <b>R$ 5.00</b></span>
                                 </div>
                                 <div class="product-price">
@@ -384,13 +384,13 @@ if($page == 'home'):
                     ?>
                     <li class="item">
                         <div class="product-img">
-                            <a href="<?php echo base_url('sala?='.$i.'');?>"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
-                            <a class="product-review" href="<?php echo base_url('sala?='.$i.'');?>">Arrematado</a>
+                            <a href="<?php echo base_url('sala?p='.$i.'');?>"><img class="full-width img-responsive" src="assets/img/blog/09.jpg" alt=""></a>
+                            <a class="product-review" href="<?php echo base_url('sala?p='.$i.'');?>">Arrematado</a>
                         </div>
                         <div class="product-description product-description-brd">
                             <div class="overflow-h margin-bottom-5">
                                 <div class="pull-left">
-                                    <h4 class="title-price"><a href="<?php echo base_url('sala?='.$i.'');?>">Nome do leilão</a></h4>
+                                    <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$i.'');?>">Nome do leilão</a></h4>
                                     <span class="gender">Vencedor: <b>Jonhcash</b></span>
                                 </div>
                                 <div class="product-price">

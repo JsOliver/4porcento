@@ -36,6 +36,7 @@ class Models_model extends CI_Model
             $_SESSION['NAME'] = $nome.' '.$sobrenome;
             $_SESSION['EMAIL'] = $email;
             $_SESSION['PASS'] = hash('whirlpool',md5(sha1($senha)));
+            $_SESSION['TYPE'] = 0;
             $_SESSION['ID'] = $this->db->insert_id();
             echo 11;
         }
@@ -58,6 +59,8 @@ class Models_model extends CI_Model
             $_SESSION['EMAIL'] = $result[0]['email'];
             $_SESSION['PASS'] = hash('whirlpool',md5(sha1($senha)));
             $_SESSION['ID'] = $result[0]['id'];
+            $_SESSION['TYPE'] = $result[0]['type'];
+
             echo 11;
 
         }else{
@@ -97,6 +100,97 @@ class Models_model extends CI_Model
 
 
     }
+
+
+    public function delete($table,$col,$where){
+
+        if(empty($table) or empty($col) or empty($where)):
+        return 0;
+        else:
+        $this->db->where($col,$where);
+        $this->db->delete($table);
+
+            return 1;
+            endif;
+    }
+
+
+    public function newleilao($titulo,$breve_descricao,$file,$valor,$descricao,$inicio,$estado,$cidade,$cep,$rua,$bairro){
+
+
+        if(empty($titulo) or empty($breve_descricao) or empty($file) or empty($valor) or empty($descricao) or empty($inicio)){
+
+            return 'A campos obrigatorios vazios.';
+
+        }else
+        {
+            $max_size = 5;
+            $data['title'] = $titulo;
+            $data['breve_descricao'] = $breve_descricao;
+            $data['valor_leilao'] = $valor;
+            $data['descricao_completa'] = $descricao;
+            $data['inicio_data'] = $inicio;
+            $data['estado'] = $estado;
+            $data['duracao_hora'] = 3600;
+            $data['status'] = 1;
+            $data['cidade'] = $cidade;
+            $data['cep'] = $cep;
+            $data['rua'] = $rua;
+            $data['bairro'] = $bairro;
+
+            if (!empty($file['name'])):
+                $filex = $file['tmp_name'];
+                $size = $file['size'];
+                $type = $file['type'];
+                $name = $file['name'];
+
+                $extension = pathinfo($name, PATHINFO_EXTENSION);
+                $extension = strtolower($extension);
+                $data['ext'] = str_replace('.','',$extension);
+                if (strstr('jpg,gif,png', $extension)):
+
+
+                    if ($size > $max_size * 1000000):
+
+                        return 'Tamanho maximo de ' . $max_size. 'MB, excedido.';
+
+                    else:
+
+                        $data['image'] = file_get_contents(addslashes($filex));
+
+                        $this->db->insert('leiloes',$data);
+
+                        if ($this->db->insert_id() > 0) {
+                            return 1;
+                        } else {
+                            return 'Erro a salvar a imagem, tente mais tarde.';
+                        }
+
+                    endif;
+
+
+                else:
+
+                    return 'Somente as extensões jpg,gif,png são permitidas.';
+
+                endif;
+
+
+            else:
+
+
+                return 'Por favor selecione o arquivo.';
+
+
+            endif;
+
+
+        }
+
+
+
+        }
+
 
 
 
