@@ -63,3 +63,4 @@ $route['logar'] = 'pages/logar';
 $route['admin'] = 'pages/admin/home';
 $route['adm/clientes'] = 'pages/clients';
 $route['adm/leiloes'] = 'pages/leilao';
+$route['adm/pacotes'] = 'pages/pacotes';

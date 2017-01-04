@@ -171,6 +171,7 @@ class Pages extends CI_Controller {
     {
 
 
+        if(isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
 
         if($this->Models_model->delete('user','id',$_GET['id']) == 1){
             redirect(base_url('adm/clientes'), 'refresh');
@@ -179,14 +180,17 @@ class Pages extends CI_Controller {
             redirect(base_url('admin'), 'refresh');
 
         }
+        else:
+            redirect(base_url('home'), 'refresh');
 
+        endif;
     }
 
     public function deletelei()
     {
 
 
-
+if(isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
         if($this->Models_model->delete('leiloes','id',$_GET['id']) == 1){
             redirect(base_url('adm/leiloes'), 'refresh');
 
@@ -194,6 +198,31 @@ class Pages extends CI_Controller {
             redirect(base_url('admin'), 'refresh');
 
         }
+
+        else:
+            redirect(base_url('home'), 'refresh');
+
+endif;
+
+    }
+
+    public function deleteptc()
+    {
+
+
+        if(isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+            if($this->Models_model->delete('pacotes','id',$_GET['id']) == 1){
+                redirect(base_url('adm/pacotes'), 'refresh');
+
+            }else{
+                redirect(base_url('admin'), 'refresh');
+
+            }
+
+        else:
+            redirect(base_url('home'), 'refresh');
+
+        endif;
 
     }
 
@@ -230,19 +259,54 @@ class Pages extends CI_Controller {
                 endif;
 
     }
+    public function pacotes(){
+
+        $this->load->library('functions');
+        $log = $this->Models_model->logVer();
+
+        if($log == true and $_SESSION['TYPE'] == 54):
+            $dados['status'] = $log;
+            $dados['page'] = 'pacotes';
+            $this->load->view('pages/admin/pacotes',$dados);
+
+        else:
+                @session_destroy();
+                redirect(base_url('login'), 'refresh');
+                endif;
+
+    }
 
     public function addLeilao(){
-
-      if($this->Models_model->newleilao($_POST['title'],$_POST['breve_descricao'],$_FILES['image'],$_POST['valor_leilao'],$_POST['descricao_completa'],$_POST['inicio_data'],$_POST['estado'],$_POST['cidade'],$_POST['cep'],$_POST['rua'],$_POST['bairro']) == 1):
+        if(isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+      if($this->Models_model->newleilao($_POST['title'],$_POST['minuser'],$_POST['maxuser'],$_POST['breve_descricao'],$_FILES['image'],$_POST['valor_leilao'],$_POST['descricao_completa'],$_POST['inicio_data'],$_POST['estado'],$_POST['cidade'],$_POST['cep'],$_POST['rua'],$_POST['bairro']) == 1):
            redirect(base_url('adm/leiloes'), 'refresh');
 
            else:
                redirect(base_url('admin'), 'refresh');
 
                endif;
+        else:
+            redirect(base_url('home'), 'refresh');
 
+        endif;
     }
 
+    public function addPacote(){
+        if(isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+
+           if($this->Models_model->newpacote($_POST['title'],$_POST['valor_pacote']) == 1):
+                redirect(base_url('adm/pacotes'), 'refresh');
+
+            else:
+                redirect(base_url('admin'), 'refresh');
+
+            endif;
+        else:
+            redirect(base_url('home'), 'refresh');
+
+
+        endif;
+    }
     public function exibir(){
 
         $this->db->from('leiloes');
@@ -254,4 +318,38 @@ class Pages extends CI_Controller {
 
     }
 
+    public function updLeilao(){
+
+   if(isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+            if($this->Models_model->updleilao($_POST['leilao'],$_POST['minuser'],$_POST['maxuser'],$_POST['title'],$_POST['breve_descricao'],$_FILES['image'],$_POST['valor_leilao'],$_POST['descricao_completa'],$_POST['inicio_data'],$_POST['estado'],$_POST['cidade'],$_POST['cep'],$_POST['rua'],$_POST['bairro']) == 1):
+                redirect(base_url('adm/leiloes'), 'refresh');
+
+            else:
+                redirect(base_url('admin'), 'refresh');
+
+            endif;
+            else:
+                redirect(base_url('home'), 'refresh');
+
+        endif;
+
+    }
+
+    public function updPacote(){
+
+   if(isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+       if($this->Models_model->updpacote($_POST['pacote'],$_POST['title'],$_POST['valor_pacote']) == 1):
+           redirect(base_url('adm/pacotes'), 'refresh');
+
+       else:
+           redirect(base_url('admin'), 'refresh');
+
+       endif;
+   else:
+       redirect(base_url('home'), 'refresh');
+
+
+   endif;
+
+    }
 }

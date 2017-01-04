@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+@$data_atual_system = date('YmdHis');
 
 ?>
 <!DOCTYPE html>
@@ -124,8 +125,11 @@ if($page == 'sala'):
         <div class="topbar-v3">
             <div class="search-open">
                 <div class="container">
-                    <input type="text" class="form-control" placeholder="Pesquisar">
+
+                    <form method="get" action="<?php echo base_url('leiloes')?>">
+                    <input type="text" name="search" class="form-control" placeholder="Buscar por: produto, localidade...">
                     <div class="search-close"><i class="icon-close"></i></div>
+               </form>
                 </div>
             </div>
 
@@ -223,7 +227,17 @@ if($page == 'sala'):
                             </ul>
                         </li>
                         <!-- End Promotion -->
+                        <?php
+                        $this->db->from('leiloes');
+                        $this->db->where('status',1);
+                        $this->db->where('inicio_data < ',$data_atual_system);
+                        $this->db->limit(4,0);
+                        $query = $this->db->get();
+                        $count = $query->num_rows();
+                        $result = $query->result_array();
+if($count > 0):
 
+                        ?>
                         <!-- Gifts -->
                         <li class="dropdown mega-menu-fullwidth">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">
@@ -234,19 +248,16 @@ if($page == 'sala'):
                                     <div class="mega-menu-content">
                                         <div class="container">
                                             <div class="row">
+<?php
+
+foreach ($result as $dds){
+?>
 
                                                 <div class="col-md-3 col-sm-4 col-xs-4 md-margin-bottom-30">
-                                                    <a href="#"><img class="product-offers img-responsive" src="assets/img/blog/01.jpg" alt=""></a>
+                                                    <a href="#"><img style="height: 200px;object-fit: cover; object-position: center;" class="product-offers img-responsive" src="<?php echo base_url('pages/exibir?id='.$dds['id']);?>" alt=""></a>
+                                                    <b><?php echo $this->Models_model->limitarTexto($dds['title'],30);?></b>
                                                 </div>
-                                                <div class="col-md-3 col-sm-4 col-xs-4 sm-margin-bottom-30">
-                                                    <a href="#"><img class="product-offers img-responsive" src="assets/img/blog/02.jpg" alt=""></a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-4 col-xs-4">
-                                                    <a href="#"><img class="product-offers img-responsive" src="assets/img/blog/03.jpg" alt=""></a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-4 col-xs-4">
-                                                    <a href="#"><img class="product-offers img-responsive" src="assets/img/blog/03.jpg" alt=""></a>
-                                                </div>
+<?php }?>
                                             </div><!--/end row-->
                                         </div><!--/end container-->
                                     </div><!--/end mega menu content-->
@@ -254,7 +265,7 @@ if($page == 'sala'):
                             </ul><!--/end dropdown-menu-->
                         </li>
                         <!-- End Gifts -->
-
+<?php endif;?>
 <?php
 
 if($status == true):

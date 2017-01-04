@@ -34,6 +34,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <?php if($page == 'leilao'):?>
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 
 
@@ -52,11 +54,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             content_css: '//www.tinymce.com/css/codepen.min.css'
         });
     </script>
+
+    <?php endif;?>
     <!-- jQuery -->
     <script src="<?php echo base_url();?>/assets/admin/vendor/jquery/jquery.min.js"></script>
 
     <!-- Jquery easing -->
-    <script type="text/javascript" src="http://www.aquamercantil.com.br/assets/js/jquery.mask.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>/assets/js/jquery.mask.js"></script>
 
     <script>
         jQuery(document).ready(function() {
@@ -64,6 +68,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             jQuery('#cep').mask('00.000-000');
             jQuery('#dateinicio').mask('00/00/0000 00:00:00');
             jQuery('#valor').mask("#,##0.00", {reverse: true});
+            jQuery('#valor2').mask("###0.00", {reverse: true});
+            jQuery('#numero').mask("###000", {reverse: true});
+            jQuery('#numero1').mask("###000", {reverse: true});
 
         });
     </script>
@@ -82,7 +89,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">4% Administração</a>
+            <a class="navbar-brand" href="<?php echo base_url('admin');?>">4% Administração</a>
         </div>
         <!-- /.navbar-header -->
 
@@ -113,6 +120,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                     <li>
                         <a href="<?php echo base_url('adm/leiloes');?>"><i class="fa fa-tasks fa-fw"></i> Leilões</a>
+                    </li>
+
+                    <li>
+                        <a href="<?php echo base_url('adm/pacotes');?>"><i class="fa fa-money fa-fw"></i> Pacotes</a>
                     </li>
 
 

@@ -2,11 +2,20 @@
 if($page == 'leiloes'):
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('fixed_files/user/header');
+    $data_atual_system = date('YmdHis');
 
 
-    if(!isset($_GET['t'])):
-        $tipo = 'todos';
-        $tipoCog = 0;
+    if(!isset($_GET['t']) and !isset($_GET['search'])):
+        redirect(base_url('leiloes?t=disponiveis'), 'refresh');
+
+    else:
+
+        if(!isset($_GET['t']) and isset($_GET['search'])):
+
+            $tipoCog = 4;
+            $tipo = '<b>'.$_GET['search'].'</b>';
+
+
         else:
 
         if(isset($_GET['t']) and $_GET['t'] == 'disponiveis' or $_GET['t'] == 'finalizados' or $_GET['t'] == 'proximos' or $_GET['t'] == 'todos'):
@@ -32,8 +41,12 @@ $this->load->view('fixed_files/user/header');
 
 
         else:
-            redirect('home', 'refresh');
 
+
+            redirect(base_url('home'), 'refresh');
+
+
+                endif;
         endif;
             endif;
 ?>
@@ -44,12 +57,51 @@ $this->load->view('fixed_files/user/header');
     <div class="content container">
         <div class="row">
 
+<?php
+$this->db->from('leiloes');
+if(isset($_GET['t'])):
 
+
+    if($tipoCog == 1):
+        $this->db->where('inicio_data < ',$data_atual_system);
+
+        $this->db->where('status',1);
+    endif;
+
+    if($tipoCog == 2):
+        $this->db->where('inicio_data > ',$data_atual_system);
+        $this->db->where('status',1);
+    endif;
+
+    if($tipoCog == 3):
+        $this->db->where('status',0);
+        $this->db->or_where('status',2555);
+    endif;
+
+endif;
+if(!isset($_GET['t']) and isset($_GET['search'])):
+    if($tipoCog == 4):
+        $this->db->like('title',$_GET['search']);
+        $this->db->or_like('cidade',$_GET['search']);
+        $this->db->or_like('estado',$_GET['search']);
+        $this->db->or_like('rua',$_GET['search']);
+        $this->db->or_like('cep',$_GET['search']);
+        $this->db->or_like('breve_descricao',$_GET['search']);
+        $this->db->or_like('descricao_completa',$_GET['search']);
+        $this->db->or_like('keywords',$_GET['search']);
+
+
+    endif;
+endif;
+$querynl = $this->db->get();
+$countnl = $querynl->num_rows();
+
+?>
             <div class="col-md-12">
                 <div class="row margin-bottom-5">
                     <div class="col-sm-4 result-category">
-                        <h2><small>Leiloes <?php echo $tipo;?></small></h2>
-                        <small class="shop-bg-red badge-results">0 Resultados</small>
+                        <h2><small>Leiloes <?php echo $this->Models_model->limitarTexto($tipo,30);?></small></h2>
+                        <small class="shop-bg-red badge-results"><?php echo number_format($countnl);?> Resultados</small>
                     </div>
                     <div class="col-sm-8">
                         <ul class="list-inline clear-both">
@@ -59,7 +111,14 @@ $this->load->view('fixed_files/user/header');
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 
-                                      <?php  if(!isset($_GET['order'])):
+                                      <?php
+                                      if(isset($_GET['search'])):
+                                          $action = 'search';
+                                      else:
+                                          $action = 't';
+                                      endif;
+
+                                      if(!isset($_GET['order'])):
                                           echo 'Ultimos adicionados';
 
                                       else:
@@ -83,25 +142,25 @@ $this->load->view('fixed_files/user/header');
                                       endif; ?><span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="leiloes?t=<?php echo $tipo;?>&&<?php
+                                        <li><a href="leiloes?<?php echo $action;?>=<?php echo strip_tags($tipo);?>&&<?php
                                             if(isset($_GET['limit'])):
 
                                         echo 'limit='.$_GET['limit'].'&&';
                                             endif;
                                             ?>order=0">Ultimos adicionados</a></li>
-                                        <li><a href="leiloes?t=<?php echo $tipo;?>&&<?php
+                                        <li><a href="leiloes?<?php echo $action;?>=<?php echo strip_tags($tipo);?>&&<?php
                                             if(isset($_GET['limit'])):
 
                                                 echo 'limit='.$_GET['limit'].'&&';
                                             endif;
                                             ?>order=1">Mais proximos</a></li>
-                                        <li><a href="leiloes?t=<?php echo $tipo;?>&&<?php
+                                        <li><a href="leiloes?<?php echo $action;?>=<?php echo strip_tags($tipo);?>&&<?php
                                             if(isset($_GET['limit'])):
 
                                                 echo 'limit='.$_GET['limit'].'&&';
                                             endif;
                                             ?>order=2">Menores preços</a></li>
-                                        <li><a href="leiloes?t=<?php echo $tipo;?>&&<?php
+                                        <li><a href="leiloes?<?php echo $action;?>=<?php echo strip_tags($tipo);?>&&<?php
                                             if(isset($_GET['limit'])):
 
                                                 echo 'limit='.$_GET['limit'].'&&';
@@ -116,44 +175,43 @@ $this->load->view('fixed_files/user/header');
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                         <?php
 
-                                        if(!isset($_GET['limit'])):
-                                        echo 'Tudo';
+                                        if(isset($_GET['search'])):
+                                        $action = 'search';
                                         else:
-                                            echo $_GET['limit'];
+                                        $action = 't';
+                                        endif;
+                                        if(!isset($_GET['limit'])):
+                                        echo '20';
+                                        else:
+                                            echo strip_tags($_GET['limit']);
 
                                         endif;
                                         ?> <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="leiloes?t=<?php echo $tipo;?><?php
 
-                                            if(isset($_GET['order'])):
-                                                echo '&&order='.$_GET['order'];
-                                            endif;
-
-                                            ?>">Tudo</a></li>
-                                        <li><a href="leiloes?t=<?php echo $tipo;?>&&limit=20<?php
+                                        <li><a href="leiloes?<?php echo $action;?>=<?php echo strip_tags($tipo);?>&&limit=20<?php
 
                                             if(isset($_GET['order'])):
                                                 echo '&&order='.$_GET['order'];
                                             endif;
 
                                             ?>">20</a></li>
-                                        <li><a href="leiloes?t=<?php echo $tipo;?>&&limit=10<?php
+                                        <li><a href="leiloes?<?php echo $action;?>=<?php echo strip_tags($tipo);?>&&limit=10<?php
 
                                             if(isset($_GET['order'])):
                                                 echo '&&order='.$_GET['order'];
                                             endif;
 
                                             ?>">10</a></li>
-                                        <li><a href="leiloes?t=<?php echo $tipo;?>&&limit=5<?php
+                                        <li><a href="leiloes?<?php echo $action;?>=<?php echo strip_tags($tipo);?>&&limit=5<?php
 
                                             if(isset($_GET['order'])):
                                                 echo '&&order='.$_GET['order'];
                                             endif;
 
                                             ?>">5</a></li>
-                                        <li><a href="leiloes?t=<?php echo $tipo;?>&&limit=3<?php
+                                        <li><a href="leiloes?<?php echo $action;?>=<?php echo strip_tags($tipo);?>&&limit=3<?php
 
                                             if(isset($_GET['order'])):
                                                 echo '&&order='.$_GET['order'];
@@ -170,135 +228,278 @@ $this->load->view('fixed_files/user/header');
                 <div class="filter-results">
                     <div class="row illustration-v2 margin-bottom-30">
 
-                        <?php
-                        if($tipoCog == 0):
+                     <?php
+                     if(!isset($_GET['limit'])):
+                     $max = 15;
 
-                        ?>
+                     else:
+                         if($_GET['limit'] < 3 or $_GET['limit'] > 20):
+                             $max = 15;
+
+                             else:
+                             $max = $_GET['limit'];
+                             endif;
+
+                     endif;
+
+                     if(!isset($_GET['pg'])):
+                         $atual = 0;
+                         $pgatual = 1;
+
+                     else:
+                         $atual = ceil($max * $_GET['pg'] - $max);
+                         $pgatual = $_GET['pg'];
+                     endif;
+
+
+                     $pages = ceil($countnl / $max);
+
+
+
+
+                     $this->db->from('leiloes');
+                     if(isset($_GET['t'])):
+
+
+                         if($tipoCog == 1):
+                             $this->db->where('inicio_data < ',$data_atual_system);
+
+                             $this->db->where('status',1);
+                         endif;
+
+                         if($tipoCog == 2):
+                             $this->db->where('inicio_data > ',$data_atual_system);
+                             $this->db->where('status',1);
+                         endif;
+
+                         if($tipoCog == 3):
+                             $this->db->where('status',0);
+                             $this->db->or_where('status',2555);
+                         endif;
+
+                     endif;
+                     if(!isset($_GET['t']) and isset($_GET['search'])):
+                         if($tipoCog == 4):
+                             $this->db->like('title',$_GET['search']);
+                             $this->db->or_like('cidade',$_GET['search']);
+                             $this->db->or_like('estado',$_GET['search']);
+                             $this->db->or_like('rua',$_GET['search']);
+                             $this->db->or_like('cep',$_GET['search']);
+                             $this->db->or_like('breve_descricao',$_GET['search']);
+                             $this->db->or_like('descricao_completa',$_GET['search']);
+                             $this->db->or_like('keywords',$_GET['search']);
+
+
+                         endif;
+                     endif;
+                     $this->db->limit($max,$atual);
+
+                     if(!isset($_GET['order'])):
+                         $this->db->order_by('id','desc');
+
+                     else:
+                         if($_GET['order'] == 0):
+                         $this->db->order_by('id','desc');
+                    endif;
+                         if($_GET['order'] == 1):
+                         $this->db->order_by('id','desc');
+                    endif;
+
+                         if($_GET['order'] == 2):
+                         $this->db->order_by('valor_replace','ASC');
+                    endif;
+                         if($_GET['order'] == 3):
+                         $this->db->order_by('valor_replace','DESC');
+                    endif;
+
+
+                     endif;
+
+                     $querynl = $this->db->get();
+                     $countnl = $querynl->num_rows();
+                     $result = $querynl->result_array();
+
+                     foreach ($result as $dds){
+                         $ind = $dds['inicio_data'];
+                         $ano = substr($ind, 0, 4);
+                         $mes = substr($ind, 4, 2);
+                         $dia = substr($ind, 6, 2);
+                         $hora = substr($ind, 8, 2);
+                         $minuto = substr($ind, 10, 2);
+                         $segundo = substr($ind, 12, 2);
+                     ?>
                         <div class="col-md-4">
                             <div class="product-img product-img-brd">
-                                <a href="#"><img class="full-width img-responsive" src="assets/img/blog/16.jpg" alt=""></a>
-                                <div class="shop-rgba-dark-green rgba-banner">New</div>
+
+                                <a href="<?php
+
+
+
+                                if($dds['inicio_data'] <= $data_atual_system and $dds['status'] == 1):
+
+                                echo base_url('sala?p='.$dds['id'].'');?>"><?php
+
+
+                                    else:
+                                        echo 'javascript:func();">';
+
+                                    endif;
+
+                                    ?><img class="full-width img-responsive" src="<?php echo base_url('pages/exibir?id='.$dds['id']);?>" alt="" style="height: 350px;object-fit: cover; object-position: center;"></a>
+                                <a class="product-review"  href="<?php
+
+
+
+                         if($dds['inicio_data'] <= $data_atual_system and $dds['status'] == 1):
+
+                                            echo base_url('sala?p='.$dds['id'].'');?>"><?php
+
+
+                                    else:
+                                        echo 'javascript:func();">';
+
+                                    endif;
+
+                                ?>
+
+
+                                <?php
+                                if($dds['inicio_data'] > $data_atual_system and $dds['status'] == 1):
+                                    echo '<b>Começa:</b> '.$dia.'/'.$mes.'/'.$ano.' '.$hora.':'.$minuto.':'.$segundo.'';
+                                endif;
+
+                                if($dds['inicio_data'] <= $data_atual_system and $dds['status'] == 1):
+                                    echo '<b>0 pessoas online</b>';
+                                endif;
+
+                                    if($dds['status'] == 0):
+                                    echo '<b>Finalizado</b>';
+                                endif;
+
+                                    if($dds['status'] == 2555):
+                                    echo '<b>Finalizado</b>';
+                                endif;
+                                ?>
+
+
+
+                                </a>
                             </div>
                             <div class="product-description product-description-brd margin-bottom-30">
                                 <div class="overflow-h margin-bottom-5">
                                     <div class="pull-left">
-                                        <h4 class="title-price"><a href="shop-ui-inner.html">Double-breasted</a></h4>
-                                        <span class="gender text-uppercase">Men</span>
-                                        <span class="gender">Suits - Blazers</span>
+                                        <h4 class="title-price"><a href="<?php
+
+                         if($dds['inicio_data'] <= $data_atual_system and $dds['status'] == 1):
+
+                                            echo base_url('sala?p='.$dds['id'].'');?>"><?php echo $dds['title'];
+
+
+                             else:
+                                 echo 'javascript:func();">'. $dds['title'];
+
+                                 endif;
+
+                                                ?>
+
+
+                                            </a></h4>
+                                        <?php
+
+                                        if($dds['status'] == 1):
+                                            echo '<span class="gender">Vencedor: <b>Jonhcash</b></span>';
+                                            endif;
+                                        if($dds['status'] == 0):
+                                            echo '<span class="gender">Leilão finalizado sem nenhum vencedor.</span>';
+                                            endif;
+                                        if($dds['status'] == 2555):
+
+                                            $this->db->from('user');
+                                            $this->db->where('id',$dds['winner']);
+                                            $query1 = $this->db->get();
+                                            $count = $query1->num_rows();
+                                            $result = $query1->result_array();
+                                            if($count > 0):
+
+                                                echo '<span class="gender">Vencedor: <b class="text-info">'.$result[0]['username'].'</b></span>';
+
+
+
+                                        else:
+                                            echo '<span class="gender">Vencedor: <b class="text-danger">Indisponível</b></span>';
+
+                                            endif;
+                                            endif;
+
+                                        ?>
+
                                     </div>
                                     <div class="product-price">
-                                        <span class="title-price">$60.00</span>
-                                        <span class="title-price line-through">$95.00</span>
+                                        <?php
+
+                                        if($dds['status'] <> 2555):
+                                        ?>
+                                        <span class="title-price" ><small>R$ <?php echo $dds['valor_leilao'];?></small></span>
+<?php endif;?>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <?php endif;?>
+                        <?php }?>
 
-                        <?php
-                        if($tipoCog == 1):
 
-                            for($i=0;$i<1;$i++):
-                        ?>
-                        <div class="col-md-4">
-                            <div class="product-img product-img-brd">
-                                <a href="#"><img class="full-width img-responsive" src="assets/img/blog/16.jpg" alt=""></a>
-                            </div>
-                            <div class="product-description product-description-brd margin-bottom-30">
-                                <div class="overflow-h margin-bottom-5">
-                                    <div class="pull-left">
-                                        <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$i.'');?>">Nome do leilão</a></h4>
-                                        <span class="gender text-uppercase">Cidade</span>
-                                        <span class="gender">Adicionado por: ---------</span>
-                                    </div>
-                                    <div class="product-price">
-                                        <!--Inicio - Preço atual -->
-                                        <span class="title-price">R$ 5.00</span>
-                                        <!--Fim - Preço atual -->
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <?php
-
-                        endfor;
-                        endif;?>
-
-                        <?php
-                        if($tipoCog == 2):
-
-                        for($w=0;$w<1;$w++):
-                        ?>
-                        <div class="col-md-4">
-                            <div class="product-img product-img-brd">
-                                <a href="#"><img class="full-width img-responsive" src="assets/img/blog/16.jpg" alt=""></a>
-                                <a class="product-review"  href="<?php echo base_url('sala?p='.$w.'');?>"><b>Começa em:</b> <span id="start<?php echo $w;?>"></span></a>
-                            </div>
-                            <div class="product-description product-description-brd margin-bottom-30">
-                                <div class="overflow-h margin-bottom-5">
-                                    <div class="pull-left">
-                                        <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$w.'');?>">Nome do leilão</a></h4>
-                                        <span class="gender text-uppercase">Valor inicial: <b>R$ 5.00</b></span>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                            <script type="text/javascript">
-                                $("#start<?php echo $w; ?>")
-                                    .countdown("2017/01/05 10:02:19", function(event) {
-                                        $(this).text(
-                                            event.strftime('%D dias %H:%M:%S')
-                                        );
-                                    });
-                            </script>
-
-                        <?php
-
-                        endfor;
-                       endif;?>
-
-                        <?php
-                        if($tipoCog == 3):
-                            for($n=0;$n<1;$n++):
-                        ?>
-                        <div class="col-md-4">
-                            <div class="product-img product-img-brd">
-                                <a href="#"><img class="full-width img-responsive" src="assets/img/blog/16.jpg" alt=""></a>
-                            </div>
-                            <div class="product-description product-description-brd margin-bottom-30">
-                                <div class="overflow-h margin-bottom-5">
-                                    <div class="pull-left">
-                                        <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$n.'');?>">Nome do leilão</a></h4>
-                                        <span class="gender">Vencedor: <b>Jonhcash</b></span>
-                                    </div>
-                                    <div class="product-price">
-                                        <span class="title-price" ><small>R$ 255.00</small></span>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <?php
-                        endfor;
-                        endif;?>
 
                     </div>
 
 
                 </div><!--/end filter resilts-->
 
+                <?php
+
+                $requisicao = explode('?',$_SERVER['REQUEST_URI']);
+                $url_atual = $requisicao[1];
+
+
+                if($pgatual <= 0):
+                    $next = 1;
+                    $before = 1;
+                else:
+                if($pages <= 1):
+
+                    $next = 1;
+                    $before = 1;
+
+                else:
+
+                    if($pages > 1):
+
+                        if($pgatual == $pages):
+
+                            $next = $pgatual;
+
+                        else:
+                        $next = $pgatual + 1;
+
+
+                        endif;
+                    endif;
+                     if($pgatual > 1):
+                         $before = $pgatual - 1;
+
+                     else:
+                         $before = 1;
+                     endif;
+                    endif;
+                    endif;
+
+
+                ?>
                 <div class="text-center">
                     <ul class="pagination pagination-v2">
-                        <li><a href="#"><i class="fa fa-angle-left"></i></a></li>
-                        <li><a href="#">1</a></li>
-                        <li class="active"><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+                        <li><a href="<?php echo base_url('leiloes?'.$url_atual);?>&&pg=<?php echo $before;?>">Anterior</a></li>
+
+                        <li><a href="<?php echo base_url('leiloes?'.$url_atual);?>&&pg=<?php echo $next;?>">Próximo</a></li>
                     </ul>
                 </div><!--/end pagination-->
             </div>
@@ -307,6 +508,10 @@ $this->load->view('fixed_files/user/header');
     <!--=== End Content Part ===-->
 
 <?php
+
+
+
+
 
     $this->load->view('fixed_files/user/footer');
 
