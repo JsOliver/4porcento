@@ -66,9 +66,9 @@ if ($page == 'compra'):
                         <i class="fa fa-money"></i>
                     </div>
                     <div class="product-service-in">
-                        <h3>R$ <?php echo $dds['valor']; ?> </h3>
+                        <h3>R$ <?php echo number_format($dds['valor'],2,'.',','); ?> </h3>
                         <p><b><?php echo explode('.',$dds['valor'])[0]; ?></b> reais em créditos para participar de leilões</p>
-                        <a href="#" class="btn btn-success text-white" style="color: white;">Comprar por <b>R$ <?php echo $dds['valor']; ?> </b></a>
+                        <a href="#" class="btn btn-success text-white" style="color: white;">Comprar por <b>R$ <?php echo number_format($dds['valor'],2,'.',','); ?> </b></a>
                     </div>
                     <br>
                 </div>

@@ -82,20 +82,28 @@ class Pages extends CI_Controller
 
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
+        if($log == true):
         $dados['status'] = $log;
         $dados['page'] = 'account';
         $this->load->view('pages/user/account/account', $dados);
+else:
+    redirect(base_url('home'), 'refresh');
 
+        endif;
     }
     public function arremate()
     {
 
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
+        if($log == true):
         $dados['status'] = $log;
         $dados['page'] = 'arrematados';
         $this->load->view('pages/user/account/arremate', $dados);
+else:
+    redirect(base_url('home'), 'refresh');
 
+        endif;
     }
 
 

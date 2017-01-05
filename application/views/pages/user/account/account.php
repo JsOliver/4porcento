@@ -31,10 +31,10 @@ if ($page == 'account'):
             $resultCre = $queryCre->result_array();
             if($countCre > 0):
 
-                $credito = number_format($resultCre[0]['credito'],2,'.',',');
+                $credito = '<span  class="text-info">'.number_format($resultCre[0]['credito'],2,'.',',').'</span>';
 
             else:
-                $credito = '0.00';
+                $credito = '<span class="text-danger">0.00</span>';
 
             endif;
 
@@ -367,9 +367,9 @@ if ($page == 'account'):
                                             $explode = @explode('.', substr(str_replace(',', '', $dds['valor_leilao']) / 100, 0, -2) * 4);
 
                                             if (@strlen($explode[0]) == 1 and @strlen($explode[1]) == 1):
-                                                echo substr(str_replace(',', '', $dds['valor_leilao']) / 100, 0, -2) * 4 . '0';
+                                                echo number_format(substr(str_replace(',', '', $dds['valor_leilao']) / 100, 0, -2) * 4 . '0',2,'.',',');
                                             else:
-                                                echo substr(str_replace(',', '', $dds['valor_leilao']) / 100, 0, -2) * 4;
+                                                echo number_format(substr(str_replace(',', '', $dds['valor_leilao']) / 100, 0, -2) * 4,2,'.',',');
 
                                             endif;
 
@@ -378,10 +378,10 @@ if ($page == 'account'):
 
 
                                             if (@strlen($explode[1]) == 1 and @strlen(@$explode[0]) >= 2):
-                                                echo str_replace(',', '', $dds['valor_leilao']) / 100 * 4 . 0;
+                                                echo number_format(str_replace(',', '', $dds['valor_leilao']) / 100 * 4 . 0,2,'.',',');
                                             else:
                                                 // echo str_replace(',','',$dds['valor_leilao']) / 100 * 4;
-                                                echo str_replace(',', '', $dds['valor_leilao']) / 100 * 4;
+                                                echo number_format(str_replace(',', '', $dds['valor_leilao']) / 100 * 4,2,'.',',');
                                             endif;
                                         endif;
                                         ?></b>

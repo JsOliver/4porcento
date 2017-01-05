@@ -101,7 +101,7 @@ if ($page == 'leiloes'):
                         <h2>
                             <small>Leiloes <?php echo $this->Models_model->limitarTexto($tipo, 30); ?></small>
                         </h2>
-                        <small class="shop-bg-red badge-results"><?php echo number_format($countnl); ?>Resultados
+                        <small class="shop-bg-red badge-results"><?php echo number_format($countnl); ?> Resultados
                         </small>
                     </div>
                     <div class="col-sm-8">
@@ -261,7 +261,6 @@ if ($page == 'leiloes'):
                             $atual = ceil($max * $_GET['pg'] - $max);
                             $pgatual = $_GET['pg'];
                         endif;
-
 
 
                         $pages = ceil($countnl / $max);
