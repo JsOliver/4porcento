@@ -104,6 +104,15 @@ if($page == 'sala'):
 
     <?php endif;?>
 
+
+    <?php
+
+    if($page == 'account' or $page == 'configuracoes' or $page == 'arrematados' or $page == 'pagamentos'):
+        ?>    <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url();?>/assets/js/plugins/countdown.js"></script>
+    <?php endif;?>
+
+
     <?php if($page == 'home'):?>
     <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url();?>/assets/js/plugins/countdown.js"></script>
@@ -285,3 +294,69 @@ if($status == true):
     </div>
     <!--=== End Header v5 ===-->
 
+<?php
+
+if(isset($_SESSION['ID']) and $page == 'account' or $page == 'configuracoes' or $page == 'arrematados' or $page == 'pagamentos'):
+?>
+
+    <div class="container content profile">
+        <div class="row">
+            <!--Left Sidebar-->
+            <div class="col-md-3 md-margin-bottom-40">
+
+
+                <img class="img-responsive profile-img margin-bottom-20" src="http://127.0.0.1:8080/projects/4porcento/pages/exibir?id=7" style="height: 250px; object-fit: cover; object-position: center;" alt="">
+                <a class="btn-u btn-u-sm"  href="#">Alterar imagem</a><br><br>
+                <ul class="list-group sidebar-nav-v1 margin-bottom-40" id="sidebar-nav-1">
+                    <li class="list-group-item active">
+                        <a href="page_profile.html"><i class="fa fa-bar-chart-o"></i> Resumo</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="page_profile_me.html"><i class="fa fa-cog"></i> Configuraçoes</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="page_profile_users.html"><i class="fa fa-trophy"></i> Leilões arrematados</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="page_profile_projects.html"><i class="fa fa-shopping-cart"></i> Compras</a>
+                    </li>
+
+                </ul>
+
+                <div class="panel-heading-v2 overflow-h">
+                    <h2 class="heading-xs pull-left"><i class="fa fa-bar-chart-o"></i> Task Progress</h2>
+                    <a href="#"><i class="fa fa-cog pull-right"></i></a>
+                </div>
+
+
+                <h3 class="heading-xs">Web Design <span class="pull-right">92%</span></h3>
+                <div class="progress progress-u progress-xxs">
+                    <div style="width: 92%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="92" role="progressbar"
+                         class="progress-bar progress-bar-u">
+                    </div>
+                </div>
+                <h3 class="heading-xs">Unify Project <span class="pull-right">85%</span></h3>
+                <div class="progress progress-u progress-xxs">
+                    <div style="width: 85%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="85" role="progressbar"
+                         class="progress-bar progress-bar-blue">
+                    </div>
+                </div>
+                <h3 class="heading-xs">Sony Corporation <span class="pull-right">64%</span></h3>
+                <div class="progress progress-u progress-xxs margin-bottom-40">
+                    <div style="width: 64%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="64" role="progressbar"
+                         class="progress-bar progress-bar-dark">
+                    </div>
+                </div>
+
+                <hr>
+
+
+                <div class="margin-bottom-50"></div>
+
+
+            </div>
+            <!--End Left Sidebar-->
+
+            <?php
+    endif;
+    ?>

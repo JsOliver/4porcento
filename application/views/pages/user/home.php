@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('fixed_files/user/header');
 
 
-if($page == 'home'):
+if ($page == 'home'):
     $data_atual_system = date('YmdHis');
 
 
@@ -14,9 +14,11 @@ if($page == 'home'):
         <div class="tp-banner">
             <ul>
                 <!-- SLIDE -->
-                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000" data-title="Slide 1">
+                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000"
+                    data-title="Slide 1">
                     <!-- MAIN IMAGE -->
-                    <img src="assets/img/1.jpg"  alt="darkblurbg"  data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
+                    <img src="assets/img/1.jpg" alt="darkblurbg" data-bgfit="cover" data-bgposition="left top"
+                         data-bgrepeat="no-repeat">
 
                     <div class="tp-caption revolution-ch1 sft start"
                          data-x="center"
@@ -50,9 +52,11 @@ if($page == 'home'):
                 <!-- END SLIDE -->
 
                 <!-- SLIDE -->
-                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000" data-title="Slide 2">
+                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000"
+                    data-title="Slide 2">
                     <!-- MAIN IMAGE -->
-                    <img src="assets/img/5.jpg"  alt="darkblurbg"  data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
+                    <img src="assets/img/5.jpg" alt="darkblurbg" data-bgfit="cover" data-bgposition="left top"
+                         data-bgrepeat="no-repeat">
 
                     <div class="tp-caption revolution-ch3 sft start"
                          data-x="center"
@@ -100,9 +104,11 @@ if($page == 'home'):
                 <!-- END SLIDE -->
 
                 <!-- SLIDE -->
-                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000" data-title="Slide 3">
+                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000"
+                    data-title="Slide 3">
                     <!-- MAIN IMAGE -->
-                    <img src="assets/img/3.jpg"  alt="darkblurbg"  data-bgfit="cover" data-bgposition="right top" data-bgrepeat="no-repeat">
+                    <img src="assets/img/3.jpg" alt="darkblurbg" data-bgfit="cover" data-bgposition="right top"
+                         data-bgrepeat="no-repeat">
 
                     <div class="tp-caption revolution-ch3 sft start"
                          data-x="right"
@@ -150,9 +156,11 @@ if($page == 'home'):
                 <!-- END SLIDE -->
 
                 <!-- SLIDE -->
-                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000" data-title="Slide 4">
+                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000"
+                    data-title="Slide 4">
                     <!-- MAIN IMAGE -->
-                    <img src="assets/img/2.jpg"  alt="darkblurbg"  data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
+                    <img src="assets/img/2.jpg" alt="darkblurbg" data-bgfit="cover" data-bgposition="left top"
+                         data-bgrepeat="no-repeat">
 
                     <div class="tp-caption revolution-ch1 sft start"
                          data-x="center"
@@ -200,9 +208,11 @@ if($page == 'home'):
                 <!-- END SLIDE -->
 
                 <!-- SLIDE -->
-                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000" data-title="Slide 5">
+                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000"
+                    data-title="Slide 5">
                     <!-- MAIN IMAGE -->
-                    <img src="assets/img/4.jpg"  alt="darkblurbg"  data-bgfit="cover" data-bgposition="right top" data-bgrepeat="no-repeat">
+                    <img src="assets/img/4.jpg" alt="darkblurbg" data-bgfit="cover" data-bgposition="right top"
+                         data-bgrepeat="no-repeat">
 
                     <div class="tp-caption revolution-ch5 sft start"
                          data-x="right"
@@ -257,244 +267,264 @@ if($page == 'home'):
     <!--=== Inicio - Leilões ===-->
     <div class="container content-md">
 
-<?php
+        <?php
 
-$sql = "SELECT * FROM leiloes WHERE inicio_data < ? AND status=? LIMIT 0,15";
-$query =  $this->db->query($sql, array($data_atual_system,1));
-$count = $query->num_rows();
+        $sql = "SELECT * FROM leiloes WHERE inicio_data < ? AND status=? LIMIT 0,15";
+        $query = $this->db->query($sql, array($data_atual_system, 1));
+        $count = $query->num_rows();
 
-if($count > 0):
-?>
+        if ($count > 0):
+            ?>
 
-        <!--===Inicio - Leilões que o usuario pode entrar  ===-->
+            <!--===Inicio - Leilões que o usuario pode entrar  ===-->
 
-        <div class="heading heading-v1 margin-bottom-20">
-            <h2>Leilões disponiveis</h2>
+            <div class="heading heading-v1 margin-bottom-20">
+                <h2>Leilões disponiveis</h2>
 
-        </div>
+            </div>
 
-        <div class="illustration-v2 margin-bottom-60">
-
-
-            <ul class="list-inline owl-slider">
-                <?php
-
-                $result = $query->result_array();
-                foreach ($result as $dds){
-                    $ind = $dds['inicio_data'];
-                    $ano = substr($ind, 0, 4);
-                    $mes = substr($ind, 4, 2);
-                    $dia = substr($ind, 6, 2);
-                    $hora = substr($ind, 8, 2);
-                    $minuto = substr($ind, 10, 2);
-                    $segundo = substr($ind, 12, 2);
-
-                    $data_inicio_system = $ano.$mes.$dia.$hora.$minuto.$segundo;
+            <div class="illustration-v2 margin-bottom-60">
 
 
-                    ?>
-                    <li class="item">
-                        <div class="product-img">
-                            <a href="<?php echo base_url('sala?p='.$dds['id'].'');?>"><img class="full-width img-responsive" src="<?php echo base_url('pages/exibir?id='.$dds['id']);?>" alt="" style="height: 300px;object-fit: cover; object-position: center;"></a>
-                            <a class="product-review" href="<?php echo base_url('sala?p='.$dds['id'].'');?>">0 pessoas online</a>
-                        </div>
-                        <div class="product-description product-description-brd">
-                            <div class="overflow-h margin-bottom-5">
-                                <div class="pull-left">
-                                    <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$dds['id'].'');?>"><?php echo $dds['title'];?></a></h4>
-                                    <?php
-                                    if(!empty($dds['cidade']) and !empty($dds['estado'])):
-                                    ?>
-                                    <span class="gender text-uppercase"><small><?php echo $dds['cidade'];?> - <b><?php echo $dds['estado'];?></b> </small></span>
-                                        <?php endif;?>
-                                    <span class="gender" title="<?php echo $dds['breve_descricao'];?>"><?php echo $this->Models_model->limitarTexto($dds['breve_descricao'],30);?></span>
-                                </div>
-                                <div class="product-price">
-                                    <!--Inicio - Preço atual -->
-                                    <span class="title-price">R$ <?php echo $dds['valor_leilao'];?></span>
-                                    <!--Fim - Preço atual -->
+                <ul class="list-inline owl-slider">
+                    <?php
 
+                    $result = $query->result_array();
+                    foreach ($result as $dds) {
+                        $ind = $dds['inicio_data'];
+                        $ano = substr($ind, 0, 4);
+                        $mes = substr($ind, 4, 2);
+                        $dia = substr($ind, 6, 2);
+                        $hora = substr($ind, 8, 2);
+                        $minuto = substr($ind, 10, 2);
+                        $segundo = substr($ind, 12, 2);
+
+                        $data_inicio_system = $ano . $mes . $dia . $hora . $minuto . $segundo;
+
+
+                        ?>
+                        <li class="item">
+                            <div class="product-img">
+                                <a href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>"><img
+                                        class="full-width img-responsive"
+                                        src="<?php echo base_url('pages/exibir?id=' . $dds['id']); ?>" alt=""
+                                        style="height: 300px;object-fit: cover; object-position: center;"></a>
+                                <a class="product-review" href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>">0
+                                    pessoas online</a>
+                            </div>
+                            <div class="product-description product-description-brd">
+                                <div class="overflow-h margin-bottom-5">
+                                    <div class="pull-left">
+                                        <h4 class="title-price"><a
+                                                href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>"><?php echo $dds['title']; ?></a>
+                                        </h4>
+                                        <?php
+                                        if (!empty($dds['cidade']) and !empty($dds['estado'])):
+                                            ?>
+                                            <span class="gender text-uppercase"><small><?php echo $dds['cidade']; ?>
+                                                    - <b><?php echo $dds['estado']; ?></b> </small></span>
+                                        <?php endif; ?>
+                                        <span class="gender"
+                                              title="<?php echo $dds['breve_descricao']; ?>"><?php echo $this->Models_model->limitarTexto($dds['breve_descricao'], 30); ?></span>
+                                    </div>
+                                    <div class="product-price">
+                                        <!--Inicio - Preço atual -->
+                                        <span class="title-price">R$ <?php echo $dds['valor_leilao']; ?></span>
+                                        <!--Fim - Preço atual -->
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                <?php } ?>
+                        </li>
+                    <?php } ?>
 
-            </ul>
-        </div>
+                </ul>
+            </div>
 
-        <!--===Fim - Leilões que o usuario pode entrar  ===-->
-<?php endif;?>
+            <!--===Fim - Leilões que o usuario pode entrar  ===-->
+        <?php endif; ?>
 
-<?php
-$sql = "SELECT * FROM leiloes WHERE inicio_data > ? AND status=? LIMIT 0,15";
-$query =  $this->db->query($sql, array($data_atual_system,1));
-$count = $query->num_rows();
+        <?php
+        $sql = "SELECT * FROM leiloes WHERE inicio_data > ? AND status=? LIMIT 0,15";
+        $query = $this->db->query($sql, array($data_atual_system, 1));
+        $count = $query->num_rows();
 
-$count = $query->num_rows();
-if($count > 0):
-?>
-        <!--===Inicio - Leilões que o usuario pode entrar mais tarde  ===-->
+        $count = $query->num_rows();
+        if ($count > 0):
+            ?>
+            <!--===Inicio - Leilões que o usuario pode entrar mais tarde  ===-->
 
-        <div class="heading heading-v1 margin-bottom-20">
-            <h2>Proximos leilões</h2>
+            <div class="heading heading-v1 margin-bottom-20">
+                <h2>Proximos leilões</h2>
 
-        </div>
+            </div>
 
-        <div class="illustration-v2 margin-bottom-60">
-
-
-            <ul class="list-inline owl-slider">
-                <?php
-
-                $result = $query->result_array();
-                foreach ($result as $dds){
-                    $ind = $dds['inicio_data'];
-                    $ano = substr($ind, 0, 4);
-                    $mes = substr($ind, 4, 2);
-                    $dia = substr($ind, 6, 2);
-                    $hora = substr($ind, 8, 2);
-                    $minuto = substr($ind, 10, 2);
-                    $segundo = substr($ind, 12, 2);
+            <div class="illustration-v2 margin-bottom-60">
 
 
+                <ul class="list-inline owl-slider">
+                    <?php
 
-                ?>
-                    <li class="item">
-                        <div class="product-img">
-                            <a href="<?php echo base_url('sala?p='.$dds['id'].'');?>"><img class="full-width img-responsive" src="<?php echo base_url('pages/exibir?id='.$dds['id']);?>" style="height: 300px; object-fit: cover; object-position: center;" alt=""></a>
-                            <a class="product-review"  href="<?php echo base_url('sala?p='.$dds['id'].'');?>"><b>Começa em:</b> <span id="start<?php echo $dds['id'];?>"></span></a>
-                        </div>
-                        <div class="product-description product-description-brd">
-                            <div class="overflow-h margin-bottom-5">
-                                <div class="pull-left">
-                                    <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$dds['id'].'');?>"><?php echo $dds['title'];?></a></h4>
-                                    <span class="gender text-uppercase">Valor: <b>R$ <?php echo $dds['valor_leilao'];?></b></span>
-                                </div>
-                                <div class="product-price">
-                                    <!--Inicio - Preço atual -->
-                                    <!--Fim - Preço atual -->
+                    $result = $query->result_array();
+                    foreach ($result as $dds) {
+                        $ind = $dds['inicio_data'];
+                        $ano = substr($ind, 0, 4);
+                        $mes = substr($ind, 4, 2);
+                        $dia = substr($ind, 6, 2);
+                        $hora = substr($ind, 8, 2);
+                        $minuto = substr($ind, 10, 2);
+                        $segundo = substr($ind, 12, 2);
 
+
+                        ?>
+                        <li class="item">
+                            <div class="product-img">
+                                <a href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>"><img
+                                        class="full-width img-responsive"
+                                        src="<?php echo base_url('pages/exibir?id=' . $dds['id']); ?>"
+                                        style="height: 300px; object-fit: cover; object-position: center;" alt=""></a>
+                                <a class="product-review"
+                                   href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>"><b>Começa em:</b> <span
+                                        id="start<?php echo $dds['id']; ?>"></span></a>
+                            </div>
+                            <div class="product-description product-description-brd">
+                                <div class="overflow-h margin-bottom-5">
+                                    <div class="pull-left">
+                                        <h4 class="title-price"><a
+                                                href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>"><?php echo $dds['title']; ?></a>
+                                        </h4>
+                                        <span
+                                            class="gender text-uppercase">Valor: <b>R$ <?php echo $dds['valor_leilao']; ?></b></span>
+                                    </div>
+                                    <div class="product-price">
+                                        <!--Inicio - Preço atual -->
+                                        <!--Fim - Preço atual -->
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <script type="text/javascript">
-                        $("#start<?php echo $dds['id']; ?>")
-                            .countdown("<?php echo $ano;?>/<?php echo $mes;?>/<?php echo $dia;?> <?php echo $hora;?>:<?php echo $minuto;?>:<?php echo $segundo;?>", function(event) {
-                                $(this).text(
-                                    event.strftime('%D dias %H:%M:%S')
-                                );
-                            });
-                    </script>
+                        </li>
+                        <script type="text/javascript">
+                            $("#start<?php echo $dds['id']; ?>")
+                                .countdown("<?php echo $ano;?>/<?php echo $mes;?>/<?php echo $dia;?> <?php echo $hora;?>:<?php echo $minuto;?>:<?php echo $segundo;?>", function (event) {
+                                    $(this).text(
+                                        event.strftime('%D dias %H:%M:%S')
+                                    );
+                                });
+                        </script>
 
 
+                    <?php } ?>
+                </ul>
+            </div>
 
-                <?php } ?>
-            </ul>
-        </div>
 
+            <!--===Fim - Leilões que o usuario pode entrar mais tarde ===-->
 
-        <!--===Fim - Leilões que o usuario pode entrar mais tarde ===-->
-
-        <?php endif;?>
+        <?php endif; ?>
         <?php
         $sql = "SELECT * FROM leiloes WHERE status=? OR status=? LIMIT 0,15";
-        $query =  $this->db->query($sql, array(0,2555));
+        $query = $this->db->query($sql, array(0, 2555));
         $count = $query->num_rows();
-        if($count > 0):
+        if ($count > 0):
 
             ?>
-        <!--=== Inicio Leilões Finalizados ===-->
+            <!--=== Inicio Leilões Finalizados ===-->
 
 
-        <div class="heading heading-v1 margin-bottom-40">
-            <h2>Leilões finalizados</h2>
-        </div>
+            <div class="heading heading-v1 margin-bottom-40">
+                <h2>Leilões finalizados</h2>
+            </div>
 
-        <div class="illustration-v2 margin-bottom-60">
-
-
-            <ul class="list-inline owl-slider">
-                <?php
+            <div class="illustration-v2 margin-bottom-60">
 
 
-                $result = $query->result_array();
-                foreach ($result as $dds){
-                ?>
-                    <li class="item">
-                        <div class="product-img">
-                            <a href="<?php echo base_url('sala?p='.$dds['id'].'');?>"><img class="full-width img-responsive" src="<?php echo base_url('pages/exibir?id='.$dds['id']);?>" alt="" style="height: 300px;object-fit: cover; object-position: center;"></a>
-                            <?php if($dds['status'] == 0):?>
-                                <a class="product-review" href="<?php echo base_url('sala?p='.$dds['id'].'');?>">Finalizado</a>
-                            <?php endif;?>
+                <ul class="list-inline owl-slider">
+                    <?php
 
-                            <?php if($dds['status'] == 2555):?>
-                                <a class="product-review" href="<?php echo base_url('sala?p='.$dds['id'].'');?>">Arrematado</a>
-                            <?php endif;?>
-                        </div>
-                        <div class="product-description product-description-brd">
-                            <div class="overflow-h margin-bottom-5">
-                                <div class="pull-left">
-                                    <h4 class="title-price"><a href="<?php echo base_url('sala?p='.$dds['id'].'');?>"><?php echo $dds['title'];?></a></h4>
-                    <?php if($dds['status'] == 2555):?>
 
-                        <?php
-                        if($dds['winner'] == 0):
-
+                    $result = $query->result_array();
+                    foreach ($result as $dds) {
                         ?>
+                        <li class="item">
+                            <div class="product-img">
+                                <a href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>"><img
+                                        class="full-width img-responsive"
+                                        src="<?php echo base_url('pages/exibir?id=' . $dds['id']); ?>" alt=""
+                                        style="height: 300px;object-fit: cover; object-position: center;"></a>
+                                <?php if ($dds['status'] == 0): ?>
+                                    <a class="product-review"
+                                       href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>">Finalizado</a>
+                                <?php endif; ?>
 
-                        <span class="gender">Vencedor: <b>Indisponivel</b></span>
-<?php else:
+                                <?php if ($dds['status'] == 2555): ?>
+                                    <a class="product-review"
+                                       href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>">Arrematado</a>
+                                <?php endif; ?>
+                            </div>
+                            <div class="product-description product-description-brd">
+                                <div class="overflow-h margin-bottom-5">
+                                    <div class="pull-left">
+                                        <h4 class="title-price"><a
+                                                href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>"><?php echo $dds['title']; ?></a>
+                                        </h4>
+                                        <?php if ($dds['status'] == 2555): ?>
 
-                            $this->db->from('user');
-                            $this->db->where('id',$dds['winner']);
-                            $query1 = $this->db->get();
-                            $count = $query1->num_rows();
-                            $result = $query1->result_array();
-                            if($count > 0):
+                                            <?php
+                                            if ($dds['winner'] == 0):
 
-                            ?>
-                            <span class="gender">Vencedor: <b><?php echo $result[0]['username'];?></b></span>
+                                                ?>
 
-                        <?php
+                                                <span class="gender">Vencedor: <b>Indisponivel</b></span>
+                                            <?php else:
 
-                            else:
-                                ?>
+                                                $this->db->from('user');
+                                                $this->db->where('id', $dds['winner']);
+                                                $query1 = $this->db->get();
+                                                $count = $query1->num_rows();
+                                                $result = $query1->result_array();
+                                                if ($count > 0):
 
-                                <span class="gender">Vencedor: <b>Indisponivel</b></span>
+                                                    ?>
+                                                    <span
+                                                        class="gender">Vencedor: <b><?php echo $result[0]['username']; ?></b></span>
+
+                                                    <?php
+
+                                                else:
+                                                    ?>
+
+                                                    <span class="gender">Vencedor: <b>Indisponivel</b></span>
 
 
-                                <?php
+                                                    <?php
 
-                                endif;
-                        endif;
-                        endif;
-                        ?>
-                                </div>
-                                <div class="product-price">
+                                                endif;
+                                            endif;
+                                        endif;
+                                        ?>
+                                    </div>
+                                    <div class="product-price">
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                <?php } ?>
+                    <?php } ?>
 
-            </ul>
-        </div>
+                </ul>
+            </div>
 
-        <!--=== Fim Leilões Finalizados ===-->
+            <!--=== Fim Leilões Finalizados ===-->
 
-    <?php endif;?>
+        <?php endif; ?>
 
     </div>
     <!--=== Fim - Leilões ===-->
 
 
-
-
-<?php
+    <?php
 
     $this->load->view('fixed_files/user/footer');
-endif;?>
+endif; ?>
