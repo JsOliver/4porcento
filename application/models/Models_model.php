@@ -8,6 +8,7 @@ class Models_model extends CI_Model
         parent::__construct();
         $this->load->database();
         $this->db->reconnect();
+        @session_start();
     }
 
 
@@ -370,6 +371,35 @@ class Models_model extends CI_Model
 
     }
 
+    public function updpass($new, $newag, $old, $email)
+    {
+
+        if (empty($new) or empty($newag) or empty($old) or empty($email)) {
+            return 0;
+        } else {
+
+            if ($new == $newag and $_SESSION['EMAIL'] == $email):
+                $data['pass'] = hash('whirlpool', md5(sha1($new)));
+                $this->db->where('id', $_SESSION['ID']);
+                $this->db->where('pass', hash('whirlpool', md5(sha1($old))));
+                if ($this->db->update('user', $data)):
+                    $_SESSION['PASS'] = hash('whirlpool', md5(sha1($_POST['newpass'])));
+                    return 1;
+
+                else:
+                    return 0;
+
+                endif;
+
+
+            else:
+                return 0;
+            endif;
+
+        }
+
+    }
+
 
     public function cupon($user, $leilao, $arremate)
     {
@@ -382,13 +412,13 @@ class Models_model extends CI_Model
 
 
             $this->db->from('arremates');
-            $this->db->where('id',$arremate);
-            $this->db->where('id_user',$_SESSION['ID']);
+            $this->db->where('id', $arremate);
+            $this->db->where('id_user', $_SESSION['ID']);
             $query = $this->db->get();
             $count = $query->num_rows();
             $result = $query->result_array();
 
-            if($count > 0){
+            if ($count > 0) {
 
                 $valor = $result[0]['valor_arremate'];
                 $this->db->from('cupon_loja');
@@ -402,25 +432,145 @@ class Models_model extends CI_Model
                     $valor_show = $result[0]['valor_show'];
                     $dado['valor'] = str_replace(',', '', $valoracs) + str_replace(',', '', $valor);
                     $dado['valor_show'] = number_format(str_replace(',', '', $valor_show) + str_replace(',', '', $valor), 2, '.', ',');
-                    $this->db->where('id_user',$_SESSION['ID']);
-                    $this->db->update('cupon_loja',$dado);
+                    $this->db->where('id_user', $_SESSION['ID']);
+                    $this->db->update('cupon_loja', $dado);
                 else:
 
                     $dado['id_user'] = $_SESSION['ID'];
                     $dado['valor'] = str_replace(',', '', $valor);
                     $dado['valor_show'] = number_format(str_replace(',', '', $valor), 2, '.', ',');
-                    $this->db->insert('cupon_loja',$dado);
+                    $this->db->insert('cupon_loja', $dado);
 
                 endif;
                 return 1;
 
-            }else{
+            } else {
                 return 0;
             }
 
 
+        }
+
+
+    }
+
+
+    public function alterdata($type, $valor, $db)
+    {
+        if (empty($valor)) {
+
+            return 0;
+        } else {
+            if ($type == 0):
+
+                $dado['firstname'] = $valor;
+                $this->db->where('id',$_SESSION['ID']);
+                if ($this->db->update($db, $dado)):
+                    return 1;
+                else:
+                    return 0;
+                endif;
+            endif;
+
+            if ($type == 1):
+
+                $dado['lastname'] = $valor;
+                $this->db->where('id',$_SESSION['ID']);
+                if ($this->db->update($db, $dado)):
+                    return 1;
+                else:
+                    return 0;
+                endif;
+            endif;
+
+            if ($type == 2):
+
+                $dado['telefone'] = $valor;
+                $this->db->where('id',$_SESSION['ID']);
+                if ($this->db->update($db, $dado)):
+                    return 1;
+                else:
+                    return 0;
+                endif;
+            endif;
+
+            if ($type == 3):
+
+                $dado['endereco'] = $valor;
+                $this->db->where('id',$_SESSION['ID']);
+                if ($this->db->update($db, $dado)):
+                    return 1;
+                else:
+                    return 0;
+                endif;
+            endif;
 
         }
+
+
+    }
+
+    public function reloadToken($user){
+
+        $dado['token'] = 'PKE-'.$user.rand();
+        $this->db->where('id_user',$user);
+        if($this->db->update('cupon_loja',$dado)){
+
+            return 'PKE-'.$user.rand();
+
+        }else{
+
+            return 0;
+        }
+
+    }
+
+
+    public function uploadUs($nameimage, $dataname, $tablename, $file, $allowed, $max_size)
+    {
+
+        if (!empty($file['name'])):
+            $filex = $file['tmp_name'];
+            $size = $file['size'];
+            $type = $file['type'];
+            $name = $file['name'];
+
+            $extension = pathinfo($name, PATHINFO_EXTENSION);
+            $extension = strtolower($extension);
+            if (strstr($allowed, $extension)):
+
+
+                if ($size > $max_size * 1000000):
+
+                    return 'Tamanho maximo de ' . $max_size . 'MB, excedido.';
+
+                else:
+
+                    $date['image'] = file_get_contents(addslashes($filex));
+                    $this->db->where('id', $_SESSION['ID']);
+                    if ($this->db->update('user', $date)) {
+                        return $_SESSION['ID'];
+                    } else {
+                        return 'Erro a salvar a imagem, tente mais tarde.';
+                    }
+
+                endif;
+
+
+            else:
+
+                return 'Somente as extensões ' . $allowed . ' são permitidas.';
+
+            endif;
+
+
+        else:
+
+
+            return 'Por favor selecione o arquivo.';
+
+
+        endif;
 
 
     }

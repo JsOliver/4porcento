@@ -118,7 +118,7 @@ if($page == 'sala'):
     <script src="<?php echo base_url();?>/assets/js/plugins/countdown.js"></script>
     <?php endif;?>
 
-    <?php if($page == 'register'):?>
+    <?php if($page == 'register' or $page == 'configuracoes'):?>
         <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery.min.js"></script>
         <script src="<?php echo base_url();?>/assets/js/plugins/jquery.mask.js"></script>
 
@@ -130,6 +130,11 @@ if($page == 'sala'):
 <div class="wrapper">
     <!--=== Header v5 ===-->
     <div class="header-v5 header-static">
+
+        <?php
+        if(!isset($_GET['info'])):
+
+        ?>
         <!-- Topbar v3 -->
         <div class="topbar-v3">
             <div class="search-open">
@@ -155,7 +160,7 @@ if($page == 'sala'):
                             ?>
                             <!-- Inicio - Aparece somente se estiver logado -->
                             <li><a href="<?php echo base_url('minha-conta');?>">Minha conta</a></li>
-                            <li><a href="<?php echo base_url('minha-conta');?>">Arrematados <!-- Inicio - Quantidade de arremates -->(0) <!-- Inicio - Quantidade de arremates --></a></li>
+                            <li><a href="<?php echo base_url('meus-arremates');?>">Arrematados <!-- Inicio - Quantidade de arremates -->(0) <!-- Inicio - Quantidade de arremates --></a></li>
                             <!-- Fim - Aparece somente se estiver logado -->
                             <?php endif; ?>
 
@@ -176,6 +181,7 @@ if($page == 'sala'):
             </div><!--/container-->
         </div>
         <!-- End Topbar v3 -->
+        <?php endif;?>
 
         <!-- Navbar -->
         <div class="navbar navbar-default mega-menu" role="navigation">
@@ -189,7 +195,7 @@ if($page == 'sala'):
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="<?php echo base_url('home');?>">
-                        <img id="logo-header" src="<?php echo base_url();?>assets/img/logo.png" alt="Logo">
+                        <img id="logo-header" style="width: 60px" src="<?php echo base_url();?>assets/img/logo-3.png" alt="Logo">
                     </a>
                 </div>
 
@@ -299,14 +305,59 @@ if($status == true):
 if(isset($_SESSION['ID']) and $page == 'account' or $page == 'configuracoes' or $page == 'arrematados' or $page == 'pagamentos'):
 ?>
 
+    <script>
+        var file = 'fileUpload';
+        var url = '<?php echo base_url('pages/image');?>';
+        var preview = 'profileimg';
+    </script>
+    <script type="text/javascript" id="ajax-upload">
+
+        $(function () {
+            var form;
+            $('#'+file+'').change(function (event) {
+                form = new FormData();
+                form.append(file, event.target.files[0]);
+                $("#errorData").html('Carregando...');
+
+                $.ajax({
+                    url: url,
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (data) {
+
+                        if(data > 0){
+                            $("#"+preview+"").attr("src","<?php echo base_url('profile?id=');?>"+data+"");
+                            $("#errorData").html('');
+
+                        }else
+                        {
+                            $("#errorData").html(data);
+                        }
+
+                    }
+                });
+            });
+
+
+        });
+    </script>
     <div class="container content profile">
         <div class="row">
             <!--Left Sidebar-->
             <div class="col-md-3 md-margin-bottom-40">
 
 
-                <img class="img-responsive profile-img margin-bottom-20" src="http://127.0.0.1:8080/projects/4porcento/pages/exibir?id=7" style="height: 250px; object-fit: cover; object-position: center;" alt="">
-                <a class="btn-u btn-u-sm"  href="#">Alterar imagem</a><br><br>
+                <img id="profileimg" class="img-responsive profile-img margin-bottom-20" src="<?php echo base_url('pages/exibirUs?id='.$_SESSION['ID']);?>" style="height: 250px; object-fit: cover; object-position: center;" alt="">
+                <br>
+                <b id="errorData"></b>
+                <form enctype="multipart/form-data"  method="post">
+                <label class="btn-u btn-u-sm" style="cursor: pointer;">Alterar imagem
+                    <input style="display: none;" id="fileUpload" name="fileUpload" type="file"/>
+                </label>
+                    </form>
+                    <br><br>
                 <ul class="list-group sidebar-nav-v1 margin-bottom-40" id="sidebar-nav-1">
                     <li class="list-group-item <?php if($page == 'account'): echo 'active'; endif;?>">
                         <a href="<?php echo base_url('minha-conta');?>"><i class="fa fa-bar-chart-o"></i> Resumo</a>

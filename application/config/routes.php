@@ -66,3 +66,6 @@ $route['adm/leiloes'] = 'pages/leilao';
 $route['adm/pacotes'] = 'pages/pacotes';
 $route['minha-conta'] = 'pages/account';
 $route['meus-arremates'] = 'pages/arremate';
+$route['configuracoes'] = 'pages/configuracoes';
+$route['profile'] = 'pages/exibirUs';
+$route['compras'] = 'pages/pagamento';

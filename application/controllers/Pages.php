@@ -106,6 +106,21 @@ else:
         endif;
     }
 
+ public function configuracoes()
+    {
+
+        $this->load->library('functions');
+        $log = $this->Models_model->logVer();
+        if($log == true):
+        $dados['status'] = $log;
+        $dados['page'] = 'configuracoes';
+        $this->load->view('pages/user/account/configuracoes', $dados);
+else:
+    redirect(base_url('home'), 'refresh');
+
+        endif;
+    }
+
 
     public function configure()
     {
@@ -115,6 +130,17 @@ else:
         $dados['status'] = $log;
         $dados['page'] = 'configure';
         $this->load->view('pages/user/sala', $dados);
+
+    }
+
+    public function pagamento()
+    {
+
+        $this->load->library('functions');
+        $log = $this->Models_model->logVer();
+        $dados['status'] = $log;
+        $dados['page'] = 'pagamentos';
+        $this->load->view('pages/user/account/compras', $dados);
 
     }
 
@@ -414,7 +440,24 @@ else:
         echo $fetch[0]['image'];
 
     }
+    public function exibirUs()
+    {
 
+        $this->db->from('user');
+        $this->db->where('id', addslashes($_GET['id']));
+        $query = $this->db->get();
+        $fetch = $query->result_array();
+        header("content-type: " . 'jpg'. "");
+        echo $fetch[0]['image'];
+
+    }
+
+    public function image(){
+        $allowed = 'jpge,jpg,png,gif';
+        $upload = $this->Models_model->uploadUs('pp','default','image_profile',$_FILES['fileUpload'],$allowed,3);
+        echo $upload;
+
+    }
     public function updLeilao()
     {
 
@@ -449,6 +492,46 @@ else:
 
 
         endif;
+
+    }
+
+    public function alterPass(){
+
+        if (isset($_SESSION['ID'])):
+            if ($this->Models_model->updpass($_POST['newpass'], $_POST['newpassag'],$_POST['oldpass'],$_POST['email']) == 1):
+                echo 'Senha alterada com sucesso.';
+
+            else:
+                echo 'Erro ao alterar senha tente mais tarde.';
+
+            endif;
+        else:
+            redirect(base_url('home'), 'refresh');
+
+
+        endif;
+    }
+
+    public function alterdatesUs(){
+
+        if (isset($_SESSION['ID'])):
+            if ($this->Models_model->alterdata($_POST['type'], $_POST['valor'],'user') == 1):
+                echo 1;
+
+            else:
+                echo 0;
+
+            endif;
+        else:
+            redirect(base_url('home'), 'refresh');
+
+
+        endif;
+    }
+
+    public function updateServer(){
+       echo $this->Models_model->reloadToken($_SESSION['ID']);
+
 
     }
 }
