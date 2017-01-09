@@ -100,20 +100,18 @@ if ($page == 'carrosel'):
                                             $this->db->order_by('id', 'desc');
                                             $pagination_query = $this->db->get();
                                             $row_query = $pagination_query->num_rows();
+                                            $pages = ceil($row_query / $max);
 
                                             if (!isset($_GET['pg'])) {
                                                 $atual = 0;
-                                                $pages = 1;
                                                 $pgatual = 1;
                                             } else {
                                                 $atual = ceil($max * $_GET['pg'] - $max);
                                                 if ($_GET['pg'] <= 1) {
-                                                    $pages = 1;
                                                     $pgatual = 1;
 
                                                 } else {
 
-                                                    $pages = ceil($max / $_GET['pg']);
                                                     $pgatual = $_GET['pg'];
 
                                                 }
@@ -217,7 +215,7 @@ if ($page == 'carrosel'):
 
 
                                         ?>
-                                        <div class="text-center">
+                                        <div class="">
                                             <ul class="pagination pagination-v2">
                                                 <li>
                                                     <a href="<?php echo base_url('adm/carrosel?'); ?>pg=<?php echo $before; ?>">Anterior</a>

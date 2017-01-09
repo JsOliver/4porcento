@@ -73,6 +73,28 @@ if ($page == 'account'):
 
         if ($count > 0):
 
+
+                ?>
+                <!--Table Search v1-->
+                <div class="table-search-v1 margin-bottom-20">
+
+                    <div class="table-responsive">
+                        <h2>Ultimas compras</h2>
+                        <table class="table table-hover table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th class="hidden-sm">Produto</th>
+                                <th style="width: 100px;">Status</th>
+                                <th>Valor</th>
+                                <th>Opções</th>
+                                <th>Ações</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+                            <?php
             foreach ($result as $dds) {
 
                 if ($dds['status'] <> 3):
@@ -92,24 +114,7 @@ if ($page == 'account'):
                     $minuto = substr($ind, 10, 2);
                     $segundo = substr($ind, 12, 2);
                 endif;
-                ?>
-                <!--Table Search v1-->
-                <div class="table-search-v1 margin-bottom-20">
-
-                    <div class="table-responsive">
-                        <h2>Ultimas compras</h2>
-                        <table class="table table-hover table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th class="hidden-sm">Produto</th>
-                                <th style="width: 100px;">Status</th>
-                                <th>Valor</th>
-                                <th>Opções</th>
-                                <th>Ações</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                            ?>
                             <tr>
                                 <td><b><?php echo $dds['id_obj_compra']; ?></b></td>
                                 <td class="td-width">
@@ -194,7 +199,7 @@ if ($page == 'account'):
                                 <td style="text-align: center;">
                                     <?php
                                     if ($dds['status'] == 1):
-                                        echo '<a href="#" target="_blank" class=" btn btn-success">Realizar pagamento</a>';
+                                        echo '<a href="'.$dds['url_payment'].'" target="_blank" class=" btn btn-success">Realizar pagamento</a>';
                                     endif;
                                     if ($dds['status'] == 5):
                                         echo '<span class=" btn btn-danger">Aguardando disputa</span>';
@@ -268,13 +273,13 @@ if ($page == 'account'):
 
                                 </td>
                             </tr>
-
+<?php } ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <!--End Table Search v1-->
-            <?php } endif; ?>
+            <?php endif; ?>
         <div class="table-search-v2">
             <div class="">
                 <h2>Ultimos leilões</h2>

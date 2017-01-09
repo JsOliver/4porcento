@@ -111,7 +111,7 @@ if ($page == 'sala'):
     <![endif]-->
 
 <?php endif; ?>
-<?php if ($page == 'home'): ?>
+<?php if ($page == 'home' or $page = 'compra'): ?>
     <!-- JS Global Compulsory -->
     <script src="<?php echo base_url(); ?>/assets/plugins/jquery/jquery-migrate.min.js"></script>
     <script src="<?php echo base_url(); ?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>

@@ -118,7 +118,7 @@ if($page == 'sala'):
     <script src="<?php echo base_url();?>/assets/js/plugins/countdown.js"></script>
     <?php endif;?>
 
-    <?php if($page == 'register' or $page == 'configuracoes'):?>
+    <?php if($page == 'register' or $page == 'configuracoes' or $page == 'compra'):?>
         <script src="<?php echo base_url();?>/assets/plugins/jquery/jquery.min.js"></script>
         <script src="<?php echo base_url();?>/assets/js/plugins/jquery.mask.js"></script>
 

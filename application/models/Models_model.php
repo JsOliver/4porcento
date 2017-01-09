@@ -353,7 +353,7 @@ class Models_model extends CI_Model
 
     }
 
-    public function addCarrosel($title, $descricao,$file,$linktext,$link)
+    public function addCarrosel($title, $descricao, $file, $linktext, $link)
     {
 
         if (empty($title) or empty($descricao) or empty($file)) {
@@ -415,7 +415,8 @@ class Models_model extends CI_Model
         }
 
     }
-    public function editCarrosel($carrosel,$title, $descricao,$file,$linktext,$link)
+
+    public function editCarrosel($carrosel, $title, $descricao, $file, $linktext, $link)
     {
 
         if (empty($title) or empty($descricao) or empty($file)) {
@@ -488,6 +489,7 @@ class Models_model extends CI_Model
         }
 
     }
+
     public function updpacote($pacote, $title, $valor)
     {
 
@@ -502,6 +504,136 @@ class Models_model extends CI_Model
             $this->db->update('pacotes', $data);
             return 1;
 
+        }
+
+    }
+
+    public function check_payment($reference){
+
+        $this->db->from('pagseguro');
+        $this->db->order_by('id','desc');
+        $this->db->limit(1,0);
+        $query = $this->db->get();
+        $result = $query->result_array();
+        $token = $result[0]['token'];
+        $email = $result[0]['email'];
+
+        $url = 'https://ws.pagseguro.uol.com.br/v2/transactions?email=' . $email . '&token='. $token . '&reference=' . $reference . '';
+
+
+        $curl = curl_init($url);
+
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $transactionCurl = curl_exec($curl);
+        curl_close($curl);
+
+        $xmlresult = simplexml_load_string($transactionCurl);
+        if(!isset($xmlresult->transactions->transaction->status)):
+
+            return 0;
+            else:
+                return simplexml_load_string($transactionCurl);
+
+        endif;
+
+    }
+
+
+    public function payment($id,$quantidade,$descricao,$preco,$reference){
+
+        //Inicio configuração do pagseguro.
+        $this->db->from('pagseguro');
+        $this->db->order_by('id','desc');
+        $this->db->limit(1,0);
+        $query = $this->db->get();
+        $result = $query->result_array();
+
+        $data['token'] = $result[0]['token'];
+        $data['email'] = $result[0]['email'];
+
+        //Fim configuração do pagseguro.
+
+
+
+        $data['currency'] = 'BRL';
+        $data['itemId1'] = $id;
+        $data['itemQuantity1'] = $quantidade;
+        $data['itemDescription1'] = ''.$descricao.'';
+        $data['itemAmount1'] = "".$preco."";
+        $data['reference'] = $reference;
+
+        $url = 'https://ws.pagseguro.uol.com.br/v2/checkout';
+
+        $data = http_build_query($data);
+
+        $curl = curl_init($url);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        $xml= curl_exec($curl);
+
+        curl_close($curl);
+
+        return simplexml_load_string($xml);
+    }
+
+
+    public function comprarPack($compra)
+    {
+        $this->db->from('pacotes');
+        $this->db->where('id',$compra);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            $this->db->from('compras');
+            $this->db->where('type',2);
+            $this->db->where('id_obj_compra',$compra);
+            $this->db->where('id_user',$_SESSION['ID']);
+            $queryPct = $this->db->get();
+
+            if($queryPct->num_rows() > 0){
+
+                return 2;
+
+            }else {
+
+                $result = $query->result_array();
+                $reference = 'PKE-T2' . date('Y') . rand();
+                $payment = $this->payment('2' . $compra, 1, strip_tags($result[0]['title']), number_format($result[0]['valor'], 2, '.', ''), $reference);
+
+
+                $dados['id_user'] = $_SESSION['ID'];
+                $dados['type'] = 2;
+                $dados['id_obj_compra'] = $compra;
+                $dados['title'] = strip_tags($result[0]['title']);
+                $dados['description'] = strip_tags($result[0]['title']);
+                $dados['value_show'] = number_format($result[0]['valor'], 2, '.', ',');
+                $dados['value_pagseguro'] = number_format($result[0]['valor'], 2, '.', '');
+                $dados['pre_approval'] = $payment->code;
+                $dados['reference_code'] = $reference;
+                $dados['url_payment'] = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' . $payment->code;
+                $dados['status'] = 1;
+                $dados['data_solicitation'] = date('d/m/Y H:i:s');
+                $dados['submit'] = 1;
+
+                $this->db->insert('compras',$dados);
+
+                if ($this->db->insert_id() > 0):
+                    return 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' . $payment->code;
+
+                else:
+                    return 0;
+
+                endif;
+
+
+            }
+
+        }else{
+            return 0;
         }
 
     }
@@ -589,6 +721,57 @@ class Models_model extends CI_Model
 
     }
 
+    public function addcredito($pacote)
+    {
+
+        if (empty($pacote)) {
+
+            return 0;
+
+        } else {
+
+
+            $this->db->from('pacotes');
+            $this->db->where('id', $pacote);
+            $query = $this->db->get();
+            $count = $query->num_rows();
+            $result = $query->result_array();
+
+            if ($count > 0) {
+
+                $valor = $result[0]['valor'];
+                $this->db->from('creditos');
+                $this->db->where('usuario', $_SESSION['ID']);
+                $query = $this->db->get();
+                $count = $query->num_rows();
+                $result = $query->result_array();
+                if ($count > 0):
+
+                    $valoracs = $result[0]['credito'];
+                    $dado['credito'] = str_replace(',', '', $valoracs) + str_replace(',', '', $valor);
+
+                    $this->db->where('usuario', $_SESSION['ID']);
+                    $this->db->update('creditos', $dado);
+                else:
+
+                    $dado['usuario'] = $_SESSION['ID'];
+                    $dado['credito'] = str_replace(',', '', $valor);
+                    $this->db->insert('creditos', $dado);
+
+                endif;
+                return 1;
+
+            } else {
+                return 0;
+            }
+
+
+        }
+
+
+    }
+
+
 
     public function alterdata($type, $valor, $db)
     {
@@ -599,7 +782,7 @@ class Models_model extends CI_Model
             if ($type == 0):
 
                 $dado['firstname'] = $valor;
-                $this->db->where('id',$_SESSION['ID']);
+                $this->db->where('id', $_SESSION['ID']);
                 if ($this->db->update($db, $dado)):
                     return 1;
                 else:
@@ -610,7 +793,7 @@ class Models_model extends CI_Model
             if ($type == 1):
 
                 $dado['lastname'] = $valor;
-                $this->db->where('id',$_SESSION['ID']);
+                $this->db->where('id', $_SESSION['ID']);
                 if ($this->db->update($db, $dado)):
                     return 1;
                 else:
@@ -621,7 +804,7 @@ class Models_model extends CI_Model
             if ($type == 2):
 
                 $dado['telefone'] = $valor;
-                $this->db->where('id',$_SESSION['ID']);
+                $this->db->where('id', $_SESSION['ID']);
                 if ($this->db->update($db, $dado)):
                     return 1;
                 else:
@@ -632,7 +815,7 @@ class Models_model extends CI_Model
             if ($type == 3):
 
                 $dado['endereco'] = $valor;
-                $this->db->where('id',$_SESSION['ID']);
+                $this->db->where('id', $_SESSION['ID']);
                 if ($this->db->update($db, $dado)):
                     return 1;
                 else:
@@ -645,15 +828,16 @@ class Models_model extends CI_Model
 
     }
 
-    public function reloadToken($user){
+    public function reloadToken($user)
+    {
 
-        $dado['token'] = 'PKE-'.$user.rand();
-        $this->db->where('id_user',$user);
-        if($this->db->update('cupon_loja',$dado)){
+        $dado['token'] = 'PKE-' . $user . rand();
+        $this->db->where('id_user', $user);
+        if ($this->db->update('cupon_loja', $dado)) {
 
-            return 'PKE-'.$user.rand();
+            return 'PKE-' . $user . rand();
 
-        }else{
+        } else {
 
             return 0;
         }

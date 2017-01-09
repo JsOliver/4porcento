@@ -59,6 +59,11 @@ class Pages extends CI_Controller
             $get = $this->db->get();
             $count = $get->num_rows();
             if ($count > 0):
+                $result = $get->result_array();
+                $valor_in = str_replace(',','',$result[0]['valor_leilao']);
+
+         
+
                 $dado['user'] = $_SESSION['ID'];
                 $dado['interact_type'] = 2;
                 $this->db->insert('interact_report', $dado);
@@ -82,41 +87,73 @@ class Pages extends CI_Controller
 
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
-        if($log == true):
-        $dados['status'] = $log;
-        $dados['page'] = 'account';
-        $this->load->view('pages/user/account/account', $dados);
-else:
-    redirect(base_url('home'), 'refresh');
+        if ($log == true):
+            $this->db->from('compras');
+            $this->db->where('id_user', $_SESSION['ID']);
+            $this->db->where('status', 1);
+            $this->db->or_where('status', 2);
+            $this->db->or_where('status', 5);
+            $query = $this->db->get();
+
+            $dadas['status'] = $log;
+            $dadas['page'] = 'account';
+            $this->load->view('pages/user/account/account', $dadas);
+            if ($query->num_rows() > 0):
+                $result = $query->result_array();
+                foreach ($result as $dds) {
+                    $check = $this->Models_model->check_payment($dds['reference_code']);
+
+                    if ($check !== 0):
+
+                        $dados['status'] = @$check->transactions->transaction->status;
+                        $dados['transaction_code'] = @$check->transactions->transaction->code;
+                        $dados['data_payment'] = @$check->transactions->transaction->date;
+                        if($dds['type'] == 2 and $dds['submit'] < 3 and $dds['submit'] >= 1  and $check->transactions->transaction->status == 3  or $check->transactions->transaction->status == 4):
+                            $dados['submit'] = 3;
+                            $this->db->from('pacotes');
+                            $this->db->where('id',$dds['id_obj_compra']);
+                            $query = $this->db->get();
+                            if($query->num_rows() > 0):
+                                $this->Models_model->addcredito($dds['id_obj_compra']);
+                            endif;
+                        endif;
+                        $this->db->where('reference_code', @$check->transactions->transaction->reference);
+                        $this->db->update('compras', $dados);
+                    endif;
+                }
+            endif;
+        else:
+            redirect(base_url('home'), 'refresh');
 
         endif;
     }
+
     public function arremate()
     {
 
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
-        if($log == true):
-        $dados['status'] = $log;
-        $dados['page'] = 'arrematados';
-        $this->load->view('pages/user/account/arremate', $dados);
-else:
-    redirect(base_url('home'), 'refresh');
+        if ($log == true):
+            $dados['status'] = $log;
+            $dados['page'] = 'arrematados';
+            $this->load->view('pages/user/account/arremate', $dados);
+        else:
+            redirect(base_url('home'), 'refresh');
 
         endif;
     }
 
- public function configuracoes()
+    public function configuracoes()
     {
 
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
-        if($log == true):
-        $dados['status'] = $log;
-        $dados['page'] = 'configuracoes';
-        $this->load->view('pages/user/account/configuracoes', $dados);
-else:
-    redirect(base_url('home'), 'refresh');
+        if ($log == true):
+            $dados['status'] = $log;
+            $dados['page'] = 'configuracoes';
+            $this->load->view('pages/user/account/configuracoes', $dados);
+        else:
+            redirect(base_url('home'), 'refresh');
 
         endif;
     }
@@ -138,9 +175,44 @@ else:
 
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
-        $dados['status'] = $log;
-        $dados['page'] = 'pagamentos';
-        $this->load->view('pages/user/account/compras', $dados);
+        if($log == true):
+            $dadas['status'] = $log;
+            $dadas['page'] = 'pagamentos';
+            $this->load->view('pages/user/account/compras', $dadas);
+            $this->db->from('compras');
+            $this->db->where('id_user', $_SESSION['ID']);
+            $this->db->where('status', 1);
+            $this->db->or_where('status', 2);
+            $this->db->or_where('status', 5);
+            $query = $this->db->get();
+            if ($query->num_rows() > 0):
+                $result = $query->result_array();
+                foreach ($result as $dds) {
+                    $check = $this->Models_model->check_payment($dds['reference_code']);
+
+                    if ($check !== 0):
+
+                        $dados['status'] = @$check->transactions->transaction->status;
+                        $dados['transaction_code'] = @$check->transactions->transaction->code;
+                        $dados['data_payment'] = @$check->transactions->transaction->date;
+                        if($dds['type'] == 2 and $dds['submit'] < 3 and $dds['submit'] >= 1  and $check->transactions->transaction->status == 3  or $check->transactions->transaction->status == 4):
+                            $dados['submit'] = 3;
+                            $this->db->from('pacotes');
+                            $this->db->where('id',$dds['id_obj_compra']);
+                            $query = $this->db->get();
+                            if($query->num_rows() > 0):
+                                $this->Models_model->addcredito($dds['id_obj_compra']);
+                            endif;
+                        endif;
+                        $this->db->where('reference_code', @$check->transactions->transaction->reference);
+                        $this->db->update('compras', $dados);
+                    endif;
+                }
+            endif;
+        else:
+            redirect(base_url('home'), 'refresh');
+
+        endif;
 
     }
 
@@ -197,10 +269,46 @@ else:
 
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
-        $dados['status'] = $log;
-        $dados['page'] = 'compra';
-        $this->load->view('pages/user/compra', $dados);
+        if($log == true):
+            $this->db->from('compras');
+            $this->db->where('id_user', $_SESSION['ID']);
+            $this->db->where('status', 1);
+            $this->db->or_where('status', 2);
+            $this->db->or_where('status', 5);
+            $query = $this->db->get();
+            if ($query->num_rows() > 0):
+                $result = $query->result_array();
+                foreach ($result as $dds) {
+                    $check = $this->Models_model->check_payment($dds['reference_code']);
 
+                    if ($check !== 0):
+
+                        $dados['status'] = @$check->transactions->transaction->status;
+                        $dados['transaction_code'] = @$check->transactions->transaction->code;
+                        $dados['data_payment'] = @$check->transactions->transaction->date;
+                        if($dds['type'] == 2 and $dds['submit'] < 3 and $dds['submit'] >= 1  and $check->transactions->transaction->status == 3  or $check->transactions->transaction->status == 4):
+                            $dados['submit'] = 3;
+                            $this->db->from('pacotes');
+                            $this->db->where('id',$dds['id_obj_compra']);
+                            $query = $this->db->get();
+                            if($query->num_rows() > 0):
+                                $this->Models_model->addcredito($dds['id_obj_compra']);
+                            endif;
+                        endif;
+                        $this->db->where('reference_code', @$check->transactions->transaction->reference);
+                        $this->db->update('compras', $dados);
+                    endif;
+                }
+            endif;
+
+            $dadas['status'] = $log;
+            $dadas['page'] = 'compra';
+            $this->load->view('pages/user/compra', $dadas);
+
+        else:
+            redirect(base_url('home'), 'refresh');
+
+        endif;
     }
 
     public function cadastro()
@@ -223,7 +331,36 @@ else:
         $log = $this->Models_model->logVer();
 
         if ($log == false):
+            $this->db->from('compras');
+            $this->db->where('id_user', $_SESSION['ID']);
+            $this->db->where('status', 1);
+            $this->db->or_where('status', 2);
+            $this->db->or_where('status', 5);
+            $query = $this->db->get();
+            if ($query->num_rows() > 0):
+                $result = $query->result_array();
+                foreach ($result as $dds) {
+                    $check = $this->Models_model->check_payment($dds['reference_code']);
 
+                    if ($check !== 0):
+
+                        $dados['status'] = @$check->transactions->transaction->status;
+                        $dados['transaction_code'] = @$check->transactions->transaction->code;
+                        $dados['data_payment'] = @$check->transactions->transaction->date;
+                        if($dds['type'] == 2 and $dds['submit'] < 3 and $dds['submit'] >= 1  and $check->transactions->transaction->status == 3  or $check->transactions->transaction->status == 4):
+                            $dados['submit'] = 3;
+                            $this->db->from('pacotes');
+                            $this->db->where('id',$dds['id_obj_compra']);
+                            $query = $this->db->get();
+                            if($query->num_rows() > 0):
+                                $this->Models_model->addcredito($dds['id_obj_compra']);
+                            endif;
+                        endif;
+                        $this->db->where('reference_code', @$check->transactions->transaction->reference);
+                        $this->db->update('compras', $dados);
+                    endif;
+                }
+            endif;
             echo $this->Models_model->login($_POST['email'], $_POST['pass']);
 
         endif;
@@ -294,11 +431,11 @@ else:
                 $this->db->where('id', $_GET['id']);
                 $this->db->where('id_user', $_SESSION['ID']);
                 $this->db->update('arremates', $dado1);
-                if($this->Models_model->cupon($_SESSION['ID'], $_GET['id'],$_GET['id3']) == 1){
+                if ($this->Models_model->cupon($_SESSION['ID'], $_GET['id'], $_GET['id3']) == 1) {
 
                     redirect(base_url('meus-arremates'), 'refresh');
 
-                }else{
+                } else {
                     redirect(base_url('minha-conta'), 'refresh');
 
 
@@ -307,7 +444,13 @@ else:
             else:
                 if ($this->Models_model->deleteus('compras', 'id', $_GET['id2'], $_SESSION['ID']) == 1) {
 
-                    redirect(base_url('meus-arremates'), 'refresh');
+                    if ($_GET['tp'] == 2):
+                        redirect(base_url('compras'), 'refresh');
+
+                    else:
+                        redirect(base_url('meus-arremates'), 'refresh');
+
+                    endif;
 
                 } else {
                     redirect(base_url('home'), 'refresh');
@@ -341,7 +484,8 @@ else:
 
     }
 
-    public function deletecrs(){
+    public function deletecrs()
+    {
 
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
             if ($this->Models_model->delete('carrosel', 'id', $_GET['id']) == 1) {
@@ -450,7 +594,7 @@ else:
     public function addCarrosel()
     {
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
-            if ($this->Models_model->addCarrosel($_POST['title'], $_POST['breve_descricao'], $_FILES['image'],$_POST['linktext'],$_POST['link']) == 1):
+            if ($this->Models_model->addCarrosel($_POST['title'], $_POST['breve_descricao'], $_FILES['image'], $_POST['linktext'], $_POST['link']) == 1):
                 redirect(base_url('adm/carrosel'), 'refresh');
 
             else:
@@ -462,10 +606,11 @@ else:
 
         endif;
     }
+
     public function editCarrosel()
     {
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
-            if ($this->Models_model->editCarrosel($_POST['carrosel'],$_POST['title'], $_POST['breve_descricao'], $_FILES['image'],$_POST['linktext'],$_POST['link']) == 1):
+            if ($this->Models_model->editCarrosel($_POST['carrosel'], $_POST['title'], $_POST['breve_descricao'], $_FILES['image'], $_POST['linktext'], $_POST['link']) == 1):
                 redirect(base_url('adm/carrosel'), 'refresh');
 
             else:
@@ -507,6 +652,7 @@ else:
         echo $fetch[0]['image'];
 
     }
+
     public function exibirUs()
     {
 
@@ -514,7 +660,7 @@ else:
         $this->db->where('id', addslashes($_GET['id']));
         $query = $this->db->get();
         $fetch = $query->result_array();
-        header("content-type: " . 'jpg'. "");
+        header("content-type: " . 'jpg' . "");
         echo $fetch[0]['image'];
 
     }
@@ -526,18 +672,20 @@ else:
         $this->db->where('id', addslashes($_GET['id']));
         $query = $this->db->get();
         $fetch = $query->result_array();
-        header("content-type: " . 'jpg'. "");
+        header("content-type: " . 'jpg' . "");
         echo $fetch[0]['image'];
 
     }
 
 
-    public function image(){
+    public function image()
+    {
         $allowed = 'jpge,jpg,png,gif';
-        $upload = $this->Models_model->uploadUs('pp','default','image_profile',$_FILES['fileUpload'],$allowed,3);
+        $upload = $this->Models_model->uploadUs('pp', 'default', 'image_profile', $_FILES['fileUpload'], $allowed, 3);
         echo $upload;
 
     }
+
     public function updLeilao()
     {
 
@@ -575,10 +723,11 @@ else:
 
     }
 
-    public function alterPass(){
+    public function alterPass()
+    {
 
         if (isset($_SESSION['ID'])):
-            if ($this->Models_model->updpass($_POST['newpass'], $_POST['newpassag'],$_POST['oldpass'],$_POST['email']) == 1):
+            if ($this->Models_model->updpass($_POST['newpass'], $_POST['newpassag'], $_POST['oldpass'], $_POST['email']) == 1):
                 echo 'Senha alterada com sucesso.';
 
             else:
@@ -592,10 +741,11 @@ else:
         endif;
     }
 
-    public function alterdatesUs(){
+    public function alterdatesUs()
+    {
 
         if (isset($_SESSION['ID'])):
-            if ($this->Models_model->alterdata($_POST['type'], $_POST['valor'],'user') == 1):
+            if ($this->Models_model->alterdata($_POST['type'], $_POST['valor'], 'user') == 1):
                 echo 1;
 
             else:
@@ -609,9 +759,24 @@ else:
         endif;
     }
 
-    public function updateServer(){
-       echo $this->Models_model->reloadToken($_SESSION['ID']);
+    public function updateServer()
+    {
+        echo $this->Models_model->reloadToken($_SESSION['ID']);
 
 
     }
+
+    public function comprarPack()
+    {
+
+        if (isset($_SESSION['ID'])):
+
+            echo $this->Models_model->comprarPack($_POST['compra']);
+
+        endif;
+
+    }
+
+
+
 }

@@ -147,20 +147,28 @@ $data_atual_system = date('YmdHis');
                                                 <tbody>
 
                                                 <?php
-                                                $max = 20;
-                                                if (isset($_GET['pg'])):
-                                                    $beg = $max * $_GET['pg'] - $max;
-
-                                                else:
-
-                                                    $beg = 0;
-
-                                                endif;
-
+                                                $max = 15;
                                                 $this->db->from('leiloes');
                                                 $this->db->order_by('id', 'desc');
-                                                $getNl = $this->db->get();
-                                                $numNl = $getNl->num_rows();
+                                                $pagination_query = $this->db->get();
+                                                $row_query = $pagination_query->num_rows();
+                                                $pages = ceil($row_query / $max);
+
+                                                if (!isset($_GET['pg'])) {
+                                                    $atual = 0;
+                                                    $pgatual = 1;
+                                                } else {
+                                                    $atual = ceil($max * $_GET['pg'] - $max);
+                                                    if ($_GET['pg'] <= 1) {
+                                                        $pgatual = 1;
+
+                                                    } else {
+
+                                                        $pgatual = $_GET['pg'];
+
+                                                    }
+                                                }
+
 
                                                 $this->db->from('leiloes');
                                                 if (isset($_GET['t']) and $_GET['t'] == 'arrematados'):
@@ -173,7 +181,7 @@ $data_atual_system = date('YmdHis');
                                                     $this->db->where('status', 1);
                                                 endif;
                                                 $this->db->order_by('id', 'desc');
-                                                $this->db->limit($max, $beg);
+                                                $this->db->limit($max, $atual);
                                                 $get = $this->db->get();
                                                 $num = $get->num_rows();
                                                 $fetch = $get->result_array();
@@ -255,18 +263,54 @@ $data_atual_system = date('YmdHis');
 
 
                                         <div class="col-sm-6">
-                                            <div class="dataTables_paginate paging_simple_numbers"
-                                                 id="dataTables-example_paginate">
-                                                <ul class="pagination">
+                                            <?php
 
-                                                    <li class="paginate_button previous"
-                                                        aria-controls="dataTables-example" tabindex="0"
-                                                        id="dataTables-example_previous"><a href="#">Anterior</a></li>
-                                                    <li class="paginate_button next" aria-controls="dataTables-example"
-                                                        tabindex="0" id="dataTables-example_next"><a
-                                                            href="#">Proximo</a></li>
+
+                                            if ($pgatual <= 0):
+                                                $next = 1;
+                                                $before = 1;
+                                            else:
+                                                if ($pages <= 1):
+
+                                                    $next = 1;
+                                                    $before = 1;
+
+                                                else:
+
+                                                    if ($pages > 1):
+
+                                                        if ($pgatual == $pages):
+
+                                                            $next = $pgatual;
+
+                                                        else:
+                                                            $next = $pgatual + 1;
+
+
+                                                        endif;
+                                                    endif;
+                                                    if ($pgatual > 1):
+                                                        $before = $pgatual - 1;
+
+                                                    else:
+                                                        $before = 1;
+                                                    endif;
+                                                endif;
+                                            endif;
+
+
+                                            ?>
+                                            <div class="">
+                                                <ul class="pagination pagination-v2">
+                                                    <li>
+                                                        <a href="<?php echo base_url('adm/leiloes?'); ?>pg=<?php echo $before; ?>">Anterior</a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="<?php echo base_url('adm/leiloes?'); ?>pg=<?php echo $next; ?>">Próximo</a>
+                                                    </li>
                                                 </ul>
-                                            </div>
+                                            </div><!--/end pagination-->
                                         </div>
                                     </div>
                                 </div>
