@@ -341,6 +341,24 @@ else:
 
     }
 
+    public function deletecrs(){
+
+        if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+            if ($this->Models_model->delete('carrosel', 'id', $_GET['id']) == 1) {
+                redirect(base_url('adm/carrosel'), 'refresh');
+
+            } else {
+                redirect(base_url('admin'), 'refresh');
+
+            }
+
+        else:
+            redirect(base_url('home'), 'refresh');
+
+        endif;
+    }
+
+
     public function clients()
     {
 
@@ -377,6 +395,24 @@ else:
 
     }
 
+    public function carrosel()
+    {
+
+        $this->load->library('functions');
+        $log = $this->Models_model->logVer();
+
+        if ($log == true and $_SESSION['TYPE'] == 54):
+            $dados['status'] = $log;
+            $dados['page'] = 'carrosel';
+            $this->load->view('pages/admin/carrosel', $dados);
+
+        else:
+            @session_destroy();
+            redirect(base_url('login'), 'refresh');
+        endif;
+
+    }
+
     public function pacotes()
     {
 
@@ -400,6 +436,37 @@ else:
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
             if ($this->Models_model->newleilao($_POST['title'], $_POST['minuser'], $_POST['maxuser'], $_POST['breve_descricao'], $_FILES['image'], $_POST['valor_leilao'], $_POST['descricao_completa'], $_POST['inicio_data'], $_POST['estado'], $_POST['cidade'], $_POST['cep'], $_POST['rua'], $_POST['bairro']) == 1):
                 redirect(base_url('adm/leiloes'), 'refresh');
+
+            else:
+                redirect(base_url('admin'), 'refresh');
+
+            endif;
+        else:
+            redirect(base_url('home'), 'refresh');
+
+        endif;
+    }
+
+    public function addCarrosel()
+    {
+        if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+            if ($this->Models_model->addCarrosel($_POST['title'], $_POST['breve_descricao'], $_FILES['image'],$_POST['linktext'],$_POST['link']) == 1):
+                redirect(base_url('adm/carrosel'), 'refresh');
+
+            else:
+                redirect(base_url('admin'), 'refresh');
+
+            endif;
+        else:
+            redirect(base_url('home'), 'refresh');
+
+        endif;
+    }
+    public function editCarrosel()
+    {
+        if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+            if ($this->Models_model->editCarrosel($_POST['carrosel'],$_POST['title'], $_POST['breve_descricao'], $_FILES['image'],$_POST['linktext'],$_POST['link']) == 1):
+                redirect(base_url('adm/carrosel'), 'refresh');
 
             else:
                 redirect(base_url('admin'), 'refresh');
@@ -451,6 +518,19 @@ else:
         echo $fetch[0]['image'];
 
     }
+
+    public function exibirCr()
+    {
+
+        $this->db->from('carrosel');
+        $this->db->where('id', addslashes($_GET['id']));
+        $query = $this->db->get();
+        $fetch = $query->result_array();
+        header("content-type: " . 'jpg'. "");
+        echo $fetch[0]['image'];
+
+    }
+
 
     public function image(){
         $allowed = 'jpge,jpg,png,gif';

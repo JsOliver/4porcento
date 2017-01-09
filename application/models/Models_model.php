@@ -353,6 +353,141 @@ class Models_model extends CI_Model
 
     }
 
+    public function addCarrosel($title, $descricao,$file,$linktext,$link)
+    {
+
+        if (empty($title) or empty($descricao) or empty($file)) {
+            return 0;
+        } else {
+
+            $data['titulo'] = $title;
+            $data['texto'] = $descricao;
+            $data['link_texto_1'] = $linktext;
+            $data['link_1'] = $link;
+            $data['data'] = date('YmdHis');
+            if (!empty($file['name'])):
+                $filex = $file['tmp_name'];
+                $size = $file['size'];
+                $type = $file['type'];
+                $name = $file['name'];
+
+                $extension = pathinfo($name, PATHINFO_EXTENSION);
+                $extension = strtolower($extension);
+
+                $data['image'] = file_get_contents(addslashes($filex));
+
+                if (strstr('jpg,gif,png', $extension)):
+
+
+                    if ($size > 5 * 1000000):
+
+                        return 'Tamanho maximo de ' . 5 . 'MB, excedido.';
+
+                    else:
+
+
+                        $this->db->insert('carrosel', $data);
+
+                        if ($this->db->insert_id() > 0) {
+                            return 1;
+                        } else {
+                            return 'Erro a salvar a imagem, tente mais tarde.';
+                        }
+
+                    endif;
+
+
+                else:
+
+                    return 'Somente as extensões jpg,gif,png são permitidas.';
+
+                endif;
+
+
+            else:
+
+
+                return 'Por favor selecione o arquivo.';
+
+
+            endif;
+
+        }
+
+    }
+    public function editCarrosel($carrosel,$title, $descricao,$file,$linktext,$link)
+    {
+
+        if (empty($title) or empty($descricao) or empty($file)) {
+            return 0;
+        } else {
+
+            $data['titulo'] = $title;
+            $data['texto'] = $descricao;
+            $data['link_texto_1'] = $linktext;
+            $data['link_1'] = $link;
+            $data['data'] = date('YmdHis');
+            if (empty($file['name'])):
+
+                $this->db->where('id', $carrosel);
+                $this->db->update('carrosel', $data);
+
+                return 1;
+
+            else:
+
+                if (!empty($file['name'])):
+                    $filex = $file['tmp_name'];
+                    $size = $file['size'];
+                    $type = $file['type'];
+                    $name = $file['name'];
+
+                    $extension = pathinfo($name, PATHINFO_EXTENSION);
+                    $extension = strtolower($extension);
+
+
+                    if (strstr('jpge,jpg,png,gif', $extension)):
+
+
+                        if ($size > 5 * 1000000):
+
+                            return 'Tamanho maximo de ' . 5 . 'MB, excedido.';
+
+                        else:
+
+                            $data['image'] = file_get_contents(addslashes($filex));
+
+                            $this->db->where('id', $carrosel);
+                            $this->db->update('carrosel', $data);
+
+                            return 1;
+
+
+                        endif;
+
+
+                    else:
+
+                        return 'Somente as extensões jpg,gif,png são permitidas.';
+
+                    endif;
+
+
+                else:
+
+
+                    return 'Por favor selecione o arquivo.';
+
+
+                endif;
+
+
+            endif;
+
+
+        }
+
+    }
     public function updpacote($pacote, $title, $valor)
     {
 

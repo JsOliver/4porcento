@@ -126,6 +126,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <a href="<?php echo base_url('adm/pacotes');?>"><i class="fa fa-money fa-fw"></i> Pacotes</a>
                     </li>
 
+                    <li>
+                        <a href="<?php echo base_url('adm/carrosel');?>"><i class="fa fa-slideshare fa-fw"></i> Slides</a>
+                    </li>
+
 
 
 

@@ -64,6 +64,7 @@ $route['admin'] = 'pages/admin/home';
 $route['adm/clientes'] = 'pages/clients';
 $route['adm/leiloes'] = 'pages/leilao';
 $route['adm/pacotes'] = 'pages/pacotes';
+$route['adm/carrosel'] = 'pages/carrosel';
 $route['minha-conta'] = 'pages/account';
 $route['meus-arremates'] = 'pages/arremate';
 $route['configuracoes'] = 'pages/configuracoes';
