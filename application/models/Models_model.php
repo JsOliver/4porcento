@@ -138,11 +138,11 @@ class Models_model extends CI_Model
     }
 
 
-    public function newleilao($titulo, $minuser, $maxuser, $breve_descricao, $file, $valor, $descricao, $inicio, $estado, $cidade, $cep, $rua, $bairro)
+    public function newleilao($lancetime,$titulo, $minuser, $maxuser, $breve_descricao, $file, $valor, $descricao, $inicio, $estado, $cidade, $cep, $rua, $bairro)
     {
 
 
-        if (empty($titulo) or empty($breve_descricao) or empty($file) or empty($valor) or empty($descricao) or empty($inicio)) {
+        if (empty($titulo) or empty($lancetime) or empty($breve_descricao) or empty($file) or empty($valor) or empty($descricao) or empty($inicio)) {
 
             return 'A campos obrigatorios vazios.';
 
@@ -161,6 +161,7 @@ class Models_model extends CI_Model
             $valor1r = str_replace('.', '', $valor);
             $valor2r = str_replace(',', '', $valor1r);
             $data['title'] = $titulo;
+            $data['duracao_lance'] = $lancetime;
             $data['breve_descricao'] = $breve_descricao;
             $data['minimo_users'] = $minuser;
             $data['maximo_users'] = $maxuser;
@@ -230,11 +231,11 @@ class Models_model extends CI_Model
     }
 
 
-    public function updleilao($leilao, $minuser, $maxuser, $titulo, $breve_descricao, $file, $valor, $descricao, $inicio, $estado, $cidade, $cep, $rua, $bairro)
+    public function updleilao($lancetime,$leilao, $minuser, $maxuser, $titulo, $breve_descricao, $file, $valor, $descricao, $inicio, $estado, $cidade, $cep, $rua, $bairro)
     {
 
 
-        if (empty($titulo) or empty($breve_descricao) or empty($file) or empty($valor) or empty($descricao) or empty($inicio) or empty($leilao)) {
+        if (empty($titulo) or empty($lancetime) or empty($breve_descricao) or empty($file) or empty($valor) or empty($descricao) or empty($inicio) or empty($leilao)) {
 
             return 'A campos obrigatorios vazios.';
 
@@ -254,6 +255,7 @@ class Models_model extends CI_Model
             $valor1r = str_replace('.', '', $valor);
             $valor2r = str_replace(',', '', $valor1r);
             $data['title'] = $titulo;
+            $data['duracao_lance'] = $lancetime;
             $data['breve_descricao'] = $breve_descricao;
             $data['valor_leilao'] = $valor;
             $data['valor_replace'] = $valor2r;

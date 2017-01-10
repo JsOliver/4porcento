@@ -367,6 +367,12 @@ $data_atual_system = date('YmdHis');
                                                         <input required id="numero1" name="maxuser" class="form-control"
                                                                placeholder="Maximo de usuarios">
                                                     </div>
+
+                                                    <div class="form-group">
+                                                        <label>Tempo de lance</label>
+                                                        <input required type="number" name="maxlance" class="form-control"
+                                                               placeholder="Tempo de lance">
+                                                    </div>
                                                     <div class="form-group">
                                                         <label>Inicio</label>
                                                         <input required id="dateinicio" name="inicio_data"
@@ -499,6 +505,12 @@ $data_atual_system = date('YmdHis');
                                                 <input required id="numero1"
                                                        value="<?php echo $result[0]['maximo_users']; ?>" name="maxuser"
                                                        class="form-control" placeholder="Maximo de usuarios">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Tempo de lance</label>
+                                                <input required value="<?php echo $result[0]['duracao_lance']; ?>" type="number" name="maxlance" class="form-control"
+                                                       placeholder="Tempo de lance">
                                             </div>
                                             <div class="form-group">
                                                 <label>Inicio</label>

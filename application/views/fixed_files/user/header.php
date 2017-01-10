@@ -221,6 +221,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </a>
                 </div>
 
+                <?php if($status == true):?>
                 <div class="shop-badge badge-icons pull-right">
                     <a href="#"><i class="fa fa-bell-o"></i></a>
                     <span class="badge badge-sea rounded-x">3</span>
@@ -256,7 +257,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </div>
                 </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
+            <?php endif;?>
+
                 <div class="collapse navbar-collapse navbar-responsive-collapse">
                     <!-- Nav Menu -->
                     <ul class="nav navbar-nav">

@@ -148,7 +148,8 @@ if ($page == 'sala'):
 
                 });
             }
-            setInterval("comecoVer()", 1000);
+
+            setInterval("comecoVer();", 1000);
 
             $(function () {
 

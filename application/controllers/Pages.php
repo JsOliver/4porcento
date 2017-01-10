@@ -623,7 +623,7 @@ class Pages extends CI_Controller
     public function addLeilao()
     {
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
-            if ($this->Models_model->newleilao($_POST['title'], $_POST['minuser'], $_POST['maxuser'], $_POST['breve_descricao'], $_FILES['image'], $_POST['valor_leilao'], $_POST['descricao_completa'], $_POST['inicio_data'], $_POST['estado'], $_POST['cidade'], $_POST['cep'], $_POST['rua'], $_POST['bairro']) == 1):
+            if ($this->Models_model->newleilao($_POST['maxlance'],$_POST['title'], $_POST['minuser'], $_POST['maxuser'], $_POST['breve_descricao'], $_FILES['image'], $_POST['valor_leilao'], $_POST['descricao_completa'], $_POST['inicio_data'], $_POST['estado'], $_POST['cidade'], $_POST['cep'], $_POST['rua'], $_POST['bairro']) == 1):
                 redirect(base_url('adm/leiloes'), 'refresh');
 
             else:
@@ -735,7 +735,7 @@ class Pages extends CI_Controller
     {
 
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
-            if ($this->Models_model->updleilao($_POST['leilao'], $_POST['minuser'], $_POST['maxuser'], $_POST['title'], $_POST['breve_descricao'], $_FILES['image'], $_POST['valor_leilao'], $_POST['descricao_completa'], $_POST['inicio_data'], $_POST['estado'], $_POST['cidade'], $_POST['cep'], $_POST['rua'], $_POST['bairro']) == 1):
+            if ($this->Models_model->updleilao($_POST['maxlance'],$_POST['leilao'], $_POST['minuser'], $_POST['maxuser'], $_POST['title'], $_POST['breve_descricao'], $_FILES['image'], $_POST['valor_leilao'], $_POST['descricao_completa'], $_POST['inicio_data'], $_POST['estado'], $_POST['cidade'], $_POST['cep'], $_POST['rua'], $_POST['bairro']) == 1):
                 redirect(base_url('adm/leiloes'), 'refresh');
 
             else:
@@ -1109,7 +1109,8 @@ class Pages extends CI_Controller
 
                         echo $this->Models_model->segundosDif($result[0]['data']);
 
-                    else: echo 0;
+                    else:
+                        echo 0;
 
                     endif;
 
