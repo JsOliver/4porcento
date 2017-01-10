@@ -14,11 +14,103 @@ if ($page == 'sala'):
 
 
     ?>
+    <script>
+
+
+        var tempo = new Number();
+        // Tempo em segundos
+        tempo = <?php echo $result[0]['duracao_lance'];?>;
+
+        function startCountdown(){
+
+            if(tempo == <?php echo ceil($result[0]['duracao_lance'] / 2);?>)
+            {
+             $.post("<?php echo base_url('pages/checkTimeSin');?>",{leilao:<?php echo $_GET['p']; ?>},function (timespe) {
+
+                 if(timespe !== 0){
+                     tempo = timespe;
+                 }
+
+             });
+
+            }
+            if(tempo == <?php echo ceil($result[0]['duracao_lance'] - 5);?>)
+            {
+                $.post("<?php echo base_url('pages/checkTimeSin');?>",{leilao:<?php echo $_GET['p']; ?>},function (timespe) {
+
+                    if(timespe !== 0){
+                        tempo = timespe;
+                    }
+
+                });
+
+            }
+
+            if(tempo == <?php echo ceil($result[0]['duracao_lance'] - 10);?>)
+            {
+                $.post("<?php echo base_url('pages/checkTimeSin');?>",{leilao:<?php echo $_GET['p']; ?>},function (timespe) {
+
+                    if(timespe !== 0){
+                        tempo = timespe;
+                    }
+
+                });
+
+            }
+            if(tempo == <?php echo ceil($result[0]['duracao_lance'] / 3);?>)
+            {
+                $.post("<?php echo base_url('pages/checkTimeSin');?>",{leilao:<?php echo $_GET['p']; ?>},function (timespe) {
+
+                    if(timespe !== 0){
+                        tempo = timespe;
+                    }
+
+                });
+
+            }
+            // Se o tempo não for zerado
+            if((tempo - 1) >= 0){
+
+                // Pega a parte inteira dos minutos
+                var min = parseInt(tempo/60);
+                // Calcula os segundos restantes
+                var seg = tempo%60;
+
+                // Formata o número menor que dez, ex: 08, 07, ...
+                if(min < 10){
+                    min = "0"+min;
+                    min = min.substr(0, 2);
+                }
+
+                // Cria a variável para formatar no estilo hora/cronômetro
+                horaImprimivel = seg+ ' segundos';
+                //JQuery pra setar o valor
+                $("#segundosRest").html(horaImprimivel);
+
+                // Define que a função será executada novamente em 1000ms = 1 segundo
+                setTimeout('startCountdown()',1000);
+
+                // diminui o tempo
+                tempo--;
+
+                // Quando o contador chegar a zero faz esta ação
+            } else {
+
+
+
+ }
+
+        }
+
+
+    </script>
 
         <script>
+            startCountdown();
 
+            var vez = 0;
             function comecoVer() {
-                var tempo = 0;
+
 
                 $.post("<?php echo base_url('pages/checkLeilao');?>", {leilao:<?php echo $_GET['p'];?>}, function (res) {
 
@@ -32,11 +124,21 @@ if ($page == 'sala'):
 
                         });
 
-                        $.post("<?php echo base_url('pages/segsRestante');?>", {leilao:<?php echo $_GET['p'];?>}, function (res2) {
+                        $.post("<?php echo base_url('pages/checktime');?>", {leilao:<?php echo $_GET['p'];?>}, function (res2) {
 
                             if (res2) {
-                                tempo = res2;
-                                $("#segundosRest").text(res2 + ' Segundos');
+
+                                if(res2 == 0){
+
+                                }else{
+                                    if(vez == 0){
+
+                                        tempo = <?php echo $result[0]['duracao_lance'];?>;
+                                    }
+                                    vez++;
+                                }
+
+
 
                             }
 
@@ -138,7 +240,7 @@ if ($page == 'sala'):
 
         <h3 class="shop-product-title">Tempo restante</h3>
         <div class="margin-bottom-40">
-            <span id="segundosRest" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #98acff;">Em breve</span>
+            <span id="segundosRest" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #98acff;">Aguardando</span>
 
             <span id="buttonLance">
             <button type="button" class="btn-u btn-u-sea-shop btn-u-lg" >Carregando...</button>

@@ -822,203 +822,361 @@ class Pages extends CI_Controller
 
     }
 
-    public function checkverMessage(){
+    public function checkverMessage()
+    {
         if (isset($_SESSION['ID'])):
 
-        if(isset($_POST['leilao']) and !isset($_POST['send'])):
+            if (isset($_POST['leilao']) and !isset($_POST['send'])):
 
-        $this->db->from('chat');
-        $this->db->where('id_leilao',$_POST['leilao']);
-        $this->db->where('status',0);
-        $this->db->order_by('id','desc');
-        $query = $this->db->get();
-        if($query->num_rows() > 0){
-            echo 1;
-        }else{
-            echo 0;
-        }
+                $this->db->from('chat');
+                $this->db->where('id_leilao', $_POST['leilao']);
+                $this->db->where('status', 0);
+                $this->db->order_by('id', 'desc');
+                $query = $this->db->get();
+                if ($query->num_rows() > 0) {
+                    echo 1;
+                } else {
+                    echo 0;
+                }
             endif;
-            endif;
+        endif;
     }
-    public function chat(){
+
+    public function chat()
+    {
 
         if (isset($_SESSION['ID'])):
 
-        if(isset($_POST['leilao']) and !isset($_POST['send'])):
+            if (isset($_POST['leilao']) and !isset($_POST['send'])):
 
-            $this->db->from('chat');
-            $this->db->where('id_leilao',$_POST['leilao']);
-            $this->db->order_by('id','desc');
-            $query = $this->db->get();
-
-
-            if($query->num_rows() > 0):
-
-        foreach ($query->result_array() as $dds){
-
-            $this->db->from('user');
-            $this->db->where('id',$dds['id_user']);
-            $query1 = $this->db->get();
-            $result1 = $query1->result_array();
-
-            ?>
+                $this->db->from('chat');
+                $this->db->where('id_leilao', $_POST['leilao']);
+                $this->db->order_by('id', 'desc');
+                $query = $this->db->get();
 
 
-            <li class="left clearfix">
+                if ($query->num_rows() > 0):
+
+                    foreach ($query->result_array() as $dds) {
+
+                        $this->db->from('user');
+                        $this->db->where('id', $dds['id_user']);
+                        $query1 = $this->db->get();
+                        $result1 = $query1->result_array();
+
+                        ?>
+
+
+                        <li class="left clearfix">
                 <span class=" pull-left">
-                            <img src="<?php echo base_url('pages/exibirUs?id='.$dds['id_user']);?>" style="opacity:1;width: 50px; height: 50px;object-fit: cover; object-position: center;" alt="User Avatar" class="img-circle"/>
+                            <img src="<?php echo base_url('pages/exibirUs?id=' . $dds['id_user']); ?>"
+                                 style="opacity:1;width: 50px; height: 50px;object-fit: cover; object-position: center;"
+                                 alt="User Avatar" class="img-circle"/>
                         </span>
-                <div class="chat-body clearfix">
-                    <div class="header">
-                        <?php if($dds['id_user'] == $_SESSION['ID']):  ?>
-                        <strong class="primary-font"><?php echo $this->Models_model->limitarTexto(strip_tags($result1[0]['firstname']),50);?></strong>
-                <?php else: ?>
-                            <span class="primary-font"><?php echo $this->Models_model->limitarTexto(strip_tags($result1[0]['firstname']),50);?></span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <?php if ($dds['id_user'] == $_SESSION['ID']): ?>
+                                        <strong
+                                            class="primary-font"><?php echo $this->Models_model->limitarTexto(strip_tags($result1[0]['firstname']), 50); ?></strong>
+                                    <?php else: ?>
+                                        <span
+                                            class="primary-font"><?php echo $this->Models_model->limitarTexto(strip_tags($result1[0]['firstname']), 50); ?></span>
 
-                <?php endif;?>
-<?php if(!empty($dds['data'])):?>
-                        <small class="pull-right text-muted">
-                            <span class="glyphicon glyphicon-time"></span><?php echo $this->Models_model->SecsDataConvert($this->Models_model->segundosDif($dds['data'])); ?>
-                        </small>
-                <?php endif;?>
-                    </div>
-                    <p>
-                      <?php echo $dds['mensagem'];?>
-                    </p>
-                </div>
-            </li>
-
-
-            <?php
-
-            $dta['status'] = 1;
-            $this->db->where('id',$dds['id']);
-            $this->db->where('status',0);
-            $this->db->update('chat',$dta);
-        }
+                                    <?php endif; ?>
+                                    <?php if (!empty($dds['data'])): ?>
+                                        <small class="pull-right text-muted">
+                                            <span
+                                                class="glyphicon glyphicon-time"></span><?php echo $this->Models_model->SecsDataConvert($this->Models_model->segundosDif($dds['data'])); ?>
+                                        </small>
+                                    <?php endif; ?>
+                                </div>
+                                <p>
+                                    <?php echo $dds['mensagem']; ?>
+                                </p>
+                            </div>
+                        </li>
 
 
-        else:
+                        <?php
 
-                echo 'Nenhuma mensagem.';
+                        $dta['status'] = 1;
+                        $this->db->where('id', $dds['id']);
+                        $this->db->where('status', 0);
+                        $this->db->update('chat', $dta);
+                    }
+
+
+                else:
+
+                    echo 'Nenhuma mensagem.';
+
+                endif;
+            endif;
+
+            if (isset($_POST['leilao']) and isset($_POST['send'])):
+
+                echo $this->Models_model->messageChat($_POST['leilao'], $_SESSION['ID'], $_POST['mensagem']);
 
             endif;
-            endif;
-
-        if(isset($_POST['leilao']) and isset($_POST['send'])):
-
-            echo  $this->Models_model->messageChat($_POST['leilao'],$_SESSION['ID'],$_POST['mensagem']);
-
         endif;
-        endif;
-        }
+    }
 
-        public function checkLeilao(){
-            if (isset($_SESSION['ID'])):
+    public function checkLeilao()
+    {
+        if (isset($_SESSION['ID'])):
 
-            if(isset($_POST['leilao']) and !empty($_POST['leilao'])):
+            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
 
                 $this->db->from('leiloes');
-                $this->db->where('id',$_POST['leilao']);
+                $this->db->where('id', $_POST['leilao']);
                 $query = $this->db->get();
-            if($query->num_rows() > 0){
-                $result = $query->result_array();
-                $min = $result[0]['minimo_users'];
-                $max = $result[0]['maximo_users'];
-                $data_inicio = $result[0]['inicio_data'];
-                $this->db->from('vangancy');
-                $this->db->where('id_leilao',$_POST['leilao']);
-                $query1 = $this->db->get();
-                $vagas = $query1->num_rows();
+                if ($query->num_rows() > 0) {
+                    $result = $query->result_array();
+                    $min = $result[0]['minimo_users'];
+                    $max = $result[0]['maximo_users'];
+                    $data_inicio = $result[0]['inicio_data'];
+                    $this->db->from('vangancy');
+                    $this->db->where('id_leilao', $_POST['leilao']);
+                    $query1 = $this->db->get();
+                    $vagas = $query1->num_rows();
 
-                    if($vagas >= $min and $vagas <= $max){
+                    if ($vagas >= $min and $vagas <= $max) {
 
-                    echo 1;
+                        echo 1;
 
-                }else
-                {
+                    } else {
+                        echo 0;
+                    }
+
+
+                } else {
+
                     echo 0;
                 }
 
-
-            }else{
-
+            else:
                 echo 0;
-            }
+
+            endif;
+        endif;
+    }
+
+    public function permissionButton()
+    {
+        if (isset($_SESSION['ID'])):
+            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
+                $this->db->from('leiloes');
+                $this->db->where('id', $_POST['leilao']);
+                $query_prod = $this->db->get();
+                $row_prod = $query_prod->num_rows();
+                if ($row_prod > 0):
+                    $result_prod = $query_prod->result_array();
+                    $this->db->from('vangancy');
+                    $this->db->where('id_leilao', $_POST['leilao']);
+                    $query_vagancy = $this->db->get();
+                    $row_vagancy = $query_vagancy->num_rows();
+                    if ($row_vagancy >= $result_prod[0]['minimo_users'] and $row_vagancy <= $result_prod[0]['maximo_users']):
+
+                        ?>
+                        <script>
+                            function lance() {
+                                $("#btn-lanc").html('<a style="cursor: pointer;" class="btn-u btn-u-sea-shop btn-u-lg" >Aguarde...</a>');
+                                $.post("<?php echo base_url('pages/lance');?>", {leilao:<?php echo $_POST['leilao'];?>}, function (res) {
+                                    if (res == 1) {
+                                        $("#btn-lanc").html('<a style="cursor: pointer;" class="btn-u btn-u-sea-shop btn-u-lg" >Na frente</a>');
+                                        atualiza = 0;
+
+                                    } else {
+                                        $("#btn-lanc").html('<a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a>');
+                                    }
+
+                                });
+                            }
+                            var atualiza = 0;
+                            function vezlance() {
+                                $.post("<?php echo base_url('pages/atualizalance');?>", {leilao:<?php echo $_POST['leilao'];?>}, function (res) {
+                                    if (res == 1 && atualiza == 0) {
+                                        $("#btn-lanc").html('<a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a>');
+                                        atualiza++;
+                                    }
+                                });
+                            }
+                            setInterval("vezlance()", 1000);
+
+                            $(function () {
+
+                                vezlance();
+                            });
+
+
+                        </script>
+
+                        <?php
+
+                        $this->db->from('lances');
+                        $this->db->where('id_leilao', $_POST['leilao']);
+                        $this->db->order_by('id', 'desc');
+                        $this->db->limit(1, 0);
+                        $query_user = $this->db->get();
+                        $row_user = $query_user->num_rows();
+                        if ($row_user > 0):
+                            if ($query_user->result_array()[0]['id_user'] == $_SESSION['ID']):
+                                echo '<a style="cursor: pointer;" class="btn-u btn-u-sea-shop btn-u-lg" >Na frente</a>';
+
+                            else:
+                                echo '<span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
+                            endif;
+
+
+                    else:
+
+                        if ($row_vagancy > $result_prod[0]['maximo_users']):
+                            echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;" >Sala Cheia</button>';
+
+                        endif;
+
+                        if ($row_vagancy < $result_prod[0]['minimo_users']):
+                            echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cbb64a;" >Aguarde</button>';
+                        endif;
+                    endif;
+
 
                 else:
-                    echo 0;
+                    echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;">Erro</button>';
+                endif;
 
-                    endif;
-                    endif;
-        }
+            endif;
+        endif;
+        endif;
 
-        public function permissionButton(){
-            if (isset($_SESSION['ID'])):
-                if(isset($_POST['leilao']) and !empty($_POST['leilao'])):
-                    $this->db->from('leiloes');
-                    $this->db->where('id',$_POST['leilao']);
-                    $query_prod = $this->db->get();
+
+    }
+
+    public function checktime()
+    {
+
+
+        if (isset($_SESSION['ID'])):
+            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
+
+                $this->db->from('leiloes');
+                $this->db->where('id', $_POST['leilao']);
+                $query_prod = $this->db->get();
                 $row_prod = $query_prod->num_rows();
-                    if($row_prod > 0):
-                        $result_prod = $query_prod->result_array();
-                        $this->db->from('vangancy');
-                        $this->db->where('id_leilao',$_POST['leilao']);
-                        $query_vagancy = $this->db->get();
-                        $row_vagancy = $query_vagancy->num_rows();
-                    if($row_vagancy >= $result_prod[0]['minimo_users'] and $row_vagancy <= $result_prod[0]['maximo_users']):
-
-                        echo'<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</button>';
-
-                        else:
-
-                        if($row_vagancy > $result_prod[0]['maximo_users']):
-                            echo'<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;" >Sala Cheia</button>';
-
-                            endif;
-
-                            if($row_vagancy < $result_prod[0]['minimo_users']):
-                                echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cbb64a;" >Aguarde</button>';
-                            endif;
-                            endif;
-
-
-
-else:
-    echo'<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;">Erro</button>';
-                        endif;
-
-                endif;
-                endif;
-
-
-
-        }
-
-        public function checktime(){
-
-
-            if (isset($_SESSION['ID'])):
-                if(isset($_POST['leilao']) and !empty($_POST['leilao'])):
-
-                    $this->db->from('leiloes');
-                    $this->db->where('id',$_POST['leilao']);
-                    $query_prod = $this->db->get();
-                    $row_prod = $query_prod->num_rows();
-                if($row_prod > 0):
+                if ($row_prod > 0):
+                    $result_prod = $query_prod->result_array();
 
                     $this->db->from('lances');
-                    $this->db->where('id_leilao',$_POST['leilao']);
+                    $this->db->where('id_leilao', $_POST['leilao']);
                     $query_lances = $this->db->get();
                     $row_lances = $query_lances->num_rows();
-                    if($row_lances > 0):
+                    if ($row_lances > 0):
 
-                        
+                        echo $result_prod[0]['duracao_lance'];
 
+                    else:
+                        echo 0;
+                    endif;
+                endif;
+            endif;
+        endif;
+    }
+
+
+    public function checkTimeSin()
+    {
+        if (isset($_SESSION['ID'])):
+            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
+
+                $this->db->from('leiloes');
+                $this->db->where('id', $_POST['leilao']);
+                $query_prod = $this->db->get();
+                $row_prod = $query_prod->num_rows();
+                if ($row_prod > 0):
+                    $this->db->from('lances');
+                    $this->db->where('id_leilao', $_POST['leilao']);
+                    $query_lances = $this->db->get();
+                    $row_lances = $query_lances->num_rows();
+                    if ($row_lances > 0):
+                        $result = $query_lances->result_array();
+
+                        echo $this->Models_model->segundosDif($result[0]['data']);
+
+                    else: echo 0;
+
+                    endif;
+
+                else: echo 0;
+                endif;
+
+
+            endif;
+        endif;
+    }
+
+    public function lance()
+    {
+        if (isset($_SESSION['ID'])):
+            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
+
+                $this->db->from('leiloes');
+                $this->db->where('id', $_POST['leilao']);
+                $query_prod = $this->db->get();
+                $row_prod = $query_prod->num_rows();
+                $result_prd = $query_prod->result_array();
+                if ($row_prod > 0):
+
+                    $this->db->from('vangancy');
+                    $this->db->where('id_user', $_SESSION['ID']);
+                    $query_vagancy = $this->db->get();
+                    $row_vagancy = $query_vagancy->num_rows();
+                    if ($row_vagancy > 0):
+                        $dado['id_user'] = $_SESSION['ID'];
+                        $dado['id_leilao'] = $_POST['leilao'];
+                        $dado['data'] = date('YmdHis');
+                        $this->db->insert('lances', $dado);
+                        echo 1;
+                    else:
+                        echo 0;
+                    endif;
+
+
+                endif;
+            endif;
+        endif;
+    }
+
+    public function atualizalance()
+    {
+        if (isset($_SESSION['ID'])):
+            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
+
+                $this->db->from('lances');
+                $this->db->where('id_leilao', $_POST['leilao']);
+                $query_prod = $this->db->get();
+                $row_prod = $query_prod->num_rows();
+                if ($row_prod > 0):
+
+                    $result_prod = $query_prod->result_array();
+
+                    $this->db->from('lances');
+                    $this->db->where('id_leilao', $_POST['leilao']);
+                    $this->db->order_by('id', 'desc');
+                    $this->db->limit(1, 0);
+                    $query_user = $this->db->get();
+                    $row_user = $query_user->num_rows();
+                    if ($row_user > 0):
+                        if ($query_user->result_array()[0]['id_user'] == $_SESSION['ID']):
+                            echo 0;
+
+                        else:
+                            echo 1;
                         endif;
+
                     endif;
-                    endif;
-                    endif;
-        }
+                endif;
+            endif;
+        endif;
+    }
 
 }

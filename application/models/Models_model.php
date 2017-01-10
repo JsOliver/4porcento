@@ -944,16 +944,16 @@ public function SecsDataConvert($secs){
         return ceil($secs / 60) - 1 .' Min';
         endif;
 
-    if($secs > 60 and $secs > 120):
+    if($secs > 60 and $secs > 120 and $secs < 3600):
         return ceil($secs / 60) - 1 .' Mins';
         endif;
 
     if($secs > 3600 and $secs < 7200):
-        return ceil($secs / 120) .' Hr';
+        return ceil($secs / 60 / 60) - 1 .' Hr';
         endif;
 
     if($secs > 3600 and $secs > 7200):
-        return ceil($secs / 120) .' Hrs';
+        return ceil($secs / 60 / 60) - 1 .' Hrs';
         endif;
 
 }
