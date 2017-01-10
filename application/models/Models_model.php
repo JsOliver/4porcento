@@ -894,6 +894,69 @@ class Models_model extends CI_Model
 
     }
 
+public function messageChat($leilao, $user, $mesage)
+{
+
+    if(empty($leilao) or empty($user) or empty($mesage)){
+
+        return 0;
+
+    }else{
+
+        $dados['data'] = date('YmdHis');
+        $dados['id_user'] = $user;
+        $dados['id_leilao'] = $leilao;
+        $dados['mensagem'] = $mesage;
+        $this->db->insert('chat',$dados);
+
+            return 1;
+
+    }
+
+
+}
+
+public function segundosDif($data){
+
+    $ind = $data;
+    $anoat = substr($ind, 0, 4);
+    $mesat = substr($ind, 4, 2);
+    $diaat = substr($ind, 6, 2);
+    $horaat = substr($ind, 8, 2);
+    $minutoat = substr($ind, 10, 2);
+    $segundoat = substr($ind, 12, 2);
+    $data_hora_inicial = mktime($horaat, $minutoat, $segundoat, $mesat, $diaat, $anoat);
+    $data_hora_final = mktime(date('H'), date('i'), date('s'), date('m'), date('d'), date('Y'));
+    return  $data_hora_final -  $data_hora_inicial;
+
+}
+public function SecsDataConvert($secs){
+
+    if($secs <= 1):
+        return $secs.' Seg';
+        endif;
+
+    if($secs < 60 and $secs > 2):
+        return $secs.' Segs';
+        endif;
+
+    if($secs > 60 and $secs < 120):
+        return ceil($secs / 60) - 1 .' Min';
+        endif;
+
+    if($secs > 60 and $secs > 120):
+        return ceil($secs / 60) - 1 .' Mins';
+        endif;
+
+    if($secs > 3600 and $secs < 7200):
+        return ceil($secs / 120) .' Hr';
+        endif;
+
+    if($secs > 3600 and $secs > 7200):
+        return ceil($secs / 120) .' Hrs';
+        endif;
+
+}
 
     public function limitarTexto($texto, $limite)
     {

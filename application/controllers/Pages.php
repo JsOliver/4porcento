@@ -49,6 +49,7 @@ class Pages extends CI_Controller
 
     public function sala()
     {
+        @$data_atual_system = date('YmdHis');
 
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
@@ -60,59 +61,91 @@ class Pages extends CI_Controller
             $count = $get->num_rows();
             if ($count > 0):
                 $result = $get->result_array();
-                $valor_in = number_format($result[0]['valor_leilao'], 2, '.', '');
-                $this->db->from('creditos');
-                $this->db->where('usuario', $_SESSION['ID']);
-                $query_credit = $this->db->get();
-                $row_credit = $query_credit->num_rows();
-                if ($row_credit > 0):
-                    $my_credit = number_format($query_credit->result_array()[0]['credito'], 2, '.', '');
-                else:
-                    $my_credit = '0.00';
-                endif;
-                $this->db->from('vangancy');
-                $this->db->where('id_leilao', $_GET['p']);
-                $query_count = $this->db->get();
-                if($query_count->num_rows() < $result[0]['minimo_users']):
 
-                    if($query_count->num_rows() > 0):
-                        $vagas = false;
+                $data_inicio = $result[0]['inicio_data'];
+                if ($data_inicio < $data_atual_system):
 
-                    else:
-                            $vagas = true;
 
-                    endif;
+                    if (strlen(str_replace(',', '', $result[0]['valor_leilao']) / 100) > 4):
 
-                    else:
+                        $explode = @explode('.', substr(str_replace(',', '', $result[0]['valor_leilao']) / 100, 0, -2) * 4);
 
-                        $vagas = false;
+                        if (@strlen($explode[0]) == 1 and @strlen($explode[1]) == 1):
+                            $valor_in = number_format(substr(str_replace(',', '', $result[0]['valor_leilao']) / 100, 0, -2) * 4 . '0', 2, '.', ',');
+                        else:
+                            $valor_in = number_format(substr(str_replace(',', '', $result[0]['valor_leilao']) / 100, 0, -2) * 4, 2, '.', ',');
+
                         endif;
 
-                if ($my_credit >= $valor_in):
+                    else:
+                        $explode = @explode('.', str_replace(',', '', $result[0]['valor_leilao']) / 100);
 
-                    if($vagas == true):
-                    $dos['credito'] = $my_credit - $valor_in;
+
+                        if (@strlen($explode[1]) == 1 and @strlen(@$explode[0]) >= 2):
+                            $valor_in = number_format(str_replace(',', '', $result[0]['valor_leilao']) / 100 * 4 . 0, 2, '.', ',');
+                        else:
+                            $valor_in = number_format(str_replace(',', '', $result[0]['valor_leilao']) / 100 * 4, 2, '.', ',');
+                        endif;
+                    endif;
+                    $this->db->from('creditos');
                     $this->db->where('usuario', $_SESSION['ID']);
-                    $this->db->update('creditos', $dos);
-                        $ddos['id_leilao'] = $_GET['p'];
-                        $ddos['id_user'] = $_SESSION['ID'];
-                    $this->db->insert('vangancy',$ddos);
+                    $query_credit = $this->db->get();
+                    $row_credit = $query_credit->num_rows();
+                    if ($row_credit > 0):
+                        $my_credit = number_format($query_credit->result_array()[0]['credito'], 2, '.', '');
+                    else:
+                        $my_credit = '0.00';
+                    endif;
+                    $this->db->from('vangancy');
+                    $this->db->where('id_leilao', $_GET['p']);
+                    $query_count = $this->db->get();
+                    if ($query_count->num_rows() < $result[0]['minimo_users']):
+
+                        if ($query_count->num_rows() > 0):
+                            $vagas = false;
+
+                        else:
+                            $vagas = true;
+
+                        endif;
+
+                    else:
+
+                        $vagas = false;
                     endif;
 
-                    $dado['user'] = $_SESSION['ID'];
-                    $dado['interact_type'] = 2;
-                    $this->db->insert('interact_report', $dado);
+                    if ($my_credit >= $valor_in):
 
-                    $dados['status'] = $log;
-                    $dados['page'] = 'sala';
-                    $this->load->view('pages/user/sala', $dados);
+                        if ($vagas == true):
+                            $dos['credito'] = $my_credit - $valor_in;
+                            $this->db->where('usuario', $_SESSION['ID']);
+                            $this->db->update('creditos', $dos);
+                            $ddos['id_leilao'] = $_GET['p'];
+                            $ddos['id_user'] = $_SESSION['ID'];
+                            $this->db->insert('vangancy', $ddos);
+                        endif;
+
+                        $dado['user'] = $_SESSION['ID'];
+                        $dado['interact_type'] = 2;
+                        $this->db->insert('interact_report', $dado);
+
+                        $dados['status'] = $log;
+                        $dados['page'] = 'sala';
+                        $dados['desconto'] = $valor_in;
+                        $this->load->view('pages/user/sala', $dados);
+
+
+                    else:
+                        redirect(base_url('adicionar/creditos'), 'refresh');
+                    endif;
 
                 else:
-                    redirect(base_url('adicionar/creditos'), 'refresh');
+                    redirect(base_url('home'), 'refresh');
                 endif;
 
             else:
                 redirect(base_url('home'), 'refresh');
+
             endif;
 
         else:
@@ -262,11 +295,12 @@ class Pages extends CI_Controller
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
         $dados['status'] = $log;
+        $dados['page'] = 'login';
+
 
         if ($log == true):
             redirect(base_url('home'), 'refresh');
         else:
-            $dados['page'] = 'login';
             $this->load->view('pages/user/acess/login', $dados);
 
         endif;
@@ -280,11 +314,12 @@ class Pages extends CI_Controller
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
         $dados['status'] = $log;
+        $dados['page'] = 'register';
+
         if ($log == true):
 
             redirect(base_url('home'), 'refresh');
         else:
-            $dados['page'] = 'register';
             $this->load->view('pages/user/acess/register', $dados);
         endif;
 
@@ -371,36 +406,6 @@ class Pages extends CI_Controller
         $log = $this->Models_model->logVer();
 
         if ($log == false):
-            $this->db->from('compras');
-            $this->db->where('id_user', $_SESSION['ID']);
-            $this->db->where('status', 1);
-            $this->db->or_where('status', 2);
-            $this->db->or_where('status', 5);
-            $query = $this->db->get();
-            if ($query->num_rows() > 0):
-                $result = $query->result_array();
-                foreach ($result as $dds) {
-                    $check = $this->Models_model->check_payment($dds['reference_code']);
-
-                    if ($check !== 0):
-
-                        $dados['status'] = @$check->transactions->transaction->status;
-                        $dados['transaction_code'] = @$check->transactions->transaction->code;
-                        $dados['data_payment'] = @$check->transactions->transaction->date;
-                        if ($dds['type'] == 2 and $dds['submit'] < 3 and $dds['submit'] >= 1 and $check->transactions->transaction->status == 3 or $check->transactions->transaction->status == 4):
-                            $dados['submit'] = 3;
-                            $this->db->from('pacotes');
-                            $this->db->where('id', $dds['id_obj_compra']);
-                            $query = $this->db->get();
-                            if ($query->num_rows() > 0):
-                                $this->Models_model->addcredito($dds['id_obj_compra']);
-                            endif;
-                        endif;
-                        $this->db->where('reference_code', @$check->transactions->transaction->reference);
-                        $this->db->update('compras', $dados);
-                    endif;
-                }
-            endif;
             echo $this->Models_model->login($_POST['email'], $_POST['pass']);
 
         endif;
@@ -817,5 +822,203 @@ class Pages extends CI_Controller
 
     }
 
+    public function checkverMessage(){
+        if (isset($_SESSION['ID'])):
+
+        if(isset($_POST['leilao']) and !isset($_POST['send'])):
+
+        $this->db->from('chat');
+        $this->db->where('id_leilao',$_POST['leilao']);
+        $this->db->where('status',0);
+        $this->db->order_by('id','desc');
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            echo 1;
+        }else{
+            echo 0;
+        }
+            endif;
+            endif;
+    }
+    public function chat(){
+
+        if (isset($_SESSION['ID'])):
+
+        if(isset($_POST['leilao']) and !isset($_POST['send'])):
+
+            $this->db->from('chat');
+            $this->db->where('id_leilao',$_POST['leilao']);
+            $this->db->order_by('id','desc');
+            $query = $this->db->get();
+
+
+            if($query->num_rows() > 0):
+
+        foreach ($query->result_array() as $dds){
+
+            $this->db->from('user');
+            $this->db->where('id',$dds['id_user']);
+            $query1 = $this->db->get();
+            $result1 = $query1->result_array();
+
+            ?>
+
+
+            <li class="left clearfix">
+                <span class=" pull-left">
+                            <img src="<?php echo base_url('pages/exibirUs?id='.$dds['id_user']);?>" style="opacity:1;width: 50px; height: 50px;object-fit: cover; object-position: center;" alt="User Avatar" class="img-circle"/>
+                        </span>
+                <div class="chat-body clearfix">
+                    <div class="header">
+                        <?php if($dds['id_user'] == $_SESSION['ID']):  ?>
+                        <strong class="primary-font"><?php echo $this->Models_model->limitarTexto(strip_tags($result1[0]['firstname']),50);?></strong>
+                <?php else: ?>
+                            <span class="primary-font"><?php echo $this->Models_model->limitarTexto(strip_tags($result1[0]['firstname']),50);?></span>
+
+                <?php endif;?>
+<?php if(!empty($dds['data'])):?>
+                        <small class="pull-right text-muted">
+                            <span class="glyphicon glyphicon-time"></span><?php echo $this->Models_model->SecsDataConvert($this->Models_model->segundosDif($dds['data'])); ?>
+                        </small>
+                <?php endif;?>
+                    </div>
+                    <p>
+                      <?php echo $dds['mensagem'];?>
+                    </p>
+                </div>
+            </li>
+
+
+            <?php
+
+            $dta['status'] = 1;
+            $this->db->where('id',$dds['id']);
+            $this->db->where('status',0);
+            $this->db->update('chat',$dta);
+        }
+
+
+        else:
+
+                echo 'Nenhuma mensagem.';
+
+            endif;
+            endif;
+
+        if(isset($_POST['leilao']) and isset($_POST['send'])):
+
+            echo  $this->Models_model->messageChat($_POST['leilao'],$_SESSION['ID'],$_POST['mensagem']);
+
+        endif;
+        endif;
+        }
+
+        public function checkLeilao(){
+            if (isset($_SESSION['ID'])):
+
+            if(isset($_POST['leilao']) and !empty($_POST['leilao'])):
+
+                $this->db->from('leiloes');
+                $this->db->where('id',$_POST['leilao']);
+                $query = $this->db->get();
+            if($query->num_rows() > 0){
+                $result = $query->result_array();
+                $min = $result[0]['minimo_users'];
+                $max = $result[0]['maximo_users'];
+                $data_inicio = $result[0]['inicio_data'];
+                $this->db->from('vangancy');
+                $this->db->where('id_leilao',$_POST['leilao']);
+                $query1 = $this->db->get();
+                $vagas = $query1->num_rows();
+
+                    if($vagas >= $min and $vagas <= $max){
+
+                    echo 1;
+
+                }else
+                {
+                    echo 0;
+                }
+
+
+            }else{
+
+                echo 0;
+            }
+
+                else:
+                    echo 0;
+
+                    endif;
+                    endif;
+        }
+
+        public function permissionButton(){
+            if (isset($_SESSION['ID'])):
+                if(isset($_POST['leilao']) and !empty($_POST['leilao'])):
+                    $this->db->from('leiloes');
+                    $this->db->where('id',$_POST['leilao']);
+                    $query_prod = $this->db->get();
+                $row_prod = $query_prod->num_rows();
+                    if($row_prod > 0):
+                        $result_prod = $query_prod->result_array();
+                        $this->db->from('vangancy');
+                        $this->db->where('id_leilao',$_POST['leilao']);
+                        $query_vagancy = $this->db->get();
+                        $row_vagancy = $query_vagancy->num_rows();
+                    if($row_vagancy >= $result_prod[0]['minimo_users'] and $row_vagancy <= $result_prod[0]['maximo_users']):
+
+                        echo'<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</button>';
+
+                        else:
+
+                        if($row_vagancy > $result_prod[0]['maximo_users']):
+                            echo'<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;" >Sala Cheia</button>';
+
+                            endif;
+
+                            if($row_vagancy < $result_prod[0]['minimo_users']):
+                                echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cbb64a;" >Aguarde</button>';
+                            endif;
+                            endif;
+
+
+
+else:
+    echo'<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;">Erro</button>';
+                        endif;
+
+                endif;
+                endif;
+
+
+
+        }
+
+        public function checktime(){
+
+
+            if (isset($_SESSION['ID'])):
+                if(isset($_POST['leilao']) and !empty($_POST['leilao'])):
+
+                    $this->db->from('leiloes');
+                    $this->db->where('id',$_POST['leilao']);
+                    $query_prod = $this->db->get();
+                    $row_prod = $query_prod->num_rows();
+                if($row_prod > 0):
+
+                    $this->db->from('lances');
+                    $this->db->where('id_leilao',$_POST['leilao']);
+                    $query_lances = $this->db->get();
+                    $row_lances = $query_lances->num_rows();
+                    if($row_lances > 0):
+
+                        
+
+                        endif;
+                    endif;
+                    endif;
+                    endif;
+        }
 
 }

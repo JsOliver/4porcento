@@ -9,6 +9,72 @@ if($page == 'login'):
 
     ?>
 
+    <script>
+function login(){
+        //Masking
+
+            // Validation for login form
+            $("#sky-form1").validate({
+                // Rules for form validation
+                rules:
+                {
+                    email:
+                    {
+                        required: true,
+                        email: true
+                    },
+                    password:
+                    {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 20
+                    }
+                },
+
+                // Messages for form validation
+                messages:
+                {
+                    email:
+                    {
+                        required: 'Informe o email',
+                        email: 'Email inválido'
+                    },
+                    password:
+                    {
+                        required: 'informe sua senha'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement: function(error, element)
+                {
+                    error.insertAfter(element.parent());
+                }, submitHandler: function(error, element) {
+
+                    var email = document.getElementById('email').value;
+
+                    var pass = document.getElementById('pass').value;
+
+                    $.post("logar",{log:true,email:email,pass:pass},function (res) {
+
+                        if (res == 11)
+                        {
+                            window.location.reload();
+                        }else{
+
+                            $("#resposta").html(res);
+                        }
+
+                    });
+                }
+            });
+            return false;
+
+
+        }
+
+    </script>
+
     <div class="modal fade" id="recuperar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -108,7 +174,7 @@ if($page == 'login'):
 
 
                         <!-- Modal -->
-                        <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20">Entrar</button>
+                        <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20" onclick="login();">Entrar</button>
 <!--
                                                 <div class="border-wings">
                                                     <span>or</span>

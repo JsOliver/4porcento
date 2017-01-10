@@ -245,22 +245,21 @@ if ($page == 'login'):
     ?>
 
     <!-- JS Global Compulsory -->
-    <script src="<?php echo base_url(); ?>/assets/plugins/jquery/jquery.min.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/plugins/jquery/jquery-migrate.min.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/jquery/jquery-migrate.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/bootstrap/js/bootstrap.min.js"></script>
     <!-- JS Implementing Plugins -->
-    <script src="<?php echo base_url(); ?>/assets/plugins/back-to-top.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/plugins/smoothScroll.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/plugins/scrollbar/js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/plugins/sky-forms-pro/skyforms/js/jquery.form.min.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/back-to-top.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/smoothScroll.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/scrollbar/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
     <!-- JS Customization -->
-    <script src="<?php echo base_url(); ?>/assets/js/custom.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/custom.js"></script>
     <!-- JS Page Level -->
-    <script src="<?php echo base_url(); ?>/assets/js/shop.app.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/js/forms/page_login.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/js/plugins/style-switcher.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/js/forms/page_contact_form.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/shop.app.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/forms/page_login.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/plugins/style-switcher.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/forms/page_contact_form.js"></script>
     <script>
         jQuery(document).ready(function () {
             App.init();
@@ -271,13 +270,13 @@ if ($page == 'login'):
         });
     </script>
 
-    <script src="<?php echo base_url(); ?>/assets/plugins/respond.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/plugins/html5shiv.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/js/plugins/placeholder-IE-fixes.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/plugins/sky-forms-pro/skyforms/js/sky-forms-ie8.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/respond.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/html5shiv.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/plugins/placeholder-IE-fixes.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/sky-forms-pro/skyforms/js/sky-forms-ie8.js"></script>
 
 
-    <script src="<?php echo base_url(); ?>/assets/plugins/sky-forms-pro/skyforms/js/jquery.placeholder.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/sky-forms-pro/skyforms/js/jquery.placeholder.min.js"></script>
 
 
 <?php endif; ?>
@@ -300,7 +299,6 @@ if ($page == 'register'):
     <!-- JS Page Level -->
     <script src="<?php echo base_url(); ?>assets/js/shop.app.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/plugins/style-switcher.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/forms/page_registration.js"></script>
     <script>
         jQuery(document).ready(function () {
             App.init();
