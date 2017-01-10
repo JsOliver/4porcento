@@ -1029,7 +1029,9 @@ class Pages extends CI_Controller
 
 
                     else:
-
+                        if ($row_vagancy <= $result_prod[0]['maximo_users'] and $row_vagancy >= $result_prod[0]['minimo_users']):
+                        echo '<span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
+                            endif;
                         if ($row_vagancy > $result_prod[0]['maximo_users']):
                             echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;" >Sala Cheia</button>';
 
@@ -1042,8 +1044,13 @@ class Pages extends CI_Controller
 
 
                 else:
-                    echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;">Erro</button>';
+                    echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cbb64a;" >Aguarde</button>';
+
+
+
+
                 endif;
+
 
             endif;
         endif;
