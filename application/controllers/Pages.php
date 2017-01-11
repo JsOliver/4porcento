@@ -1011,7 +1011,15 @@ class Pages extends CI_Controller
 
                             else:
                                 if($this->Models_model->segundosDif($query_user->result_array()[0]['data']) < $query_prod->result_array()[0]['duracao_lance']):
-                                echo '<span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
+                                echo '
+<script>
+if(so == 0){
+     startCountdown();
+                so++;
+}
+
+</script>
+<span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
 
                                 else:
 
@@ -1025,7 +1033,15 @@ class Pages extends CI_Controller
                         if ($row_vagancy <= $result_prod[0]['maximo_users'] and $row_vagancy >= $result_prod[0]['minimo_users']):
 
 
-                                echo '<span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
+                                echo '
+<script>
+if(so == 0){
+     startCountdown();
+                so++;
+}
+
+</script>
+<span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
 
                             endif;
                         if ($row_vagancy > $result_prod[0]['maximo_users']):
@@ -1106,10 +1122,7 @@ class Pages extends CI_Controller
 
                         echo $row_result[0]['duracao_lance'] - $this->Models_model->segundosDif($result[0]['data']);
 
-                    else:
-
-                        echo 0;
-
+                 
                     endif;
 
                 else: echo 0;

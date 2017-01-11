@@ -261,6 +261,38 @@ if ($page == 'sala'):
 
                 });
             }
+            if(tempo == 5 ){
+                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
+
+                    if(res1){
+                        tempo = res1;
+
+                    }
+
+                });
+            }
+            if(tempo == 3 ){
+                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
+
+                    if(res1){
+                        tempo = res1;
+
+                    }
+
+                });
+            }
+
+
+            if(tempo == 1 ){
+                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
+
+                    if(res1){
+                        tempo = res1;
+
+                    }
+
+                });
+            }
 
 
             // Se o tempo não for zerado
@@ -298,11 +330,12 @@ if ($page == 'sala'):
 $("#segundosRest").html('Finalizado');
 
 
-$("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cb0000;">Finalizado</button>');
+$("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #4752cb;">Aguarde...</button>');
                 $.post("<?php echo base_url('pages/winner');?>",{leilao:leilao,valor:<?php echo $desconto; ?>},function (res) {
 
                     if(res){
                     if(res == 1){
+                        $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cb0000;">Finalizado</button>');
                        window.location.href="<?php echo base_url('meus-arremates');?>";
                     }
                     }
