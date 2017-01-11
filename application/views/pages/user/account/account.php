@@ -367,29 +367,7 @@ if ($page == 'account'):
                                 <td>R$
                                     <b><?php
 
-                                        if (strlen(str_replace(',', '', $dds['valor_leilao']) / 100) > 4):
-
-                                            $explode = @explode('.', substr(str_replace(',', '', $dds['valor_leilao']) / 100, 0, -2) * 4);
-
-                                            if (@strlen($explode[0]) == 1 and @strlen($explode[1]) == 1):
-                                                echo number_format(substr(str_replace(',', '', $dds['valor_leilao']) / 100, 0, -2) * 4 . '0',2,'.',',');
-                                            else:
-                                                echo number_format(substr(str_replace(',', '', $dds['valor_leilao']) / 100, 0, -2) * 4,2,'.',',');
-
-                                            endif;
-
-                                        else:
-                                            $explode = @explode('.', str_replace(',', '', $dds['valor_leilao']) / 100);
-
-
-                                            if (@strlen($explode[1]) == 1 and @strlen(@$explode[0]) >= 2):
-                                                echo number_format(str_replace(',', '', $dds['valor_leilao']) / 100 * 4 . 0,2,'.',',');
-                                            else:
-                                                // echo str_replace(',','',$dds['valor_leilao']) / 100 * 4;
-                                                echo number_format(str_replace(',', '', $dds['valor_leilao']) / 100 * 4,2,'.',',');
-                                            endif;
-                                        endif;
-                                        ?></b>
+                                        echo $this->Models_model->convertPrize($dds['valor_leilao'],4);                                        ?></b>
                                 </td>
                             </tr>
 

@@ -155,7 +155,7 @@ if ($page == 'home'):
                                     </div>
                                     <div class="product-price">
                                         <!--Inicio - Preço atual -->
-                                        <span class="title-price">R$ <?php echo $dds['valor_leilao']; ?></span>
+                                        <span class="title-price">R$  <?php echo $this->Models_model->convertPrize($dds['valor_leilao'],4); ?></span>
                                         <!--Fim - Preço atual -->
 
                                     </div>

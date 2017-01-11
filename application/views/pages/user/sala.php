@@ -84,7 +84,7 @@ if ($page == 'sala'):
                     <ul class="list-inline shop-product-prices margin-bottom-30">
 
                         <li class="shop-red">
-                            <small> R$ <?php echo $desconto; ?></small>
+                            <small> R$ <?php echo  number_format($desconto,2,'.',','); ?></small>
 
                         </li>
                         <li class="line-through"> R$ <?php echo $result[0]['valor_leilao']; ?></li>
@@ -291,15 +291,30 @@ if ($page == 'sala'):
                 // Quando o contador chegar a zero faz esta ação
             } else {
 
+                $("#script0").remove();
+                $("#script1").remove();
+                $("#script2").remove();
+                $("#script3").remove();
 $("#segundosRest").html('Finalizado');
 
 
 $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cb0000;">Finalizado</button>');
+                $.post("<?php echo base_url('pages/winner');?>",{leilao:leilao,valor:<?php echo $desconto; ?>},function (res) {
+
+                    if(res){
+                    if(res == 1){
+                       window.location.href="<?php echo base_url('meus-arremates');?>";
+                    }
+                    }
+                });
+
             }
 
         }
 
+        </script>
 
+    <script id="script0">
 
 
         <?php
@@ -387,7 +402,7 @@ $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u
 
     </script>
 
-    <script>
+    <script id="script1">
         $.post("<?php echo base_url('pages/permissionButton');?>", {leilao:<?php echo $_GET['p'];?>}, function (res1) {
 
             if (res1) {
@@ -397,7 +412,7 @@ $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u
 
         });
     </script>
-    <script>
+    <script id="script2">
 
         function atualizar1() {
 
@@ -464,7 +479,7 @@ $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u
             atualizar();
         });
     </script>
-    <script>
+    <script id="script3">
         $("#txtArea").on("keypress", function (e) {
             var key = e.keyCode;
 

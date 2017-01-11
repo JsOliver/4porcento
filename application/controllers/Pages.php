@@ -57,36 +57,19 @@ class Pages extends CI_Controller
 
             $this->db->from('leiloes');
             $this->db->where('id', $_GET['p']);
+            $this->db->where('status', 1);
             $get = $this->db->get();
             $count = $get->num_rows();
             if ($count > 0):
                 $result = $get->result_array();
 
                 $data_inicio = $result[0]['inicio_data'];
+
+
                 if ($data_inicio < $data_atual_system):
 
+                    $valor_in = $this->Models_model->convertPrize($result[0]['valor_leilao'],4);
 
-                    if (strlen(str_replace(',', '', $result[0]['valor_leilao']) / 100) > 4):
-
-                        $explode = @explode('.', substr(str_replace(',', '', $result[0]['valor_leilao']) / 100, 0, -2) * 4);
-
-                        if (@strlen($explode[0]) == 1 and @strlen($explode[1]) == 1):
-                            $valor_in = number_format(substr(str_replace(',', '', $result[0]['valor_leilao']) / 100, 0, -2) * 4 . '0', 2, '.', ',');
-                        else:
-                            $valor_in = number_format(substr(str_replace(',', '', $result[0]['valor_leilao']) / 100, 0, -2) * 4, 2, '.', ',');
-
-                        endif;
-
-                    else:
-                        $explode = @explode('.', str_replace(',', '', $result[0]['valor_leilao']) / 100);
-
-
-                        if (@strlen($explode[1]) == 1 and @strlen(@$explode[0]) >= 2):
-                            $valor_in = number_format(str_replace(',', '', $result[0]['valor_leilao']) / 100 * 4 . 0, 2, '.', ',');
-                        else:
-                            $valor_in = number_format(str_replace(',', '', $result[0]['valor_leilao']) / 100 * 4, 2, '.', ',');
-                        endif;
-                    endif;
                     $this->db->from('creditos');
                     $this->db->where('usuario', $_SESSION['ID']);
                     $query_credit = $this->db->get();
@@ -1021,18 +1004,29 @@ class Pages extends CI_Controller
                         $this->db->limit(1, 0);
                         $query_user = $this->db->get();
                         $row_user = $query_user->num_rows();
+                        $result_uss = $query_user->result_array();
                         if ($row_user > 0):
                             if ($query_user->result_array()[0]['id_user'] == $_SESSION['ID']):
                                 echo '<a style="cursor: pointer;" class="btn-u btn-u-sea-shop btn-u-lg" >Na frente</a>';
 
                             else:
+                                if($this->Models_model->segundosDif($query_user->result_array()[0]['data']) < $query_prod->result_array()[0]['duracao_lance']):
                                 echo '<span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
+
+                                else:
+
+                                    echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cb0000;">Finalizado</button>';
+                            endif;
+
                             endif;
 
 
                     else:
                         if ($row_vagancy <= $result_prod[0]['maximo_users'] and $row_vagancy >= $result_prod[0]['minimo_users']):
-                        echo '<span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
+
+
+                                echo '<span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
+
                             endif;
                         if ($row_vagancy > $result_prod[0]['maximo_users']):
                             echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;" >Sala Cheia</button>';
@@ -1150,6 +1144,8 @@ class Pages extends CI_Controller
                         $query_lance = $this->db->get();
                         $row_lance = $query_lance->num_rows();
 
+
+
                         if($row_lance > 0){
 
                             $user = $query_lance->result_array()[0]['id_user'];
@@ -1190,6 +1186,11 @@ class Pages extends CI_Controller
 
             if (isset($_POST['leilao'])):
 
+                $this->db->from('lances');
+                $this->db->where('id_leilao', $_POST['leilao']);
+                $query_prod = $this->db->get();
+                $row_prod = $query_prod->num_rows();
+
 
                 $this->db->from('leiloes');
                 $this->db->where('id', $_POST['leilao']);
@@ -1197,7 +1198,29 @@ class Pages extends CI_Controller
                 $row = $query->num_rows();
                 $result = $query->result_array();
 
+                if(!empty($result[0]['comeco_data'])):
 
+                    if($result[0]['comeco_data'] >= date('YmdHis')):
+
+                        if($row_prod > 0){
+                            $this->db->from('lances');
+                            $this->db->where('id_leilao', $_POST['leilao']);
+                            $this->db->order_by('id', 'desc');
+                            $this->db->limit(1, 0);
+                            $query_prod2 = $this->db->get();
+
+                            $this->Models_model->winner($_POST['leilao'],$query_prod2->result_array()[0]['id_user'],$this->Models_model->convertPrize($result[0]['valor_leilao'],4));
+
+                        }else{
+                            $dadoos['status'] = 0;
+                            $this->db->where('id',$_POST['leilao']);
+                            $this->db->update('leiloes',$dadoos);
+                        }
+
+
+                    endif;
+
+                endif;
 
                 $this->db->from('vangancy');
                 $this->db->where('id_leilao', $_POST['leilao']);
@@ -1208,10 +1231,7 @@ class Pages extends CI_Controller
 
                 if($row > 0 and $rowv >= $result[0]['minimo_users']):
 
-                $this->db->from('lances');
-                $this->db->where('id_leilao', $_POST['leilao']);
-                $query_prod = $this->db->get();
-                $row_prod = $query_prod->num_rows();
+
                 if ($row_prod > 0):
 
 
@@ -1282,6 +1302,45 @@ class Pages extends CI_Controller
         else:
             echo 0;
         endif;
+    }
+
+    public function winner(){
+
+        if(isset($_SESSION['ID'])):
+            if(isset($_POST['leilao']) and !empty($_POST['leilao'])):
+                $this->db->from('leiloes');
+                $this->db->where('id', $_POST['leilao']);
+                $query_lei = $this->db->get();
+                $row_lei = $query_lei->num_rows();
+
+                if($row_lei > 0):
+
+                $this->db->from('lances');
+                $this->db->where('id_leilao', $_POST['leilao']);
+                $query_lan = $this->db->get();
+                $row_lan = $query_lan->num_rows();
+                    if($row_lan > 0):
+                        $this->db->from('lances');
+                        $this->db->where('id_leilao', $_POST['leilao']);
+                        $this->db->order_by('id', 'desc');
+                        $this->db->limit(1,0);
+                        $query_lan_l = $this->db->get();
+                        $row_lan_l= $query_lan_l->num_rows();
+                        if($row_lan_l > 0){
+
+                           echo $this->Models_model->winner($_POST['leilao'],$query_lan_l->result_array()[0]['id_user'],$_POST['valor']);
+
+                        }else
+                        {
+                            echo 0;
+                        }
+
+
+
+    endif;
+    endif;
+    endif;
+    endif;
     }
 
 }

@@ -960,6 +960,139 @@ public function SecsDataConvert($secs){
 
 }
 
+
+
+public function winner($leilao,$winner,$valor){
+
+    if(empty($leilao) and empty($winner) and empty($valor)){
+        return 0;
+    }else{
+        $reference = 'PKE-T1' . date('Y') . rand();
+
+        $this->db->from('user');
+        $this->db->where('id',$winner);
+        $this->db->where('type',1);
+        $this->db->or_where('type',54);
+        $query_us = $this->db->get();
+        $row_user = $query_us->num_rows();
+
+        $this->db->from('leiloes');
+        $this->db->where('id',$leilao);
+        $this->db->where('status',1);
+        $query_lei = $this->db->get();
+        $row_lei = $query_lei->num_rows();
+        $result_lei = $query_lei->result_array();
+
+        if($row_lei > 0 and $row_user > 0){
+
+            $dados_up['winner'] = $winner;
+            $dados_up['status'] = 2555;
+            $this->db->where('id',$leilao);
+            $this->db->update('leiloes',$dados_up);
+
+
+            $this->db->from('lances');
+            $this->db->where('id_leilao',$leilao);
+            $this->db->where('id_user',$winner);
+            $query_mlnc = $this->db->get();
+            $row_mlnc = $query_mlnc->num_rows();
+
+            $this->db->from('lances');
+            $this->db->where('id_leilao',$leilao);
+            $query_lnc = $this->db->get();
+            $row_lnc = $query_lnc->num_rows();
+            $duracao = $this->segundosDif($result_lei[0]['comeco_data']);
+
+           $payment =  $this->payment('1.'.$leilao,1,strip_tags($result_lei[0]['title']),number_format($valor, 2, '.', ''),$reference);
+
+
+
+            $dados_arr['id_user'] = $winner;
+            $dados_arr['title_arremate'] = $result_lei[0]['title'];
+            $dados_arr['description_arremate'] = $result_lei[0]['descricao_completa'];
+            $dados_arr['id_arremate'] = $leilao;
+            $dados_arr['valor_arremate'] = $valor;
+            $dados_arr['meus_lances'] = $row_mlnc;
+            $dados_arr['lances_totais'] = $row_lnc;
+            $dados_arr['duracao_segundos'] = $duracao;
+            $dados_arr['pre_approval'] = $payment -> code;
+            $dados_arr['reference_code'] = $reference;
+            $dados_arr['url_payment'] = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' . $payment->code;
+            $dados_arr['data_arremate'] = date('YmdHis');
+
+            $this->db->from('arremates');
+            $this->db->where('id_arremate',$leilao);
+            $query_arsr = $this->db->get();
+            if($query_arsr->num_rows() == 0):
+                $this->db->insert('arremates',$dados_arr);
+
+                $dados_cpm['type'] = 1;
+                $dados_cpm['id_user'] = $winner;
+                $dados_cpm['title'] = $result_lei[0]['title'];
+                $dados_cpm['description'] = strip_tags($result_lei[0]['descricao_completa']);
+                $dados_cpm['id_obj_compra'] = $leilao;
+                $dados_cpm['value_show'] = number_format($valor, 2, '.', ',');
+                $dados_cpm['value_pagseguro'] = $valor;
+                $dados_cpm['pre_approval'] = $payment -> code;
+                $dados_cpm['reference_code'] = $reference;
+                $dados_cpm['status'] = 1;
+                $dados_cpm['submit'] = 1;
+                $dados_cpm['url_payment'] = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' . $payment->code;
+                $dados_cpm['data_solicitation'] = date('d/m/Y H:i:s');
+                $this->db->insert('compras',$dados_cpm);
+                if($this->db->insert_id() > 0):
+                    return 1;
+
+                else:
+
+                    return 0;
+
+                endif;
+
+
+
+                else:
+                return 0;
+                    endif;
+
+        }else{
+
+            return 0;
+
+        }
+
+
+    }
+
+
+}
+
+public function convertPrize($valor,$porcento){
+    if (strlen(str_replace(',', '', $valor) / 100) > 4):
+
+        $explode = @explode('.', substr(str_replace(',', '', $valor) / 100, 0, -2) * $porcento);
+
+        if (@strlen($explode[0]) == 1 and @strlen($explode[1]) == 1):
+            $valor_in = number_format(substr(str_replace(',', '', $valor) / 100, 0, -2) * $porcento . '0', 2, '.', ',');
+        else:
+            $valor_in = number_format(substr(str_replace(',', '', $valor) / 100, 0, -2) * $porcento, 2, '.', ',');
+
+        endif;
+
+    else:
+        $explode = @explode('.', str_replace(',', '', $valor) / 100);
+
+
+        if (@strlen($explode[1]) == 1 and @strlen(@$explode[0]) >= 2):
+            $valor_in = number_format(str_replace(',', '', $valor) / 100 * $porcento . 0, 2, '.', ',');
+        else:
+            $valor_in = number_format(str_replace(',', '', $valor) / 100 * $porcento, 2, '.', ',');
+        endif;
+    endif;
+
+    return $valor_in;
+}
+
     public function limitarTexto($texto, $limite)
     {
         $contador = strlen($texto);
