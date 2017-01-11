@@ -980,6 +980,8 @@ class Pages extends CI_Controller
                         ?>
                         <script>
                             function lance() {
+                                tempo = <?php echo $result_prod[0]['duracao_lance'];?>;
+
                                 $("#btn-lanc").html('<a style="cursor: pointer;" class="btn-u btn-u-sea-shop btn-u-lg" >Aguarde...</a>');
                                 $.post("<?php echo base_url('pages/lance');?>", {leilao:<?php echo $_POST['leilao'];?>}, function (res) {
                                     if (res == 1) {
@@ -1099,6 +1101,7 @@ class Pages extends CI_Controller
                 $this->db->where('id', $_POST['leilao']);
                 $query_prod = $this->db->get();
                 $row_prod = $query_prod->num_rows();
+                $row_result= $query_prod->result_array();
                 if ($row_prod > 0):
                     $this->db->from('lances');
                     $this->db->where('id_leilao', $_POST['leilao']);
@@ -1107,9 +1110,10 @@ class Pages extends CI_Controller
                     if ($row_lances > 0):
                         $result = $query_lances->result_array();
 
-                        echo $this->Models_model->segundosDif($result[0]['data']);
+                        echo $row_result[0]['duracao_lance'] - $this->Models_model->segundosDif($result[0]['data']);
 
                     else:
+
                         echo 0;
 
                     endif;
@@ -1139,11 +1143,36 @@ class Pages extends CI_Controller
                     $query_vagancy = $this->db->get();
                     $row_vagancy = $query_vagancy->num_rows();
                     if ($row_vagancy > 0):
-                        $dado['id_user'] = $_SESSION['ID'];
-                        $dado['id_leilao'] = $_POST['leilao'];
-                        $dado['data'] = date('YmdHis');
-                        $this->db->insert('lances', $dado);
-                        echo 1;
+                        $this->db->from('lances');
+                        $this->db->where('id_leilao', $_POST['leilao']);
+                        $this->db->order_by('id', 'desc');
+                        $this->db->limit(1, 0);
+                        $query_lance = $this->db->get();
+                        $row_lance = $query_lance->num_rows();
+
+                        if($row_lance > 0){
+
+                            $user = $query_lance->result_array()[0]['id_user'];
+
+                            if($user <> $_SESSION['ID']):
+
+                                $dado['id_user'] = $_SESSION['ID'];
+                                $dado['id_leilao'] = $_POST['leilao'];
+                                $dado['data'] = date('YmdHis');
+                                $this->db->insert('lances', $dado);
+                                echo 1;
+                                endif;
+
+                        }else{
+
+                            $dado['id_user'] = $_SESSION['ID'];
+                            $dado['id_leilao'] = $_POST['leilao'];
+                            $dado['data'] = date('YmdHis');
+                            $this->db->insert('lances', $dado);
+                            echo 1;
+
+                        }
+
                     else:
                         echo 0;
                     endif;
@@ -1156,8 +1185,28 @@ class Pages extends CI_Controller
 
     public function atualizalance()
     {
+
         if (isset($_SESSION['ID'])):
-            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
+
+            if (isset($_POST['leilao'])):
+
+
+                $this->db->from('leiloes');
+                $this->db->where('id', $_POST['leilao']);
+                $query = $this->db->get();
+                $row = $query->num_rows();
+                $result = $query->result_array();
+
+
+
+                $this->db->from('vangancy');
+                $this->db->where('id_leilao', $_POST['leilao']);
+                $queryv = $this->db->get();
+                $rowv = $queryv->num_rows();
+
+
+
+                if($row > 0 and $rowv >= $result[0]['minimo_users']):
 
                 $this->db->from('lances');
                 $this->db->where('id_leilao', $_POST['leilao']);
@@ -1165,25 +1214,73 @@ class Pages extends CI_Controller
                 $row_prod = $query_prod->num_rows();
                 if ($row_prod > 0):
 
+
+
                     $result_prod = $query_prod->result_array();
 
                     $this->db->from('lances');
                     $this->db->where('id_leilao', $_POST['leilao']);
                     $this->db->order_by('id', 'desc');
-                    $this->db->limit(1, 0);
                     $query_user = $this->db->get();
                     $row_user = $query_user->num_rows();
+
                     if ($row_user > 0):
-                        if ($query_user->result_array()[0]['id_user'] == $_SESSION['ID']):
+
+
+                        $this->db->from('lances');
+                        $this->db->where('id_leilao', $_POST['leilao']);
+                        $this->db->order_by('id', 'desc');
+                        $this->db->limit(1,0);
+                        $query_user1 = $this->db->get();
+                        $row_user1 = $query_user1->num_rows();
+
+                        if ($query_user1->result_array()[0]['id_user'] == $_SESSION['ID']):
+                        if($result_prod[0]['read'] == 0){
+                            $ddos['read'] = 1;
+                            $this->db->where('id_leilao',$_POST['leilao']);
+                            $this->db->update('lances',$ddos);
+                            echo 3;
+
+                        }else{
+
                             echo 0;
+                        }
 
                         else:
-                            echo 1;
-                        endif;
+
+                            if($result_prod[0]['read'] == 0){
+
+                            $ddos['read'] = 1;
+                                $this->db->where('id_leilao',$_POST['leilao']);
+                                $this->db->update('lances',$ddos);
+                                echo 2;
+
+                            }else{
+
+                                echo 0;
+                            }
+                            endif;
+
+
+                    else:
+                        echo 1;
 
                     endif;
+
+
+
+                else:
+
+                    echo 0;
+
                 endif;
+
             endif;
+            else:
+                echo 1;
+        endif;
+        else:
+            echo 0;
         endif;
     }
 
