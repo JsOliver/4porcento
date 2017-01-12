@@ -55,17 +55,6 @@ if ($page == 'sala'):
                                      alt="lorem ipsum dolor sit">
                             </div>
                             <br>
-                            <ul class="list-inline add-to-wishlist add-to-wishlist-brd">
-                                <li class="wishlist-in">
-                                    <i class="fa fa-eye"></i>
-                                    <a href="#">Ultimos Lances</a>
-
-                                </li>
-
-                            </ul>
-                            <p class="wishlist-category"><i class="fa fa-hand-o-up"></i> <strong>JonyCash</strong> clicou</p>
-                            <p class="wishlist-category"><i class="fa fa-hand-o-up"></i> <strong>Marciaryb</strong> clicou</p>
-                            <p class="wishlist-category"><i class="fa fa-hand-o-up"></i> <strong>Marcelogonzaga</strong> clicou
                         </div>
                         <!-- End Master Slider -->
 
@@ -94,13 +83,17 @@ if ($page == 'sala'):
 
                     <h3 class="shop-product-title">Tempo restante</h3>
                     <div class="margin-bottom-40">
+                                 <span id="buttonTemp">
                         <span id="segundosRest" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #98acff;">Aguardando</span>
-
+</span>
                         <span id="buttonLancep">
                         <span id="buttonLance">
             <button type="button" class="btn-u btn-u-sea-shop btn-u-lg" >Carregando...</button>
         </span>
-        </span>
+        </span><br>
+                        <span id="resgatess">
+
+                        </span>
                     </div><!--/end product quantity-->
 
 
@@ -334,12 +327,48 @@ $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u
                 $.post("<?php echo base_url('pages/winner');?>",{leilao:leilao,valor:<?php echo $desconto; ?>},function (res) {
 
                     if(res){
-                    if(res == 1){
+                    if(res > 0){
+                        <?php
+
+
+                        if(!empty($result[0]['cidade']) and !empty($result[0]['estado']) and !empty($result[0]['cep']) and !empty($result[0]['bairro']) and !empty($result[0]['rua'])):
+
+
+                        ?>
+
+                        $("#buttonTemp").html('<a href="<?php echo base_url('pages/sendWin?tp=2&&id='.$_GET['p']);?>" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #4c4ccb;">Retirar na loja</a>');
+
+                        $("#buttonLancep").html('<a href="<?php echo base_url('pages/sendWin?tp=1&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Enviar para mim</a>');
+                        $("#resgatess").html('<br><a href="<?php echo base_url('pages/sendWin?tp=3&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Retirar como créditos</a>');
+                        <?php
+                        else:
+
+                        ?>
+
+                        $("#buttonTemp").html('<a href="<?php echo base_url('pages/sendWin?tp=2&&id='.$_GET['p']);?>" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cb0000;">Finalizado</a>');
+
+                        $("#buttonLancep").html('<a href="<?php echo base_url('pages/sendWin?tp=1&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Meus-arremates</a>');
+
+
+                        $("#resgatess").html('<br><a href="<?php echo base_url('pages/sendWin?tp=3&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #3C3DCB;">Retirar como créditos</a>');
+
+                        <?php
+                        endif;
+
+                        ?>
+
+
+                    }else{
+
+
                         $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cb0000;">Finalizado</button>');
-                       window.location.href="<?php echo base_url('meus-arremates');?>";
+
+
                     }
                     }
                 });
+
+
 
             }
 

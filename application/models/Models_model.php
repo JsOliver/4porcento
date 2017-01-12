@@ -176,6 +176,7 @@ class Models_model extends CI_Model
             $data['cep'] = $cep;
             $data['rua'] = $rua;
             $data['bairro'] = $bairro;
+            $data['keywords'] = $rua.','.$bairro.','.$cidade.','.$estado;
 
             if (!empty($file['name'])):
                 $filex = $file['tmp_name'];
@@ -270,6 +271,8 @@ class Models_model extends CI_Model
             $data['cep'] = $cep;
             $data['rua'] = $rua;
             $data['bairro'] = $bairro;
+            $data['keywords'] = $rua.','.$bairro.','.$cidade.','.$estado;
+
 
             if (empty($file['name'])):
 
@@ -722,8 +725,7 @@ public function addcredit($user){
 
 
             $this->db->from('arremates');
-            $this->db->where('id', $arremate);
-            $this->db->where('id_user', $_SESSION['ID']);
+            $this->db->where('id_arremate', $arremate);
             $query = $this->db->get();
             $count = $query->num_rows();
             $result = $query->result_array();
@@ -732,7 +734,7 @@ public function addcredit($user){
 
                 $valor = $result[0]['valor_arremate'];
                 $this->db->from('cupon_loja');
-                $this->db->where('id_user', $_SESSION['ID']);
+                $this->db->where('id_user',$user);
                 $query = $this->db->get();
                 $count = $query->num_rows();
                 $result = $query->result_array();
@@ -742,11 +744,11 @@ public function addcredit($user){
                     $valor_show = $result[0]['valor_show'];
                     $dado['valor'] = str_replace(',', '', $valoracs) + str_replace(',', '', $valor);
                     $dado['valor_show'] = number_format(str_replace(',', '', $valor_show) + str_replace(',', '', $valor), 2, '.', ',');
-                    $this->db->where('id_user', $_SESSION['ID']);
+                    $this->db->where('id_user', $user);
                     $this->db->update('cupon_loja', $dado);
                 else:
 
-                    $dado['id_user'] = $_SESSION['ID'];
+                    $dado['id_user'] = $user;
                     $dado['valor'] = str_replace(',', '', $valor);
                     $dado['valor_show'] = number_format(str_replace(',', '', $valor), 2, '.', ',');
                     $this->db->insert('cupon_loja', $dado);
@@ -1083,7 +1085,16 @@ public function winner($leilao,$winner,$valor){
                 $dados_cpm['url_payment'] = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' . $payment->code;
                 $dados_cpm['data_solicitation'] = date('d/m/Y H:i:s');
                 $this->db->insert('compras',$dados_cpm);
-                if($this->db->insert_id() > 0):
+                $arrematePsn = $this->db->insert_id();
+                if($arrematePsn > 0):
+
+                    $this->db->from('vangancy');
+                    $this->db->where('id_user !=',$winner);
+                    $this->db->where('id_leilao',$leilao);
+                    $queryVnc = $this->db->get();
+                    foreach ($queryVnc->result_array() as $dds){
+                        $this->cupon($dds['id_user'],$leilao,$leilao);
+                    }
 
                     $dd_ntf['id_user'] = $_SESSION['ID'];
                     $dd_ntf['title'] = utf8_decode('Leilão arrematado');
@@ -1094,7 +1105,7 @@ public function winner($leilao,$winner,$valor){
                     $ddp['id_user'] = $_SESSION['ID'];
                     $this->db->insert('notificacao_read',$ddp);
 
-                    return 1;
+                    return $winner;
 
                 else:
 

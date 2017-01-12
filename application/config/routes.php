@@ -72,3 +72,4 @@ $route['profile'] = 'pages/exibirUs';
 $route['compras'] = 'pages/pagamento';
 $route['comprarPack'] = 'pages/comprarPack';
 $route['bonus'] = 'pages/API';
+$route['retirada'] = 'pages/retirada';

@@ -387,6 +387,7 @@ $data_atual_system = date('YmdHis');
                                                         <textarea name="descricao_completa" class="form-control"
                                                                   rows="3"></textarea>
                                                     </div>
+
                                                     <div class="form-group">
                                                         <label>Estado</label>
                                                         <input name="estado" class="form-control"
@@ -736,7 +737,7 @@ $data_atual_system = date('YmdHis');
 
                                                 </td>
                                                 <?php
-                                                if($resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
+                                                if($resultCp[0]['submit'] <> 2 and $resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
                                                 ?>
 
                                                     <script>

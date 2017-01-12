@@ -199,7 +199,7 @@ if(res){
                                     <span id="telefone">
 
                                     <?php if (empty($result[0]['telefone'])): echo '<b class="text-warning">Indisponível</b>';
-                                    else: echo $result[0]['telefone']; endif; ?>
+                                    else: echo strip_tags($result[0]['telefone']); endif; ?>
                                         </span>
                                 <span>
 												<span style="cursor: pointer;" onclick="altertelefone()"
@@ -219,7 +219,7 @@ if(res){
                                 <dd>
                                     <span id="endereco">
                                     <?php if (empty($result[0]['endereco'])): echo 'Indisponível';
-                                    else: echo $result[0]['endereco']; endif; ?>
+                                    else: echo strip_tags($result[0]['endereco']); endif; ?>
                                             </span>
                                     <span>
 												<span style="cursor: pointer;" onclick="alterendereco()"

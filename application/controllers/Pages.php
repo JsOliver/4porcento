@@ -69,7 +69,6 @@ class Pages extends CI_Controller
                 if ($data_inicio < $data_atual_system):
 
                     $valor_in = $this->Models_model->convertPrize($result[0]['valor_leilao'], 4);
-
                     $this->db->from('creditos');
                     $this->db->where('usuario', $_SESSION['ID']);
                     $query_credit = $this->db->get();
@@ -97,7 +96,7 @@ class Pages extends CI_Controller
                         $vagas = false;
                     endif;
 
-                    if ($my_credit >= $valor_in):
+                    if ($my_credit >= str_replace(',','',$valor_in)):
 
                         if ($vagas == true):
                             $dos['credito'] = $my_credit - $valor_in;
@@ -161,7 +160,7 @@ class Pages extends CI_Controller
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
         if ($log == true):
-            $this->db->where('id_user',$_SESSION['ID']);
+            $this->db->where('id_user', $_SESSION['ID']);
             $this->db->delete('notificacao_read');
             $dados['status'] = $log;
             $dados['page'] = 'arrematados';
@@ -303,10 +302,10 @@ class Pages extends CI_Controller
         $log = $this->Models_model->logVer();
 
         if ($log == false):
-             if($this->Models_model->login($_POST['email'], $_POST['pass']) == 11):
-                 $this->Models_model->addcredit($_SESSION['ID']);
-                 echo 11;
-                 endif;
+            if ($this->Models_model->login($_POST['email'], $_POST['pass']) == 11):
+                $this->Models_model->addcredit($_SESSION['ID']);
+                echo 11;
+            endif;
 
         endif;
     }
@@ -790,10 +789,10 @@ class Pages extends CI_Controller
                                 <div class="header">
                                     <?php if ($dds['id_user'] == $_SESSION['ID']): ?>
                                         <strong
-                                            class="primary-font"><?php echo $this->Models_model->limitarTexto(strip_tags($result1[0]['firstname']), 50); ?></strong>
+                                            class="primary-font"><?php echo $this->Models_model->limitarTexto(strip_tags($result1[0]['username']), 50); ?></strong>
                                     <?php else: ?>
                                         <span
-                                            class="primary-font"><?php echo $this->Models_model->limitarTexto(strip_tags($result1[0]['firstname']), 50); ?></span>
+                                            class="primary-font"><?php echo $this->Models_model->limitarTexto(strip_tags($result1[0]['username']), 50); ?></span>
 
                                     <?php endif; ?>
                                     <?php if (!empty($dds['data'])): ?>
@@ -941,6 +940,14 @@ class Pages extends CI_Controller
 
                             else:
                                 if ($this->Models_model->segundosDif($query_user->result_array()[0]['data']) < $query_prod->result_array()[0]['duracao_lance']):
+
+                                    if (empty($result_prod[0]['comeco_data'])):
+
+                                        $dpsa['comeco_data'] = date('YmdHis');
+                                        $this->db->where('id', $_POST['leilao']);
+                                        $this->db->update('leiloes', $dpsa);
+
+                                    endif;
                                     echo '
 <script>
 if(so == 0){
@@ -962,6 +969,13 @@ if(so == 0){
                         else:
                             if ($row_vagancy <= $result_prod[0]['maximo_users'] and $row_vagancy >= $result_prod[0]['minimo_users']):
 
+                                if (empty($result_prod[0]['comeco_data'])):
+
+                                    $dpsa['comeco_data'] = date('YmdHis');
+                                    $this->db->where('id', $_POST['leilao']);
+                                    $this->db->update('leiloes', $dpsa);
+
+                                endif;
 
                                 echo '
 <script>
@@ -971,6 +985,7 @@ if(so == 0){
 }
 
 </script>
+
 <span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
 
                             endif;
@@ -1032,91 +1047,105 @@ if(so == 0){
 
     public function checkTimeSin()
     {
-        if (isset($_SESSION['ID'])):
-            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
 
-                $this->db->from('leiloes');
-                $this->db->where('id', $_POST['leilao']);
-                $query_prod = $this->db->get();
-                $row_prod = $query_prod->num_rows();
-                $row_result = $query_prod->result_array();
-                if ($row_prod > 0):
-                    $this->db->from('lances');
-                    $this->db->where('id_leilao', $_POST['leilao']);
-                    $query_lances = $this->db->get();
-                    $row_lances = $query_lances->num_rows();
-                    if ($row_lances > 0):
-                        $result = $query_lances->result_array();
+         if (isset($_SESSION['ID'])):
+             if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
 
-                        echo $row_result[0]['duracao_lance'] - $this->Models_model->segundosDif($result[0]['data']);
+                 $this->db->from('leiloes');
+                 $this->db->where('id', $_POST['leilao']);
+                 $query_prod = $this->db->get();
+                 $row_prod = $query_prod->num_rows();
+                 $row_result = $query_prod->result_array();
+                 if ($row_prod > 0):
+                     $this->db->from('lances');
+                     $this->db->where('id_leilao', $_POST['leilao']);
+                     $query_lances = $this->db->get();
+                     $row_lances = $query_lances->num_rows();
+                     if ($row_lances > 0):
+                         $result = $query_lances->result_array();
 
+                         $segundos = $this->Models_model->segundosDif($row_result[0]['comeco_data']);
+                         if($segundos >  $row_result[0]['duracao_hora']):
 
-                    endif;
+                             echo 0;
 
-                else: echo 0;
-                endif;
+                         else:
 
+                             echo $row_result[0]['duracao_lance'] - $this->Models_model->segundosDif($result[0]['data']);
 
-            endif;
-        endif;
-    }
+                         endif;
 
-    public function lance()
-    {
-        if (isset($_SESSION['ID'])):
-            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
-
-                $this->db->from('leiloes');
-                $this->db->where('id', $_POST['leilao']);
-                $query_prod = $this->db->get();
-                $row_prod = $query_prod->num_rows();
-                $result_prd = $query_prod->result_array();
-                if ($row_prod > 0):
-
-                    $this->db->from('vangancy');
-                    $this->db->where('id_user', $_SESSION['ID']);
-                    $query_vagancy = $this->db->get();
-                    $row_vagancy = $query_vagancy->num_rows();
-                    if ($row_vagancy > 0):
-                        $this->db->from('lances');
-                        $this->db->where('id_leilao', $_POST['leilao']);
-                        $this->db->order_by('id', 'desc');
-                        $this->db->limit(1, 0);
-                        $query_lance = $this->db->get();
-                        $row_lance = $query_lance->num_rows();
+                     else:
 
 
-                        if ($row_lance > 0) {
-
-                            $user = $query_lance->result_array()[0]['id_user'];
-
-                            if ($user <> $_SESSION['ID']):
-
-                                $dado['id_user'] = $_SESSION['ID'];
-                                $dado['id_leilao'] = $_POST['leilao'];
-                                $dado['data'] = date('YmdHis');
-                                $this->db->insert('lances', $dado);
-                                echo 1;
-                            endif;
-
-                        } else {
-
-                            $dado['id_user'] = $_SESSION['ID'];
-                            $dado['id_leilao'] = $_POST['leilao'];
-                            $dado['data'] = date('YmdHis');
-                            $this->db->insert('lances', $dado);
-                            echo 1;
-
-                        }
-
-                    else:
-                        echo 0;
-                    endif;
 
 
-                endif;
-            endif;
-        endif;
+
+                     endif;
+
+                 endif;
+
+
+             endif;
+         endif;
+     }
+
+     public function lance()
+     {
+         if (isset($_SESSION['ID'])):
+             if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
+
+                 $this->db->from('leiloes');
+                 $this->db->where('id', $_POST['leilao']);
+                 $query_prod = $this->db->get();
+                 $row_prod = $query_prod->num_rows();
+                 $result_prd = $query_prod->result_array();
+                 if ($row_prod > 0):
+
+                     $this->db->from('vangancy');
+                     $this->db->where('id_user', $_SESSION['ID']);
+                     $query_vagancy = $this->db->get();
+                     $row_vagancy = $query_vagancy->num_rows();
+                     if ($row_vagancy > 0):
+                         $this->db->from('lances');
+                         $this->db->where('id_leilao', $_POST['leilao']);
+                         $this->db->order_by('id', 'desc');
+                         $this->db->limit(1, 0);
+                         $query_lance = $this->db->get();
+                         $row_lance = $query_lance->num_rows();
+
+
+                         if ($row_lance > 0) {
+
+                             $user = $query_lance->result_array()[0]['id_user'];
+
+                             if ($user <> $_SESSION['ID']):
+
+                                 $dado['id_user'] = $_SESSION['ID'];
+                                 $dado['id_leilao'] = $_POST['leilao'];
+                                 $dado['data'] = date('YmdHis');
+                                 $this->db->insert('lances', $dado);
+                                 echo 1;
+                             endif;
+
+                         } else {
+
+                             $dado['id_user'] = $_SESSION['ID'];
+                             $dado['id_leilao'] = $_POST['leilao'];
+                             $dado['data'] = date('YmdHis');
+                             $this->db->insert('lances', $dado);
+                             echo 1;
+
+                         }
+
+                     else:
+                         echo 0;
+                     endif;
+
+
+                 endif;
+             endif;
+         endif;
     }
 
     public function atualizalance()
@@ -1292,20 +1321,21 @@ if(so == 0){
                     $dado['code'] = $_POST['url'];
                     $dado['item_id'] = $_POST['arr'];
                     $dado['data_send'] = date('YmdHis');
-                $this->db->insert('objetos_correios',$dado);
+                    $this->db->insert('objetos_correios', $dado);
                 endif;
             endif;
         endif;
     }
+
     public function trackNewup()
     {
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
 
             if (isset($_POST['url']) and !empty($_POST['url']) and isset($_POST['arr']) and !empty($_POST['arr'])):
-                    $dado['code'] = $_POST['url'];
-                    $dado['data_send'] = date('YmdHis');
-                $this->db->where('item_id',$_POST['arr']);
-                $this->db->update('objetos_correios',$dado);
+                $dado['code'] = $_POST['url'];
+                $dado['data_send'] = date('YmdHis');
+                $this->db->where('item_id', $_POST['arr']);
+                $this->db->update('objetos_correios', $dado);
             endif;
         endif;
     }
@@ -1313,38 +1343,36 @@ if(so == 0){
     public function done()
     {
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
-            if(isset($_GET['id']) and !empty($_GET['id'])):
+            if (isset($_GET['id']) and !empty($_GET['id'])):
 
-            $db['done'] = 1;
-            $this->db->where('id',$_GET['id']);
-            if($this->db->update('leiloes',$db)):
-                $db2['submit'] = 3;
-                $this->db->where('id_obj_compra',$_GET['id']);
-                $this->db->update('compras',$db2);
-                redirect(base_url('adm/leiloes'), 'refresh');
+                $db['done'] = 1;
+                $this->db->where('id', $_GET['id']);
+                if ($this->db->update('leiloes', $db)):
+                    $db2['submit'] = 3;
+                    $this->db->where('id_obj_compra', $_GET['id']);
+                    $this->db->update('compras', $db2);
+                    redirect(base_url('adm/leiloes'), 'refresh');
 
-            else:
+                else:
 
-                redirect(base_url('adm/leiloes'), 'refresh');
+                    redirect(base_url('adm/leiloes'), 'refresh');
+
+                endif;
+
 
             endif;
-
-
-
-
-        endif;
         endif;
 
-        }
+    }
 
     public function lbcnd()
     {
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
-            if(isset($_GET['id']) and !empty($_GET['id'])):
+            if (isset($_GET['id']) and !empty($_GET['id'])):
 
                 $db['type'] = 53;
-                $this->db->where('id',$_GET['id']);
-                if($this->db->update('user',$db)):
+                $this->db->where('id', $_GET['id']);
+                if ($this->db->update('user', $db)):
 
                     redirect(base_url('adm/clientes'), 'refresh');
 
@@ -1355,20 +1383,19 @@ if(so == 0){
                 endif;
 
 
-
-
             endif;
         endif;
 
     }
+
     public function bbcnd()
     {
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
-            if(isset($_GET['id']) and !empty($_GET['id'])):
+            if (isset($_GET['id']) and !empty($_GET['id'])):
 
                 $db['type'] = 1;
-                $this->db->where('id',$_GET['id']);
-                if($this->db->update('user',$db)):
+                $this->db->where('id', $_GET['id']);
+                if ($this->db->update('user', $db)):
 
                     redirect(base_url('adm/clientes'), 'refresh');
 
@@ -1379,26 +1406,106 @@ if(so == 0){
                 endif;
 
 
+            endif;
+        endif;
 
+    }
+
+    public function API()
+    {
+
+        if (isset($_GET['token']) and isset($_GET['method']) and isset($_GET['code']) and !empty($_GET['token']) and !empty($_GET['code']) and !empty($_GET['method'])):
+            var_dump($this->Models_model->API($_GET['token'], $_GET['code'], $_GET['method']));
+
+        else:
+            echo 0;
+        endif;
+    }
+
+
+    public function sendWin()
+    {
+
+        if (isset($_GET['tp']) and isset($_GET['id']) and !empty($_GET['tp']) and !empty($_GET['id'])):
+            if (isset($_SESSION['ID'])):
+
+                if($_GET['tp'] <> 3):
+                $dado['submit'] = $_GET['tp'];
+                $this->db->where('id_obj_compra', $_GET['id']);
+                $this->db->where('id_user', $_SESSION['ID']);
+                if ($this->db->update('compras', $dado)):
+                    redirect(base_url('meus-arremates'), 'refresh');
+                else:
+                    redirect(base_url('home'), 'refresh');
+
+                endif;
+                else:
+
+                    $this->db->from('leiloes');
+                    $this->db->where('id',$_GET['id']);
+                    $this->db->where('winner',$_SESSION['ID']);
+                    $query = $this->db->get();
+                    if($query->num_rows()):
+
+                        $this->Models_model->cupon($_SESSION['ID'],$_GET['id'],$_GET['id']);
+
+                        $dp['status'] = 0;
+                    $this->db->where('id',$_GET['id']);
+                    $this->db->update('leiloes',$dp);
+
+                        $this->db->where('id_obj_compra',$_GET['id']);
+                        $this->db->where('id_user',$_SESSION['ID']);
+                        $this->db->delete('compras');
+
+                        $this->db->where('id_arremate',$_GET['id']);
+                        $this->db->where('id_user',$_SESSION['ID']);
+                        $this->db->delete('arremates');
+
+                        redirect(base_url('minha-conta'), 'refresh');
+                        redirect(base_url('minha-contatp'), 'refresh');
+
+                    endif;
+
+            endif;
 
             endif;
         endif;
 
     }
 
-    public function API(){
+    public function retirada()
+    {
 
-        if(isset($_GET['token']) and isset($_GET['method']) and isset($_GET['code']) and !empty($_GET['token']) and !empty($_GET['code']) and !empty($_GET['method'])):
-        var_dump($this->Models_model->API($_GET['token'],$_GET['code'],$_GET['method']));
+        if(isset($_GET['item']) and isset($_SESSION['ID'])):
 
+            $this->db->from('compras');
+            $this->db->where('id_obj_compra',$_GET['item']);
+            $this->db->where('submit',2);
+            $query = $this->db->get();
+            if($query->num_rows() > 0):
+
+                if($query->result_array()[0]['id_user'] == $_SESSION['ID']):
+                    $this->load->library('functions');
+                    $log = $this->Models_model->logVer();
+                    $do['page'] = 'invice';
+                    $do['status'] = $log;
+                $this->load->view('pages/user/account/invoce',$do);
+endif;
             else:
-                echo 0;
-                endif;
+                redirect(base_url('meus-arremates'), 'refresh');
+
+            endif;
+        else:
+            @session_destroy();
+            redirect(base_url('login'), 'refresh');
+
+        endif;
+
     }
 
+    public function teste()
+    {
 
-public function teste(){
-
-   echo $this->Models_model->addcredit($_SESSION['ID']);
-}
+        echo $this->Models_model->addcredit($_SESSION['ID']);
+    }
 }

@@ -227,7 +227,7 @@ if ($page == 'account'):
                                     endif;
 
                                     if ($dds['submit'] == 2 and $dds['type'] == 1 and $dds['status'] == 3 or $dds['status'] == 4):
-                                        echo '<a href="#" class=" btn btn-info">Retirar comprovante</a>';
+                                        echo '<a href="'.base_url('meus-arremates').'" class=" btn btn-info">Retirar comprovante</a>';
                                     endif;
 
                                     if ($dds['submit'] == 1 and $dds['type'] == 2 and $dds['status'] == 3 or $dds['status'] == 4):
@@ -354,11 +354,7 @@ if ($page == 'account'):
                                         echo ' <small class="hex"><b>Começa:</b> ' . $dia . '/' . $mes . '/' . $ano . ' as ' . $hora . ':' . $minuto . ':' . $segundo . '</small>';
                                     endif;
 
-                                    if ($dds['status'] == 1 and $data_atual_system >= $dds['inicio_data']):
 
-                                        echo ' <small class="hex"><b>0</b> pessoas online / <b>0</b> lugares disponiveis</small>';
-
-                                    endif;
                                     ?>
                                 </td>
                                 <td>

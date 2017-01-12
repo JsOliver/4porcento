@@ -456,7 +456,12 @@ if ($page == 'leiloes'):
 
                         <?php } ?>
 
+<?php
 
+if($countnl == 0):
+echo '<br><br><br>';
+endif;
+?>
                     </div>
 
 

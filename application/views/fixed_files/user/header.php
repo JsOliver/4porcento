@@ -132,7 +132,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url(); ?>/assets/js/plugins/countdown.js"></script>
     <?php endif; ?>
 
-    <?php if ($page == 'register' or $page == 'configuracoes' or $page == 'compra'): ?>
+    <?php if ($page == 'register' or $page == 'configuracoes' or $page == 'compra' or $page == 'invice'): ?>
         <script src="<?php echo base_url(); ?>/assets/plugins/jquery/jquery.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/plugins/sky-forms-pro/skyforms/js/jquery.form.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js"></script>
@@ -207,6 +207,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <!-- End Topbar v3 -->
         <?php endif; ?>
 
+        <?php
+        if($page <> 'invice'):
+        ?>
         <!-- Navbar -->
         <div class="navbar navbar-default mega-menu" role="navigation">
             <div class="container">
@@ -225,70 +228,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </a>
                 </div>
 
-                <?php
-                if($status == true):
-                $this->db->from('notificacao');
-                $this->db->where('id_user',$_SESSION['ID']);
-                $query = $this->db->limit(10,0);
-                $query = $this->db->order_by('id','desc');
-                $query = $this->db->get();
-                $count = $query->num_rows();
 
-                if($count > 0):?>
-                <div class="shop-badge badge-icons pull-right">
-                    <a href="#"><i class="fa fa-bell-o"></i></a>
-                    <?php
-                    $this->db->from('notificacao_read');
-                    $this->db->where('id_user',$_SESSION['ID']);
-                    $query = $this->db->get();
-                    $count = $query->num_rows();
-                    if($count > 0):
-                        echo '<span class="badge badge-sea rounded-x">'.$count.'</span>';
-                        endif;
-
-                    $this->db->from('notificacao');
-                    $this->db->where('id_user',$_SESSION['ID']);
-                    $query = $this->db->limit(10,0);
-                    $query = $this->db->order_by('id','desc');
-                    $query = $this->db->get();
-                    $count = $query->num_rows();
-                    if($count > 0):
-                    ?>
-                    <div class="badge-open">
-                        <ul class="list-unstyled mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar"
-                            data-mcs-theme="minimal-dark" style="position: relative; overflow: visible;">
-                            <div id="mCSB_1" class="mCustomScrollBox mCS-minimal-dark mCSB_vertical mCSB_outside"
-                                 tabindex="0">
-                                <div id="mCSB_1_container" class="mCSB_container mCS_y_hidden mCS_no_scrollbar_y"
-                                     style="position:relative; top:0; left:0;" dir="ltr">
-                                   <?php
-
-                                    if($count > 0):
-                                        foreach($query->result_array() as $dds){
-                                   ?>
-                                    <li style="cursor: pointer;" onclick="window.location.href='<?php echo base_url('meus-arremates');?>';">
-                                        <img src="<?php echo base_url('pages/exibirNf?id='.$dds['id']);?>" alt="" class="mCS_img_loaded">
-                                        <div class="overflow-h">
-                                            <span><?php echo $dds['title'];?></span>
-                                            <small><?php echo $dds['text'];?></small>
-                                        </div>
-                                    </li>
-
-                                    <?php } endif;?>
-
-                                </div>
-
-                            </div>
-
-                        </ul>
-                        <div class="subtotal">
-
-                        </div>
-                    </div>
-
-                    <?php endif; ?>
-                </div>
-            <?php endif;endif;?>
 
                 <div class="collapse navbar-collapse navbar-responsive-collapse">
                     <!-- Nav Menu -->
@@ -394,6 +334,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div>
         <!-- End Navbar -->
+        <?php endif;?>
     </div>
     <!--=== End Header v5 ===-->
 

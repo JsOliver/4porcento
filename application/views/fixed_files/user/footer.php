@@ -1,25 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<!--=== Shop Suvbscribe ===-->
-<div class="shop-subscribe">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 md-margin-bottom-20">
-                <h2>Se inscreva e para receber <strong>emails</strong> de promoções</h2>
-            </div>
-            <div class="col-md-4">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Seu e-mail...">
-                    <span class="input-group-btn">
-							<button class="btn" type="button"><i class="fa fa-envelope-o"></i></button>
-						</span>
-                </div>
-            </div>
-        </div>
-    </div><!--/end container-->
-</div>
-<!--=== End Shop Suvbscribe ===-->
+
+<br>
+<br>
+<br>
+<br>
+<?php
+if($page <> 'invice'):
+?>
 <!--=== Footer v4 ===-->
 <div class="footer-v4">
 
@@ -46,6 +35,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div><!--/copyright-->
 </div>
 <!--=== End Footer v4 ===-->
+
+<?php endif;?>
+<?php if($page == 'invice'):?>
+    <br>
+    <br>
+    <br>
+    <br>
+
+<?php endif;?>
 </div><!--/wrapper-->
 
 <!-- Wait Block
@@ -72,7 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- End Wait Block -->
 <?php
 
-if ($page == 'sala'):
+if ($page == 'sala' or $page == 'invice'):
     ?>
 
     <!-- JS Global Compulsory -->
