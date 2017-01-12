@@ -31,10 +31,10 @@ if ($page == 'account'):
             $resultCre = $queryCre->result_array();
             if($countCre > 0):
 
-                $credito = '<span  class="text-info">'.number_format($resultCre[0]['credito'],2,'.',',').'</span>';
+                $credito = '<a href="'.base_url('adicionar/creditos').'" target="_blank"><span  class="text-info">'.number_format($resultCre[0]['credito'],2,'.',',').'</span></a>';
 
             else:
-                $credito = '<span class="text-danger">0.00</span>';
+                $credito = '<a href="'.base_url('adicionar/creditos').'" target="_blank"><span class="text-danger">0.00</span></a>';
 
             endif;
 
@@ -208,8 +208,8 @@ if ($page == 'account'):
                                     if ($dds['status'] == 6 or $dds['status'] == 7):
                                         echo '<span class=" btn btn-danger">Cancelado/devolvido</span>';
                                     endif;
-                                    if ($dds['submit'] == 1 and $dds['type'] == 1 and $dds['status'] == 3 or $dds['status'] == 4):
-                                        echo '<a href="#" target="_blank" class=" btn btn-warning">Rastrear pedido</a>';
+                                    if ($dds['submit']  == 1 and $dds['type'] == 1 and $dds['status'] == 3 or $dds['status'] == 4):
+                                        echo '<a href="'.base_url('meus-arremates').'" class=" btn btn-warning">Rastrear pedido</a>';
                                     endif;
 
                                     if ($dds['submit'] == 3 and $dds['type'] == 1 and $dds['status'] == 3 or $dds['status'] == 4):

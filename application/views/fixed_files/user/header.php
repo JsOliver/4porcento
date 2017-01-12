@@ -174,11 +174,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                                 <?php
                                 if ($status == true):
+                                    $this->db->from('notificacao_read');
+                                    $this->db->where('id_user',$_SESSION['ID']);
+                                    $query = $this->db->get();
+                                    $count = $query->num_rows();
                                     ?>
                                     <!-- Inicio - Aparece somente se estiver logado -->
                                     <li><a href="<?php echo base_url('minha-conta'); ?>">Minha conta</a></li>
                                     <li><a href="<?php echo base_url('meus-arremates'); ?>">Arrematados
-                                            <!-- Inicio - Quantidade de arremates -->(0)
+                                            <!-- Inicio - Quantidade de arremates -->(<?php echo $count;?>)
                                             <!-- Inicio - Quantidade de arremates --></a></li>
                                     <!-- Fim - Aparece somente se estiver logado -->
                                 <?php endif; ?>
@@ -221,10 +225,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </a>
                 </div>
 
-                <?php if($status == true):?>
+                <?php
+                $this->db->from('notificacao');
+                $this->db->where('id_user',$_SESSION['ID']);
+                $query = $this->db->limit(10,0);
+                $query = $this->db->order_by('id','desc');
+                $query = $this->db->get();
+                $count = $query->num_rows();
+
+                if($status == true and $count > 0):?>
                 <div class="shop-badge badge-icons pull-right">
                     <a href="#"><i class="fa fa-bell-o"></i></a>
-                    <span class="badge badge-sea rounded-x">3</span>
+                    <?php
+                    $this->db->from('notificacao_read');
+                    $this->db->where('id_user',$_SESSION['ID']);
+                    $query = $this->db->get();
+                    $count = $query->num_rows();
+                    if($count > 0):
+                        echo '<span class="badge badge-sea rounded-x">'.$count.'</span>';
+                        endif;
+
+                    $this->db->from('notificacao');
+                    $this->db->where('id_user',$_SESSION['ID']);
+                    $query = $this->db->limit(10,0);
+                    $query = $this->db->order_by('id','desc');
+                    $query = $this->db->get();
+                    $count = $query->num_rows();
+                    if($count > 0):
+                    ?>
                     <div class="badge-open">
                         <ul class="list-unstyled mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar"
                             data-mcs-theme="minimal-dark" style="position: relative; overflow: visible;">
@@ -232,14 +260,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                  tabindex="0">
                                 <div id="mCSB_1_container" class="mCSB_container mCS_y_hidden mCS_no_scrollbar_y"
                                      style="position:relative; top:0; left:0;" dir="ltr">
-                                    <li>
-                                        <img src="assets/img/thumb/05.jpg" alt="" class="mCS_img_loaded">
-                                        <button type="button" class="close">×</button>
+                                   <?php
+
+                                    if($count > 0):
+                                        foreach($query->result_array() as $dds){
+                                   ?>
+                                    <li style="cursor: pointer;" onclick="window.location.href='<?php echo base_url('meus-arremates');?>';">
+                                        <img src="<?php echo base_url('pages/exibirNf?id='.$dds['id']);?>" alt="" class="mCS_img_loaded">
                                         <div class="overflow-h">
-                                            <span>Black Glasses</span>
-                                            <small>1 x $400.00</small>
+                                            <span><?php echo $dds['title'];?></span>
+                                            <small><?php echo $dds['text'];?></small>
                                         </div>
                                     </li>
+
+                                    <?php } endif;?>
 
                                 </div>
 
@@ -248,14 +282,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </ul>
                         <div class="subtotal">
 
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <a href="shop-ui-inner.html" class="btn-u btn-brd btn-brd-hover btn-u-sea-shop btn-block">View Cart</a>
-                                </div>
-
-                            </div>
                         </div>
                     </div>
+
+                    <?php endif; ?>
                 </div>
             <?php endif;?>
 

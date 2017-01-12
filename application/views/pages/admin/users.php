@@ -122,6 +122,11 @@ if ($page == 'users'):
                                     }
 
                                     $this->db->from('user');
+                                    if(isset($_GET['q']) and !empty($_GET['q'])):
+                                        $this->db->where('id', $_GET['q']);
+                                    endif;
+                                    $this->db->where('type !=', 54);
+
                                     $this->db->order_by('id', 'desc');
                                     $this->db->limit($max, $atual);
                                     $get = $this->db->get();
@@ -180,9 +185,9 @@ if ($page == 'users'):
 
                                                     echo '0,00';
                                                 else:
-                                                    $valuef1 = str_replace('.', '', $fetchValue['credito']);
-                                                    $valuef2 = str_replace(',', '', $valuef1);
-                                                    echo number_format($valuef2, 2, '.', ',');
+
+                                                    echo number_format($fetchValue[0]['credito'], 2, '.', ',');
+
                                                     ?>
 
                                                 <?php endif; ?>
@@ -190,7 +195,16 @@ if ($page == 'users'):
 
                                             <td class="center"><a
                                                     href="<?php echo base_url('pages/deleteus?id=' . $dds['id']); ?>"
-                                                    class="text-danger">Excluir</a></td>
+                                                    class="text-danger">Excluir</a><br>
+                                            <?php 
+                                            if($dds['type'] == 1):
+                                                echo '<a href="'.base_url('pages/lbcnd?id='.$dds['id']).'">Liberar consulta</a>';
+                                                else:
+                                                    echo '<a href="'.base_url('pages/bbcnd?id='.$dds['id']).'">Bloquear consulta</a>';
+
+                                            endif;
+                                            ?>
+                                            </td>
                                         </tr>
 
                                     <?php } ?>

@@ -68,7 +68,7 @@ class Pages extends CI_Controller
 
                 if ($data_inicio < $data_atual_system):
 
-                    $valor_in = $this->Models_model->convertPrize($result[0]['valor_leilao'],4);
+                    $valor_in = $this->Models_model->convertPrize($result[0]['valor_leilao'], 4);
 
                     $this->db->from('creditos');
                     $this->db->where('usuario', $_SESSION['ID']);
@@ -190,6 +190,8 @@ class Pages extends CI_Controller
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
         if ($log == true):
+            $this->db->where('id_user',$_SESSION['ID']);
+            $this->db->delete('notificacao_read');
             $dados['status'] = $log;
             $dados['page'] = 'arrematados';
             $this->load->view('pages/user/account/arremate', $dados);
@@ -606,7 +608,7 @@ class Pages extends CI_Controller
     public function addLeilao()
     {
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
-            if ($this->Models_model->newleilao($_POST['maxlance'],$_POST['title'], $_POST['minuser'], $_POST['maxuser'], $_POST['breve_descricao'], $_FILES['image'], $_POST['valor_leilao'], $_POST['descricao_completa'], $_POST['inicio_data'], $_POST['estado'], $_POST['cidade'], $_POST['cep'], $_POST['rua'], $_POST['bairro']) == 1):
+            if ($this->Models_model->newleilao($_POST['maxlance'], $_POST['title'], $_POST['minuser'], $_POST['maxuser'], $_POST['breve_descricao'], $_FILES['image'], $_POST['valor_leilao'], $_POST['descricao_completa'], $_POST['inicio_data'], $_POST['estado'], $_POST['cidade'], $_POST['cep'], $_POST['rua'], $_POST['bairro']) == 1):
                 redirect(base_url('adm/leiloes'), 'refresh');
 
             else:
@@ -681,6 +683,19 @@ class Pages extends CI_Controller
 
     }
 
+    public function exibirNf()
+    {
+
+        $this->db->from('notificacao');
+        $this->db->where('id', addslashes($_GET['id']));
+        $query = $this->db->get();
+        $fetch = $query->result_array();
+        header("content-type: " . $fetch[0]['ext'] . "");
+        echo $fetch[0]['image'];
+
+    }
+
+
     public function exibirUs()
     {
 
@@ -718,7 +733,7 @@ class Pages extends CI_Controller
     {
 
         if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
-            if ($this->Models_model->updleilao($_POST['maxlance'],$_POST['leilao'], $_POST['minuser'], $_POST['maxuser'], $_POST['title'], $_POST['breve_descricao'], $_FILES['image'], $_POST['valor_leilao'], $_POST['descricao_completa'], $_POST['inicio_data'], $_POST['estado'], $_POST['cidade'], $_POST['cep'], $_POST['rua'], $_POST['bairro']) == 1):
+            if ($this->Models_model->updleilao($_POST['maxlance'], $_POST['leilao'], $_POST['minuser'], $_POST['maxuser'], $_POST['title'], $_POST['breve_descricao'], $_FILES['image'], $_POST['valor_leilao'], $_POST['descricao_completa'], $_POST['inicio_data'], $_POST['estado'], $_POST['cidade'], $_POST['cep'], $_POST['rua'], $_POST['bairro']) == 1):
                 redirect(base_url('adm/leiloes'), 'refresh');
 
             else:
@@ -1010,8 +1025,8 @@ class Pages extends CI_Controller
                                 echo '<a style="cursor: pointer;" class="btn-u btn-u-sea-shop btn-u-lg" >Na frente</a>';
 
                             else:
-                                if($this->Models_model->segundosDif($query_user->result_array()[0]['data']) < $query_prod->result_array()[0]['duracao_lance']):
-                                echo '
+                                if ($this->Models_model->segundosDif($query_user->result_array()[0]['data']) < $query_prod->result_array()[0]['duracao_lance']):
+                                    echo '
 <script>
 if(so == 0){
      startCountdown();
@@ -1024,13 +1039,13 @@ if(so == 0){
                                 else:
 
                                     echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cb0000;">Finalizado</button>';
-                            endif;
+                                endif;
 
                             endif;
 
 
-                    else:
-                        if ($row_vagancy <= $result_prod[0]['maximo_users'] and $row_vagancy >= $result_prod[0]['minimo_users']):
+                        else:
+                            if ($row_vagancy <= $result_prod[0]['maximo_users'] and $row_vagancy >= $result_prod[0]['minimo_users']):
 
 
                                 echo '
@@ -1044,28 +1059,26 @@ if(so == 0){
 <span id="btn-lanc"><a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a></span>';
 
                             endif;
-                        if ($row_vagancy > $result_prod[0]['maximo_users']):
-                            echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;" >Sala Cheia</button>';
+                            if ($row_vagancy > $result_prod[0]['maximo_users']):
+                                echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cb0000;" >Sala Cheia</button>';
 
+                            endif;
+
+                            if ($row_vagancy < $result_prod[0]['minimo_users']):
+                                echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cbb64a;" >Aguarde</button>';
+                            endif;
                         endif;
 
-                        if ($row_vagancy < $result_prod[0]['minimo_users']):
-                            echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cbb64a;" >Aguarde</button>';
-                        endif;
+
+                    else:
+                        echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cbb64a;" >Aguarde</button>';
+
+
                     endif;
 
 
-                else:
-                    echo '<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" style="background: #cbb64a;" >Aguarde</button>';
-
-
-
-
                 endif;
-
-
             endif;
-        endif;
         endif;
 
 
@@ -1111,7 +1124,7 @@ if(so == 0){
                 $this->db->where('id', $_POST['leilao']);
                 $query_prod = $this->db->get();
                 $row_prod = $query_prod->num_rows();
-                $row_result= $query_prod->result_array();
+                $row_result = $query_prod->result_array();
                 if ($row_prod > 0):
                     $this->db->from('lances');
                     $this->db->where('id_leilao', $_POST['leilao']);
@@ -1122,7 +1135,7 @@ if(so == 0){
 
                         echo $row_result[0]['duracao_lance'] - $this->Models_model->segundosDif($result[0]['data']);
 
-                 
+
                     endif;
 
                 else: echo 0;
@@ -1158,21 +1171,20 @@ if(so == 0){
                         $row_lance = $query_lance->num_rows();
 
 
-
-                        if($row_lance > 0){
+                        if ($row_lance > 0) {
 
                             $user = $query_lance->result_array()[0]['id_user'];
 
-                            if($user <> $_SESSION['ID']):
+                            if ($user <> $_SESSION['ID']):
 
                                 $dado['id_user'] = $_SESSION['ID'];
                                 $dado['id_leilao'] = $_POST['leilao'];
                                 $dado['data'] = date('YmdHis');
                                 $this->db->insert('lances', $dado);
                                 echo 1;
-                                endif;
+                            endif;
 
-                        }else{
+                        } else {
 
                             $dado['id_user'] = $_SESSION['ID'];
                             $dado['id_leilao'] = $_POST['leilao'];
@@ -1211,23 +1223,23 @@ if(so == 0){
                 $row = $query->num_rows();
                 $result = $query->result_array();
 
-                if(!empty($result[0]['comeco_data'])):
+                if (!empty($result[0]['comeco_data'])):
 
-                    if($result[0]['comeco_data'] >= date('YmdHis')):
+                    if ($result[0]['comeco_data'] >= date('YmdHis')):
 
-                        if($row_prod > 0){
+                        if ($row_prod > 0) {
                             $this->db->from('lances');
                             $this->db->where('id_leilao', $_POST['leilao']);
                             $this->db->order_by('id', 'desc');
                             $this->db->limit(1, 0);
                             $query_prod2 = $this->db->get();
 
-                            $this->Models_model->winner($_POST['leilao'],$query_prod2->result_array()[0]['id_user'],$this->Models_model->convertPrize($result[0]['valor_leilao'],4));
+                            $this->Models_model->winner($_POST['leilao'], $query_prod2->result_array()[0]['id_user'], $this->Models_model->convertPrize($result[0]['valor_leilao'], 4));
 
-                        }else{
+                        } else {
                             $dadoos['status'] = 0;
-                            $this->db->where('id',$_POST['leilao']);
-                            $this->db->update('leiloes',$dadoos);
+                            $this->db->where('id', $_POST['leilao']);
+                            $this->db->update('leiloes', $dadoos);
                         }
 
 
@@ -1241,119 +1253,231 @@ if(so == 0){
                 $rowv = $queryv->num_rows();
 
 
-
-                if($row > 0 and $rowv >= $result[0]['minimo_users']):
-
-
-                if ($row_prod > 0):
+                if ($row > 0 and $rowv >= $result[0]['minimo_users']):
 
 
+                    if ($row_prod > 0):
 
-                    $result_prod = $query_prod->result_array();
 
-                    $this->db->from('lances');
-                    $this->db->where('id_leilao', $_POST['leilao']);
-                    $this->db->order_by('id', 'desc');
-                    $query_user = $this->db->get();
-                    $row_user = $query_user->num_rows();
-
-                    if ($row_user > 0):
-
+                        $result_prod = $query_prod->result_array();
 
                         $this->db->from('lances');
                         $this->db->where('id_leilao', $_POST['leilao']);
                         $this->db->order_by('id', 'desc');
-                        $this->db->limit(1,0);
-                        $query_user1 = $this->db->get();
-                        $row_user1 = $query_user1->num_rows();
+                        $query_user = $this->db->get();
+                        $row_user = $query_user->num_rows();
 
-                        if ($query_user1->result_array()[0]['id_user'] == $_SESSION['ID']):
-                        if($result_prod[0]['read'] == 0){
-                            $ddos['read'] = 1;
-                            $this->db->where('id_leilao',$_POST['leilao']);
-                            $this->db->update('lances',$ddos);
-                            echo 3;
+                        if ($row_user > 0):
 
-                        }else{
 
-                            echo 0;
-                        }
+                            $this->db->from('lances');
+                            $this->db->where('id_leilao', $_POST['leilao']);
+                            $this->db->order_by('id', 'desc');
+                            $this->db->limit(1, 0);
+                            $query_user1 = $this->db->get();
+                            $row_user1 = $query_user1->num_rows();
 
-                        else:
+                            if ($query_user1->result_array()[0]['id_user'] == $_SESSION['ID']):
+                                if ($result_prod[0]['read'] == 0) {
+                                    $ddos['read'] = 1;
+                                    $this->db->where('id_leilao', $_POST['leilao']);
+                                    $this->db->update('lances', $ddos);
+                                    echo 3;
 
-                            if($result_prod[0]['read'] == 0){
+                                } else {
 
-                            $ddos['read'] = 1;
-                                $this->db->where('id_leilao',$_POST['leilao']);
-                                $this->db->update('lances',$ddos);
-                                echo 2;
+                                    echo 0;
+                                }
 
-                            }else{
+                            else:
 
-                                echo 0;
-                            }
+                                if ($result_prod[0]['read'] == 0) {
+
+                                    $ddos['read'] = 1;
+                                    $this->db->where('id_leilao', $_POST['leilao']);
+                                    $this->db->update('lances', $ddos);
+                                    echo 2;
+
+                                } else {
+
+                                    echo 0;
+                                }
                             endif;
 
 
+                        else:
+                            echo 1;
+
+                        endif;
+
+
                     else:
-                        echo 1;
+
+                        echo 0;
 
                     endif;
 
-
-
-                else:
-
-                    echo 0;
-
                 endif;
-
-            endif;
             else:
                 echo 1;
-        endif;
+            endif;
         else:
             echo 0;
         endif;
     }
 
-    public function winner(){
+    public function winner()
+    {
 
-        if(isset($_SESSION['ID'])):
-            if(isset($_POST['leilao']) and !empty($_POST['leilao'])):
+        if (isset($_SESSION['ID'])):
+            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
                 $this->db->from('leiloes');
                 $this->db->where('id', $_POST['leilao']);
                 $query_lei = $this->db->get();
                 $row_lei = $query_lei->num_rows();
 
-                if($row_lei > 0):
+                if ($row_lei > 0):
 
-                $this->db->from('lances');
-                $this->db->where('id_leilao', $_POST['leilao']);
-                $query_lan = $this->db->get();
-                $row_lan = $query_lan->num_rows();
-                    if($row_lan > 0):
+                    $this->db->from('lances');
+                    $this->db->where('id_leilao', $_POST['leilao']);
+                    $query_lan = $this->db->get();
+                    $row_lan = $query_lan->num_rows();
+                    if ($row_lan > 0):
                         $this->db->from('lances');
                         $this->db->where('id_leilao', $_POST['leilao']);
                         $this->db->order_by('id', 'desc');
-                        $this->db->limit(1,0);
+                        $this->db->limit(1, 0);
                         $query_lan_l = $this->db->get();
-                        $row_lan_l= $query_lan_l->num_rows();
-                        if($row_lan_l > 0){
+                        $row_lan_l = $query_lan_l->num_rows();
+                        if ($row_lan_l > 0) {
 
-                           echo $this->Models_model->winner($_POST['leilao'],$query_lan_l->result_array()[0]['id_user'],$_POST['valor']);
+                            echo $this->Models_model->winner($_POST['leilao'], $query_lan_l->result_array()[0]['id_user'], $_POST['valor']);
 
-                        }else
-                        {
+                        } else {
                             echo 0;
                         }
 
 
-
-    endif;
-    endif;
-    endif;
-    endif;
+                    endif;
+                endif;
+            endif;
+        endif;
     }
 
+    public function trackNew()
+    {
+        if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+
+            if (isset($_POST['url']) and !empty($_POST['url']) and isset($_POST['arr']) and !empty($_POST['arr'])):
+
+                $this->db->from('objetos_correios');
+                $this->db->where('item_id', $_POST['arr']);
+                $query = $this->db->get();
+                if ($query->num_rows() == 0):
+                    $dado['code'] = $_POST['url'];
+                    $dado['item_id'] = $_POST['arr'];
+                    $dado['data_send'] = date('YmdHis');
+                $this->db->insert('objetos_correios',$dado);
+                endif;
+            endif;
+        endif;
+    }
+    public function trackNewup()
+    {
+        if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+
+            if (isset($_POST['url']) and !empty($_POST['url']) and isset($_POST['arr']) and !empty($_POST['arr'])):
+                    $dado['code'] = $_POST['url'];
+                    $dado['data_send'] = date('YmdHis');
+                $this->db->where('item_id',$_POST['arr']);
+                $this->db->update('objetos_correios',$dado);
+            endif;
+        endif;
+    }
+
+    public function done()
+    {
+        if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+            if(isset($_GET['id']) and !empty($_GET['id'])):
+
+            $db['done'] = 1;
+            $this->db->where('id',$_GET['id']);
+            if($this->db->update('leiloes',$db)):
+                $db2['submit'] = 3;
+                $this->db->where('id_obj_compra',$_GET['id']);
+                $this->db->update('compras',$db2);
+                redirect(base_url('adm/leiloes'), 'refresh');
+
+            else:
+
+                redirect(base_url('adm/leiloes'), 'refresh');
+
+            endif;
+
+
+
+
+        endif;
+        endif;
+
+        }
+
+    public function lbcnd()
+    {
+        if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+            if(isset($_GET['id']) and !empty($_GET['id'])):
+
+                $db['type'] = 53;
+                $this->db->where('id',$_GET['id']);
+                if($this->db->update('user',$db)):
+
+                    redirect(base_url('adm/clientes'), 'refresh');
+
+                else:
+
+                    redirect(base_url('adm/clientes'), 'refresh');
+
+                endif;
+
+
+
+
+            endif;
+        endif;
+
+    }
+    public function bbcnd()
+    {
+        if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+            if(isset($_GET['id']) and !empty($_GET['id'])):
+
+                $db['type'] = 1;
+                $this->db->where('id',$_GET['id']);
+                if($this->db->update('user',$db)):
+
+                    redirect(base_url('adm/clientes'), 'refresh');
+
+                else:
+
+                    redirect(base_url('adm/clientes'), 'refresh');
+
+                endif;
+
+
+
+
+            endif;
+        endif;
+
+    }
+
+    public function API(){
+
+        if(isset($_GET['token']) and isset($_GET['method']) and isset($_GET['code']) and !empty($_GET['token']) and !empty($_GET['code']) and !empty($_GET['method'])):
+        var_dump($this->Models_model->API($_GET['token'],$_GET['code'],$_GET['method']));
+
+            else:
+                echo 0;
+                endif;
+    }
 }

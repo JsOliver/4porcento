@@ -156,6 +156,8 @@ if ($page == 'home'):
                                     <div class="product-price">
                                         <!--Inicio - Preço atual -->
                                         <span class="title-price">R$  <?php echo $this->Models_model->convertPrize($dds['valor_leilao'],4); ?></span>
+                                        <span class="title-price line-through">R$ <?php echo number_format($dds['valor_leilao'],2,'.',',');?></span>
+
                                         <!--Fim - Preço atual -->
 
                                     </div>
@@ -220,7 +222,8 @@ if ($page == 'home'):
                                                 href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>"><?php echo $dds['title']; ?></a>
                                         </h4>
                                         <span
-                                            class="gender text-uppercase">Valor: <b>R$ <?php echo $dds['valor_leilao']; ?></b></span>
+                                            class="gender text-uppercase">Valor: <b>R$ <?php echo $this->Models_model->convertPrize($dds['valor_leilao'],4); ?></b></span>
+                                        <span class="title-price line-through">R$ <?php echo number_format($dds['valor_leilao'],2,'.',',');?></span>
                                     </div>
                                     <div class="product-price">
                                         <!--Inicio - Preço atual -->

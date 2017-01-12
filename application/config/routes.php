@@ -71,3 +71,4 @@ $route['configuracoes'] = 'pages/configuracoes';
 $route['profile'] = 'pages/exibirUs';
 $route['compras'] = 'pages/pagamento';
 $route['comprarPack'] = 'pages/comprarPack';
+$route['bonus'] = 'pages/API';

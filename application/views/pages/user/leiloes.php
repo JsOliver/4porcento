@@ -446,7 +446,7 @@ if ($page == 'leiloes'):
 
                                             if ($dds['status'] <> 2555):
                                                 ?>
-                                                <span class="title-price"><small>R$ <?php echo $dds['valor_leilao']; ?></small></span>
+                                                <span class="title-price"><small>R$ <?php echo $this->Models_model->convertPrize($dds['valor_leilao'],4); ?> </small></span>
                                             <?php endif; ?>
                                         </div>
                                     </div>

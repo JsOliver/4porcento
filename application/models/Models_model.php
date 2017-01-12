@@ -723,6 +723,8 @@ class Models_model extends CI_Model
 
     }
 
+
+
     public function addcredito($pacote)
     {
 
@@ -1041,6 +1043,16 @@ public function winner($leilao,$winner,$valor){
                 $dados_cpm['data_solicitation'] = date('d/m/Y H:i:s');
                 $this->db->insert('compras',$dados_cpm);
                 if($this->db->insert_id() > 0):
+
+                    $dd_ntf['id_user'] = $_SESSION['ID'];
+                    $dd_ntf['title'] = utf8_decode('Leilão arrematado');
+                    $dd_ntf['image'] = $result_lei[0]['image'];
+                    $dd_ntf['text'] = utf8_decode('Parabéns <b>'.$_SESSION['NAME'].'</b>, você arrematou o leilão numero <b>'.$leilao.'</b>. Estamos aguardando a confirmação do pagamento para a liberação do produto.');
+                    $dd_ntf['link'] = base_url('meus-arremates');
+                    $this->db->insert('notificacao',$dd_ntf);
+                    $ddp['id_user'] = $_SESSION['ID'];
+                    $this->db->insert('notificacao_read',$ddp);
+
                     return 1;
 
                 else:
@@ -1104,6 +1116,57 @@ public function convertPrize($valor,$porcento){
         }
     }
 
+
+
+    public function API($token,$code,$method){
+
+        if($token == 'pk221a'):
+        $token = strip_tags($token);
+        $code = strip_tags($code);
+        $method = strip_tags($method);
+
+    $this->db->from('cupon_loja');
+    $this->db->where('token',$code);
+    $query = $this->db->get();
+    if($query->num_rows() > 0):
+
+        $result = $query->result_array();
+        if($method == 1):
+
+            $this->db->from('user');
+            $this->db->where('id',$result[0]['id_user']);
+            $query = $this->db->get();
+            $resultu = $query->result_array();
+                if($query->num_rows() > 0):
+
+            $dado['userid'] = $result[0]['id_user'];
+            $dado['email'] = $resultu[0]['email'];
+            $dado['cpf'] = $resultu[0]['cpf'];
+            $dado['saldo'] = $result[0]['valor_show'];
+                return $dado;
+
+            else:
+            return 0;
+            endif;
+
+        endif;
+        if($method == 2):
+            
+            endif;
+        if($method <> 1 or $method <> 2 ):
+return 0;
+            
+            endif;
+else:
+    return 0;
+
+
+    endif;
+        else:
+
+            return 0;
+    endif;
+}
 }
 
 ?>

@@ -180,6 +180,8 @@ $data_atual_system = date('YmdHis');
                                                 if (isset($_GET['t']) and $_GET['t'] == 'disponiveis'):
                                                     $this->db->where('status', 1);
                                                 endif;
+                                                $this->db->where('done', 0);
+
                                                 $this->db->order_by('id', 'desc');
                                                 $this->db->limit($max, $atual);
                                                 $get = $this->db->get();
@@ -370,7 +372,8 @@ $data_atual_system = date('YmdHis');
 
                                                     <div class="form-group">
                                                         <label>Tempo de lance</label>
-                                                        <input required type="number" name="maxlance" class="form-control"
+                                                        <input required type="number" name="maxlance"
+                                                               class="form-control"
                                                                placeholder="Tempo de lance">
                                                     </div>
                                                     <div class="form-group">
@@ -509,7 +512,8 @@ $data_atual_system = date('YmdHis');
 
                                             <div class="form-group">
                                                 <label>Tempo de lance</label>
-                                                <input required value="<?php echo $result[0]['duracao_lance']; ?>" type="number" name="maxlance" class="form-control"
+                                                <input required value="<?php echo $result[0]['duracao_lance']; ?>"
+                                                       type="number" name="maxlance" class="form-control"
                                                        placeholder="Tempo de lance">
                                             </div>
                                             <div class="form-group">
@@ -574,7 +578,243 @@ $data_atual_system = date('YmdHis');
         else:
 
             ?>
-            arrematado
+
+            <?php
+
+            $this->db->from('leiloes');
+            $this->db->where('id',$_GET['arrematado']);
+            $query = $this->db->get();
+            $rowArremate = $query->num_rows();
+            $result = $query->result_array();
+            if($rowArremate == 0):
+                redirect(base_url('leiloes'), 'refresh');
+            endif;
+            ?>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Leilão arrematado por usuario <b><?php echo $result[0]['winner']; ?></b>
+                        </div>
+                        <?php
+                        $this->db->from('compras');
+                        $this->db->where('id_obj_compra',$_GET['arrematado']);
+                        $this->db->where('type',1);
+                        $query_cp = $this->db->get();
+                        $rowCp = $query_cp->num_rows();
+                        $resultCp = $query_cp->result_array();
+                        if($rowCp == 0):
+                            redirect(base_url('leiloes'), 'refresh');
+                        endif;
+
+
+                        $this->db->from('user');
+                        $this->db->where('id',$result[0]['winner']);
+                        $query_us = $this->db->get();
+                        $rowUs = $query_us->num_rows();
+                        $resultUs = $query_us->result_array();
+                        if($rowUs == 0):
+                            redirect(base_url('leiloes'), 'refresh');
+                        endif;
+
+                        ?>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="dataTables-example_wrapper"
+                                 class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table width="100%"
+                                               class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline"
+                                               id="dataTables-example" role="grid"
+                                               aria-describedby="dataTables-example_info" style="width: 100%;">
+                                            <thead>
+                                            <tr role="row">
+                                                <th tabindex="0" aria-controls="dataTables-example"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Rendering engine: activate to sort column descending"
+                                                    style="width: 77px;">Item arrematado
+                                                </th>
+                                                <th tabindex="0" aria-controls="dataTables-example"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Rendering engine: activate to sort column descending"
+                                                    style="width: 77px;">Vencedor
+                                                </th>
+                                                <th tabindex="0" aria-controls="dataTables-example"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Rendering engine: activate to sort column descending"
+                                                    style="width: 77px;">Valor com desconto
+                                                </th>
+
+                                                <th tabindex="0" aria-controls="dataTables-example"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Rendering engine: activate to sort column descending"
+                                                    style="width: 77px;"> Status do pagamento
+                                                </th>
+                                                <?php
+                                                if($resultCp[0]['submit'] == 1 and  $resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
+                                                ?>
+                                                    <th tabindex="0" aria-controls="dataTables-example"
+                                                        rowspan="1" colspan="1" aria-sort="ascending"
+                                                        aria-label="Rendering engine: activate to sort column descending"
+                                                        style="width: 77px;"> Url de rastreio
+                                                    </th>
+
+
+
+                                                <?php endif;?>
+
+                                                <?php
+                                                if($resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4 and $resultCp[0]['submit'] == 2 or $resultCp[0]['submit'] == 3 ):
+                                                ?>
+                                                    <th tabindex="0" aria-controls="dataTables-example"
+                                                        rowspan="1" colspan="1" aria-sort="ascending"
+                                                        aria-label="Rendering engine: activate to sort column descending"
+                                                        style="width: 77px;"> Status do recebimento
+                                                    </th>
+
+
+
+                                                <?php endif;?>
+                                                <?php
+                                                if($resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
+                                                ?>
+                                                    <th tabindex="0" aria-controls="dataTables-example"
+                                                        rowspan="1" colspan="1" aria-sort="ascending"
+                                                        aria-label="Rendering engine: activate to sort column descending"
+                                                        style="width: 77px;"> Resolvido
+                                                    </th>
+                                                <?php endif;?>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                            <tr class="gradeA even" role="row">
+                                                <td class="sorting_1"><b><?php echo $_GET['arrematado'];?></b></td>
+                                                <td><small><b><a href="<?php echo base_url('adm/clientes?q='.$result[0]['winner']);?>" target="_blank"><?php echo $resultUs[0]['firstname'].' '.$resultUs[0]['lastname'];?></a></b></small></td>
+                                                <td>R$ <?php echo $resultCp[0]['value_show'];?></td>
+                                                <td class="center">
+
+                                                    <?php
+
+                                                    if($resultCp[0]['status'] == 1 or $resultCp[0]['status'] == 2):
+                                                    echo '<b class="text-info">Aguardando pagamento</b>';
+                                                    endif;
+
+                                                    if($resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
+                                                    echo '<b class="text-success">Pagamento aprovado</b>';
+                                                    endif;
+
+                                                    if($resultCp[0]['status'] == 5):
+                                                    echo '<b class="text-warning">Em disputa</b>';
+                                                    endif;
+
+                                                    if($resultCp[0]['status'] == 6):
+                                                    echo '<b class="text-danger">Devolvida</b>';
+                                                    endif;
+
+                                                    if($resultCp[0]['status'] == 7):
+                                                    echo '<b class="text-danger">Cancelada</b>';
+                                                    endif;
+
+
+                                                    ?>
+                                                </td>
+
+                                                <?php
+                                                if($resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
+                                                ?>
+
+                                                    <script>
+
+                                                        function rastreio(tp) {
+
+                                                            if(tp == 1){
+                                                                $("#rastreio").html('<input type="text" onkeypress="if (event.keyCode==13){ track(this.value);return false;}" />');
+
+                                                            }
+                                                            if(tp == 2){
+                                                                $("#rastreio").html('<input type="text" onkeypress="if (event.keyCode==13){ trackup(this.value);return false;}" />');
+
+                                                            }
+
+                                                        }
+                                                        
+                                                        function track(url) {
+
+                                                            $("#rastreio").html('<a href="'+url+'" target="_blank">Rastrear objeto</a>');
+                                                            $.post("<?php echo base_url('pages/trackNew');?>",{url:url,arr:<?php echo $_GET['arrematado'];?>},function (res) {});
+                                                        }
+                                                        function trackup(url) {
+
+                                                            $("#rastreio").html('<a href="'+url+'" target="_blank">Rastrear objeto</a>');
+                                                            $.post("<?php echo base_url('pages/trackNewup');?>",{url:url,arr:<?php echo $_GET['arrematado'];?>},function (res) {});
+                                                        }
+                                                    </script>
+                                                <td class="center" id="rastreio">
+
+                                                    <?php
+                                                    if($resultCp[0]['submit'] == 3):
+                                                        echo '<b>Pacote entregue</b>';
+                                                        endif;
+
+                                                    if($resultCp[0]['submit'] <> 3):
+
+                                                        $this->db->from('objetos_correios');
+                                                        $this->db->where('item_id',$_GET['arrematado']);
+                                                        $query_qr = $this->db->get();
+                                                        $rowQr = $query_qr->num_rows();
+                                                        $resultQr = $query_qr->result_array();
+                                                    if($rowQr > 0):
+
+                                                        if(empty($resultQr[0]['code'])):
+                                                            echo '<b class="text-warning" onclick="rastreio(2);">Objeto não postado</b>';
+                                                            else:
+                                                                if($resultCp[0]['submit'] == 1):
+                                                                    echo '<a href="'.$resultQr[0]['code'].'" target="_blank" style="font-weight: bold;" class="text-success">Rastrear objeto</a><br><a onclick="rastreio(2);">Alterar URL</a>';
+                                                                    else:
+                                                                        echo '<a style="font-weight: bold;" class="text-success">Aguardando busca</a>';
+                                                                        endif;
+
+
+                                                        endif;
+
+                                                else:
+
+                                        echo '<b class="text-warning" onclick="rastreio(1);">Objeto não postado</b>';
+                                                        endif;
+                                                    endif;
+                                                    ?>
+
+                                                </td>
+                                                <?php endif;?>
+
+                                                <?php
+                                                if($resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
+                                                ?>
+                                                 <td class="center">
+                                                 <a href="<?php echo base_url('pages/done?id='.$_GET['arrematado']);?>" class="btn btn-success">Resolvido</a>
+                                                 </td>
+
+                                                <?php endif;?>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
 
         <?php endif;
         ?>
