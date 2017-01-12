@@ -354,7 +354,11 @@ if ($page == 'account'):
                                         echo ' <small class="hex"><b>Começa:</b> ' . $dia . '/' . $mes . '/' . $ano . ' as ' . $hora . ':' . $minuto . ':' . $segundo . '</small>';
                                     endif;
 
+                                    if ($dds['status'] == 1 and $data_atual_system >= $dds['inicio_data']):
 
+                                        echo ' <small class="hex"><b>0</b> pessoas online / <b>0</b> lugares disponiveis</small>';
+
+                                    endif;
                                     ?>
                                 </td>
                                 <td>

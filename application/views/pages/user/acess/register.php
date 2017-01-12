@@ -156,24 +156,46 @@ function register() {
     $this->db->from('user');
     $queryu = $this->db->get();
     $users = $queryu->num_rows();
+
+    $this->db->from('leiloes');
+    $queryl = $this->db->get();
+    $leis = $queryl->num_rows();
+
+    $this->db->from('leiloes');
+    $this->db->where('status',2555);
+    $this->db->or_where('status',0);
+    $queryln = $this->db->get();
+    $leisn = $queryln->num_rows();
+
+
+
+    $this->db->from('textos');
+    $this->db->order_by('id','desc');
+    $this->db->limit(1,0);
+    $query = $this->db->get();
+    $row = $query->num_rows();
+    $result = $query->result_array();
+        $t1_cad = $result[0]['t1_cad'];
+        $d1_cad = $result[0]['d1_cad'];
+
     ?>
     <!--=== Registre ===-->
     <div class="log-reg-v3 content-md margin-bottom-30">
         <div class="container">
             <div class="row">
                 <div class="col-md-7 md-margin-bottom-50">
-                    <h2 class="welcome-title">Bem vindo ao 4 porcento</h2>
-                    <p><cite>Aqui sera um texto explicativo.</cite></p><br>
+                    <h2 class="welcome-title"><?php echo strip_tags($t1_cad);?></h2>
+                    <p><cite><?php echo $d1_cad;?></cite></p><br>
                     <div class="row margin-bottom-50">
                         <div class="col-sm-4 md-margin-bottom-20">
                             <div class="site-statistics">
-                                <span>0</span>
+                                <span><?php echo number_format($leis);?></span>
                                 <small>Leilões</small>
                             </div>
                         </div>
                         <div class="col-sm-4 md-margin-bottom-20">
                             <div class="site-statistics">
-                                <span>0</span>
+                                <span><?php echo number_format($leisn);?></span>
                                 <small>Finalizados</small>
                             </div>
                         </div>
@@ -185,7 +207,7 @@ function register() {
                         </div>
                     </div>
                     <div class="members-number">
-                        <h3>Junte-se, somos  <span class="shop-green"><cite>0</cite></span> membros. </h3>
+                        <h3>Junte-se, já somos  <span class="shop-green"><cite><?php echo number_format($users);?></cite></span> membros. </h3>
                         <img class="img-responsive" src="assets/img/map.png" alt="">
                     </div>
                 </div>

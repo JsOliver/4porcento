@@ -35,7 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
-    <?php if($page == 'leilao'):?>
+    <?php if($page == 'leilao' or $page == 'textos'):?>
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 
 
@@ -68,6 +68,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             jQuery('#cep').mask('00.000-000');
             jQuery('#dateinicio').mask('00/00/0000 00:00:00');
             jQuery('#valor').mask("#,##0.00", {reverse: true});
+            jQuery('#valor25').mask("#,##0.00", {reverse: true});
             jQuery('#valor2').mask("###0.00", {reverse: true});
             jQuery('#numero').mask("###000", {reverse: true});
             jQuery('#numero1').mask("###000", {reverse: true});
@@ -128,6 +129,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                     <li>
                         <a href="<?php echo base_url('adm/carrosel');?>"><i class="fa fa-slideshare fa-fw"></i> Slides</a>
+                    </li>
+
+                    <li>
+                        <a href="<?php echo base_url('adm/textos');?>"><i class="fa fa-font fa-fw"></i> Textos</a>
                     </li>
 
 

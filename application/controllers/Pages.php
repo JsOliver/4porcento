@@ -47,6 +47,117 @@ class Pages extends CI_Controller
 
     }
 
+
+    public function EditText(){
+
+
+        @$data_atual_system = date('YmdHis');
+
+        $this->load->library('functions');
+        $log = $this->Models_model->logVer();
+        if ($log == true and $_SESSION['TYPE'] == 54):
+
+            if(isset($_POST['type']) and $_POST['type'] == 3 and isset($_POST['explicativo']) and isset($_POST['cite']) and isset($_POST['explicativo1']) and isset($_POST['video']) and !empty($_POST['explicativo']) and !empty($_POST['cite']) and !empty($_POST['explicativo1'])):
+
+            $this->db->from('textos');
+            $query = $this->db->get();
+                $dados['d1_about'] = $_POST['explicativo'];
+                $dados['cite_about'] = $_POST['cite'];
+                $dados['d2_about'] = $_POST['explicativo1'];
+                $dados['video'] = $_POST['video'];
+            if($query->num_rows() == 0):
+                $this->db->insert('textos',$dados);
+
+                else:
+                    $this->db->update('textos',$dados);
+
+                endif;
+
+            endif;
+
+            if(isset($_POST['type']) and $_POST['type'] == 2 and isset($_POST['title']) and isset($_POST['explicativo']) and isset($_POST['title1']) and isset($_POST['explicativo1']) and isset($_POST['title2']) and isset($_POST['explicativo2']) and !empty($_POST['explicativo']) and !empty($_POST['title1']) and !empty($_POST['explicativo1']) and !empty($_POST['title']) and !empty($_POST['title2']) and !empty($_POST['explicativo2'])):
+
+                $this->db->from('textos');
+                $query = $this->db->get();
+                $dados['t1_log'] = $_POST['title'];
+                $dados['d1_log'] = $_POST['explicativo'];
+                $dados['t2_log'] = $_POST['title1'];
+                $dados['d2_log'] = $_POST['explicativo1'];
+                $dados['t3_log'] = $_POST['title2'];
+                $dados['d3_log'] = $_POST['explicativo2'];
+                if($query->num_rows() == 0):
+                    $this->db->insert('textos',$dados);
+
+                else:
+                    $this->db->update('textos',$dados);
+
+                endif;
+
+            endif;
+
+
+            if(isset($_GET['type']) and $_GET['type'] == 1 and isset($_GET['title']) and isset($_GET['explicativo']) and !empty($_GET['title']) and !empty($_GET['explicativo'])):
+                $dados['t1_cad'] = $_GET['title'];
+                $dados['d1_cad'] = $_GET['explicativo'];
+                $this->db->from('textos');
+                $query = $this->db->get();
+
+                if($query->num_rows() == 0):
+                    $this->db->insert('textos',$dados);
+
+                else:
+                    $this->db->update('textos',$dados);
+
+                endif;
+
+            endif;
+
+            redirect(base_url('adm/textos'), 'refresh');
+
+        endif;
+
+
+    }
+
+    public function entregue(){
+
+        $this->load->library('functions');
+        $log = $this->Models_model->logVer();
+        if (isset($_GET['i']) and !empty($_GET['i']) and $log == true and $_SESSION['TYPE'] == 54 or $log == true and $_SESSION['TYPE'] == 53):
+
+            $dado['submit'] = 3;
+        $this->db->where('submit !=',3);
+        $this->db->update('compras',$dado);
+            redirect(base_url('configuracoes'), 'refresh');
+
+
+        endif;
+    }
+
+    public function texto(){
+
+        @$data_atual_system = date('YmdHis');
+
+        $this->load->library('functions');
+        $log = $this->Models_model->logVer();
+        if ($log == true and $_SESSION['TYPE'] == 54):
+            $dados['status'] = $log;
+            $dados['page'] = 'textos';
+            $this->load->view('pages/admin/texto', $dados);
+            endif;
+    }
+
+    public function about(){
+
+        @$data_atual_system = date('YmdHis');
+            $dados['page'] = 'sobre';
+        $this->load->library('functions');
+        $log = $this->Models_model->logVer();
+            $dados['status'] = $log;
+
+            $this->load->view('pages/user/about', $dados);
+    }
+
     public function sala()
     {
         @$data_atual_system = date('YmdHis');
@@ -734,6 +845,31 @@ class Pages extends CI_Controller
 
     }
 
+    public function newcredit(){
+
+
+        if (isset($_SESSION['ID']) and $_SESSION['TYPE'] == 54):
+
+            $this->db->from('creditos');
+            $this->db->where('usuario',$_POST['user']);
+            $query = $this->db->get();
+            $dados['credito'] = $_POST['valor'];
+        if($query->num_rows() > 0):
+
+            $this->db->where('usuario',$_POST['user']);
+            $this->db->update('creditos',$dados);
+
+            else:
+                $dados['usuario'] = $_POST['user'];
+
+                $this->db->insert('creditos',$dados);
+
+        endif;
+
+            endif;
+
+    }
+
     public function checkverMessage()
     {
         if (isset($_SESSION['ID'])):
@@ -781,9 +917,20 @@ class Pages extends CI_Controller
 
                         <li class="left clearfix">
                 <span class=" pull-left">
-                            <img src="<?php echo base_url('pages/exibirUs?id=' . $dds['id_user']); ?>"
-                                 style="opacity:1;width: 50px; height: 50px;object-fit: cover; object-position: center;"
-                                 alt="User Avatar" class="img-circle"/>
+                        <?php
+                        $this->db->from('user');
+                        $this->db->where('id',$_SESSION['ID']);
+                        $query = $this->db->get();
+                        if(empty($query->result_array()[0]['image'])):
+                            ?>
+                            <img id="profileimg" class="img-responsive profile-img margin-bottom-20"
+                                 src="<?php echo base_url('assets/img/user.jpg'); ?>"
+                                 style="height: 250px; object-fit: cover; object-position: center;" alt="">
+                        <?php else: ?>
+                            <img id="profileimg" class="img-responsive profile-img margin-bottom-20"
+                                 src="<?php echo base_url('pages/exibirUs?id=' . $_SESSION['ID']); ?>"
+                                 style="height: 250px; object-fit: cover; object-position: center;" alt="">
+                        <?php endif;?>
                         </span>
                             <div class="chat-body clearfix">
                                 <div class="header">

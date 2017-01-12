@@ -70,7 +70,7 @@ if($page <> 'invice'):
 <!-- End Wait Block -->
 <?php
 
-if ($page == 'sala' or $page == 'invice'):
+if ($page == 'sala' or $page == 'invice' or $page == 'sobre'):
     ?>
 
     <!-- JS Global Compulsory -->

@@ -33,6 +33,7 @@ class Models_model extends CI_Model
             $dados['genre'] = $genero;
             $dados['cpf'] = $cpf;
             $dados['username'] = $usuario;
+            $dados['type'] = 1;
             $this->db->insert('user', $dados);
 
             @session_start();
@@ -40,7 +41,7 @@ class Models_model extends CI_Model
             $_SESSION['NAME'] = $nome . ' ' . $sobrenome;
             $_SESSION['EMAIL'] = $email;
             $_SESSION['PASS'] = hash('whirlpool', md5(sha1($senha)));
-            $_SESSION['TYPE'] = 0;
+            $_SESSION['TYPE'] = 1;
             $_SESSION['ID'] = $this->db->insert_id();
             echo 11;
         }

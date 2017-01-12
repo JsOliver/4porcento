@@ -173,7 +173,22 @@ if ($page == 'users'):
                                                 echo number_format($rowValue);
                                                 ?>
                                             </td>
-                                            <td>
+                                            <script>
+                                                
+
+                                                function add() {
+
+                                                    $("#saldo").html('<input id="valor25" onkeypress="if (event.keyCode==13){ newftn(this.value);return false;}"/>');
+                                                }
+                                                function newftn(valor) {
+
+                                                    $.post("<?php echo base_url('pages/newcredit');?>",{user:<?php echo $dds['id'];?>,valor:valor},function (res) {});
+                                                    $("#saldo").html('<span id="sld" onclick="add();">'+valor+'</span>');
+
+                                                }
+                                            </script>
+                                            <td id="saldo">
+                                                <span id="sld" onclick="add();">
                                                 <?php
 
                                                 $this->db->from('creditos');
@@ -191,6 +206,7 @@ if ($page == 'users'):
                                                     ?>
 
                                                 <?php endif; ?>
+                                                    </span>
                                             </td>
 
                                             <td class="center"><a
@@ -285,9 +301,3 @@ if ($page == 'users'):
 
 endif; ?>
 
-<?php
-
-$this->load->view('fixed_files/admin/footer');
-
-
-?>

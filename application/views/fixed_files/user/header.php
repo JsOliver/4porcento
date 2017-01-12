@@ -132,7 +132,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url(); ?>/assets/js/plugins/countdown.js"></script>
     <?php endif; ?>
 
-    <?php if ($page == 'register' or $page == 'configuracoes' or $page == 'compra' or $page == 'invice'): ?>
+    <?php if ($page == 'register' or $page == 'configuracoes' or $page == 'compra' or $page == 'invice' or $page == 'sobre'): ?>
         <script src="<?php echo base_url(); ?>/assets/plugins/jquery/jquery.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/plugins/sky-forms-pro/skyforms/js/jquery.form.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js"></script>
@@ -234,9 +234,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <!-- Nav Menu -->
                     <ul class="nav navbar-nav">
                         <!-- Pages -->
-                        <li class="dropdown active">
+                        <li class="dropdown <?php if($page == 'home'): echo 'active'; endif;?>">
                             <a href="<?php echo base_url('home'); ?>">
                                 Inicio
+                            </a>
+
+                        </li>
+                        <li class="dropdown <?php if($page == 'sobre'): echo 'active'; endif;?>">
+
+                            <a href="<?php echo base_url('sobre'); ?>">
+                                Sobre
                             </a>
 
                         </li>
@@ -385,10 +392,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <!--Left Sidebar-->
             <div class="col-md-3 md-margin-bottom-40">
 
-
+<?php
+$this->db->from('user');
+$this->db->where('id',$_SESSION['ID']);
+$query = $this->db->get();
+if(empty($query->result_array()[0]['image'])):
+?>
                 <img id="profileimg" class="img-responsive profile-img margin-bottom-20"
-                     src="<?php echo base_url('pages/exibirUs?id=' . $_SESSION['ID']); ?>"
+                     src="<?php echo base_url('assets/img/user.jpg'); ?>"
                      style="height: 250px; object-fit: cover; object-position: center;" alt="">
+
+                <?php else: ?>
+    <img id="profileimg" class="img-responsive profile-img margin-bottom-20"
+         src="<?php echo base_url('pages/exibirUs?id=' . $_SESSION['ID']); ?>"
+         style="height: 250px; object-fit: cover; object-position: center;" alt="">
+                <?php endif;?>
                 <br>
                 <b id="errorData"></b>
                 <form enctype="multipart/form-data" method="post">

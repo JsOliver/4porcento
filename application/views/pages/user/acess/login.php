@@ -112,6 +112,25 @@ function login(){
         <div class="container">
             <div class="row">
 
+                <?php
+
+                $this->db->from('textos');
+                $this->db->order_by('id','desc');
+                $this->db->limit(1,0);
+                $query = $this->db->get();
+                $row = $query->num_rows();
+                $result = $query->result_array();
+
+
+                $t1_log = $result[0]['t1_log'];
+                $d1_log = $result[0]['d1_log'];
+                $t2_log = $result[0]['t2_log'];
+                $d2_log = $result[0]['d2_log'];
+                $t3_log = $result[0]['t3_log'];
+                $d3_log = $result[0]['d3_log'];
+
+
+                ?>
 
                 <div class="col-md-7 md-margin-bottom-50">
                     <h2 class="welcome-title"></h2>
@@ -119,22 +138,22 @@ function login(){
                     <div class="info-block-v2">
                         <i class="icon icon-layers"></i>
                         <div class="info-block-in">
-                            <h3>Dispute produtos</h3>
-                            <p>Produtos incriveis com um preço exelente e com a confiança de uma boa compra</p>
+                            <h3><?php echo strip_tags($t1_log);?></h3>
+                            <p><?php echo $d1_log;?></p>
                         </div>
                     </div>
                     <div class="info-block-v2">
                         <i class="fa fa-trophy"></i>
                         <div class="info-block-in">
-                            <h3>Você não perde</h3>
-                            <p>Acumule seus créditos para trocar por produtos em nossa <a href="#">loja virtual</a>.</p>
+                            <h3><?php echo strip_tags($t2_log);?></h3>
+                            <p><?php echo $d2_log;?></p>
                         </div>
                     </div>
                     <div class="info-block-v2">
                         <i class="icon icon-paper-plane"></i>
                         <div class="info-block-in">
-                            <h3>Pague somente 4%</h3>
-                            <p>Você ira pagar somente 4% para participar do leilão e não ira pagar mais nada.</p>
+                            <h3><?php echo strip_tags($t3_log);?></h3>
+                            <p><?php echo $d3_log;?></p>
                         </div>
                     </div>
                 </div>
