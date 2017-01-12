@@ -652,6 +652,12 @@ $data_atual_system = date('YmdHis');
                                                     aria-label="Rendering engine: activate to sort column descending"
                                                     style="width: 77px;"> Status do pagamento
                                                 </th>
+
+                                                <th tabindex="0" aria-controls="dataTables-example"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Rendering engine: activate to sort column descending"
+                                                    style="width: 77px;"> Data do arremate
+                                                </th>
                                                 <?php
                                                 if($resultCp[0]['submit'] == 1 and  $resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
                                                 ?>
@@ -666,26 +672,23 @@ $data_atual_system = date('YmdHis');
                                                 <?php endif;?>
 
                                                 <?php
-                                                if($resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4 and $resultCp[0]['submit'] == 2 or $resultCp[0]['submit'] == 3 ):
+                                                if($resultCp[0]['submit'] == 3):
                                                 ?>
-                                                    <th tabindex="0" aria-controls="dataTables-example"
+                                              <th tabindex="0" aria-controls="dataTables-example"
                                                         rowspan="1" colspan="1" aria-sort="ascending"
                                                         aria-label="Rendering engine: activate to sort column descending"
                                                         style="width: 77px;"> Status do recebimento
                                                     </th>
+<?php endif;?>
 
 
 
-                                                <?php endif;?>
-                                                <?php
-                                                if($resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
-                                                ?>
                                                     <th tabindex="0" aria-controls="dataTables-example"
                                                         rowspan="1" colspan="1" aria-sort="ascending"
                                                         aria-label="Rendering engine: activate to sort column descending"
                                                         style="width: 77px;"> Resolvido
                                                     </th>
-                                                <?php endif;?>
+
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -723,6 +726,15 @@ $data_atual_system = date('YmdHis');
                                                     ?>
                                                 </td>
 
+                                                <td>
+                                                    <?php
+
+
+                                                    echo $resultCp[0]['data_solicitation'];
+                                                    ?>
+
+
+                                                </td>
                                                 <?php
                                                 if($resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
                                                 ?>
@@ -785,20 +797,20 @@ $data_atual_system = date('YmdHis');
 
                                         echo '<b class="text-warning" onclick="rastreio(1);">Objeto não postado</b>';
                                                         endif;
+
+
+
                                                     endif;
                                                     ?>
 
                                                 </td>
-                                                <?php endif;?>
+                                                <?php  endif;?>
 
-                                                <?php
-                                                if($resultCp[0]['status'] == 3 or $resultCp[0]['status'] == 4):
-                                                ?>
+
                                                  <td class="center">
                                                  <a href="<?php echo base_url('pages/done?id='.$_GET['arrematado']);?>" class="btn btn-success">Resolvido</a>
                                                  </td>
 
-                                                <?php endif;?>
 
                                             </tr>
                                             </tbody>

@@ -144,40 +144,11 @@ class Pages extends CI_Controller
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
         if ($log == true):
-            $this->db->from('compras');
-            $this->db->where('id_user', $_SESSION['ID']);
-            $this->db->where('status', 1);
-            $this->db->or_where('status', 2);
-            $this->db->or_where('status', 5);
-            $query = $this->db->get();
-
+            $this->Models_model->addcredit($_SESSION['ID']);
             $dadas['status'] = $log;
             $dadas['page'] = 'account';
             $this->load->view('pages/user/account/account', $dadas);
-            if ($query->num_rows() > 0):
-                $result = $query->result_array();
-                foreach ($result as $dds) {
-                    $check = $this->Models_model->check_payment($dds['reference_code']);
 
-                    if ($check !== 0):
-
-                        $dados['status'] = @$check->transactions->transaction->status;
-                        $dados['transaction_code'] = @$check->transactions->transaction->code;
-                        $dados['data_payment'] = @$check->transactions->transaction->date;
-                        if ($dds['type'] == 2 and $dds['submit'] < 3 and $dds['submit'] >= 1 and $check->transactions->transaction->status == 3 or $check->transactions->transaction->status == 4):
-                            $dados['submit'] = 3;
-                            $this->db->from('pacotes');
-                            $this->db->where('id', $dds['id_obj_compra']);
-                            $query = $this->db->get();
-                            if ($query->num_rows() > 0):
-                                $this->Models_model->addcredito($dds['id_obj_compra']);
-                            endif;
-                        endif;
-                        $this->db->where('reference_code', @$check->transactions->transaction->reference);
-                        $this->db->update('compras', $dados);
-                    endif;
-                }
-            endif;
         else:
             redirect(base_url('home'), 'refresh');
 
@@ -234,39 +205,10 @@ class Pages extends CI_Controller
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
         if ($log == true):
+            $this->Models_model->addcredit($_SESSION['ID']);
             $dadas['status'] = $log;
             $dadas['page'] = 'pagamentos';
             $this->load->view('pages/user/account/compras', $dadas);
-            $this->db->from('compras');
-            $this->db->where('id_user', $_SESSION['ID']);
-            $this->db->where('status', 1);
-            $this->db->or_where('status', 2);
-            $this->db->or_where('status', 5);
-            $query = $this->db->get();
-            if ($query->num_rows() > 0):
-                $result = $query->result_array();
-                foreach ($result as $dds) {
-                    $check = $this->Models_model->check_payment($dds['reference_code']);
-
-                    if ($check !== 0):
-
-                        $dados['status'] = @$check->transactions->transaction->status;
-                        $dados['transaction_code'] = @$check->transactions->transaction->code;
-                        $dados['data_payment'] = @$check->transactions->transaction->date;
-                        if ($dds['type'] == 2 and $dds['submit'] < 3 and $dds['submit'] >= 1 and $check->transactions->transaction->status == 3 or $check->transactions->transaction->status == 4):
-                            $dados['submit'] = 3;
-                            $this->db->from('pacotes');
-                            $this->db->where('id', $dds['id_obj_compra']);
-                            $query = $this->db->get();
-                            if ($query->num_rows() > 0):
-                                $this->Models_model->addcredito($dds['id_obj_compra']);
-                            endif;
-                        endif;
-                        $this->db->where('reference_code', @$check->transactions->transaction->reference);
-                        $this->db->update('compras', $dados);
-                    endif;
-                }
-            endif;
         else:
             redirect(base_url('home'), 'refresh');
 
@@ -330,37 +272,7 @@ class Pages extends CI_Controller
         $this->load->library('functions');
         $log = $this->Models_model->logVer();
         if ($log == true):
-            $this->db->from('compras');
-            $this->db->where('id_user', $_SESSION['ID']);
-            $this->db->where('status', 1);
-            $this->db->or_where('status', 2);
-            $this->db->or_where('status', 5);
-            $query = $this->db->get();
-            if ($query->num_rows() > 0):
-                $result = $query->result_array();
-                foreach ($result as $dds) {
-                    $check = $this->Models_model->check_payment($dds['reference_code']);
-
-                    if ($check !== 0):
-
-                        $dados['status'] = @$check->transactions->transaction->status;
-                        $dados['transaction_code'] = @$check->transactions->transaction->code;
-                        $dados['data_payment'] = @$check->transactions->transaction->date;
-                        if ($dds['type'] == 2 and $dds['submit'] < 3 and $dds['submit'] >= 1 and $check->transactions->transaction->status == 3 or $check->transactions->transaction->status == 4):
-                            $dados['submit'] = 3;
-                            $this->db->from('pacotes');
-                            $this->db->where('id', $dds['id_obj_compra']);
-                            $query = $this->db->get();
-                            if ($query->num_rows() > 0):
-                                $this->Models_model->addcredito($dds['id_obj_compra']);
-                            endif;
-                        endif;
-                        $this->db->where('reference_code', @$check->transactions->transaction->reference);
-                        $this->db->update('compras', $dados);
-                    endif;
-                }
-            endif;
-
+            $this->Models_model->addcredit($_SESSION['ID']);
             $dadas['status'] = $log;
             $dadas['page'] = 'compra';
             $this->load->view('pages/user/compra', $dadas);
@@ -391,7 +303,10 @@ class Pages extends CI_Controller
         $log = $this->Models_model->logVer();
 
         if ($log == false):
-            echo $this->Models_model->login($_POST['email'], $_POST['pass']);
+             if($this->Models_model->login($_POST['email'], $_POST['pass']) == 11):
+                 $this->Models_model->addcredit($_SESSION['ID']);
+                 echo 11;
+                 endif;
 
         endif;
     }
@@ -1480,4 +1395,10 @@ if(so == 0){
                 echo 0;
                 endif;
     }
+
+
+public function teste(){
+
+   echo $this->Models_model->addcredit($_SESSION['ID']);
+}
 }

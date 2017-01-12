@@ -226,6 +226,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
 
                 <?php
+                if($status == true):
                 $this->db->from('notificacao');
                 $this->db->where('id_user',$_SESSION['ID']);
                 $query = $this->db->limit(10,0);
@@ -233,7 +234,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 $query = $this->db->get();
                 $count = $query->num_rows();
 
-                if($status == true and $count > 0):?>
+                if($count > 0):?>
                 <div class="shop-badge badge-icons pull-right">
                     <a href="#"><i class="fa fa-bell-o"></i></a>
                     <?php
@@ -287,7 +288,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                     <?php endif; ?>
                 </div>
-            <?php endif;?>
+            <?php endif;endif;?>
 
                 <div class="collapse navbar-collapse navbar-responsive-collapse">
                     <!-- Nav Menu -->

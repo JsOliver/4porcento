@@ -105,29 +105,26 @@ if (!isset($_GET['info'])):
                                         <?php echo $dds['title']; ?>
                                     </td>
 
-
                                     <td>
                                         <?php
                                         if ($dds['status'] <> 1 and $dds['status'] <> 2 and $dds['status'] <> 3 and $dds['status'] <> 4 and $dds['status'] <> 5 and $dds['status'] <> 6 and $dds['status'] <> 7):
                                             ?>
                                             <button class="btn-u btn-u-yellow btn-block btn-u-xs"><i
-                                                    class="fa fa-sort-amount-desc margin-right-5"></i> Status
-                                                indísponivel
+                                                    class="fa fa-sort-amount-desc margin-right-5"></i> Status indísponivel
                                             </button>
 
                                         <?php endif; ?>
                                         <?php
-                                        if ($dds['status'] == 1):
+                                        if ($dds['status'] == 1 and $dds['type'] == 2):
                                             ?>
                                             <button class="btn-u btn-u-blue btn-block btn-u-xs"><i
-                                                    class="fa fa-sort-amount-desc margin-right-5"></i> Aguardando
-                                                pagamento
+                                                    class="fa fa-sort-amount-desc margin-right-5"></i> Aguardando pagamento
                                             </button>
 
                                         <?php endif; ?>
 
                                         <?php
-                                        if ($dds['status'] == 2):
+                                        if ($dds['status'] == 2 and $dds['type'] == 2):
                                             ?>
                                             <button class="btn-u btn-u-blue btn-block btn-u-xs"><i
                                                     class="fa fa-sort-amount-desc margin-right-5"></i> Em análise
@@ -136,7 +133,7 @@ if (!isset($_GET['info'])):
                                         <?php endif; ?>
 
                                         <?php
-                                        if ($dds['status'] == 3):
+                                        if ($dds['status'] == 3 and $dds['type'] == 2):
                                             ?>
                                             <button class="btn-u btn-u-green btn-block btn-u-xs"><i
                                                     class="fa fa-sort-amount-desc margin-right-5"></i> Paga
@@ -144,7 +141,7 @@ if (!isset($_GET['info'])):
 
                                         <?php endif; ?>
                                         <?php
-                                        if ($dds['status'] == 4):
+                                        if ($dds['status'] == 4 and $dds['type'] == 2):
                                             ?>
                                             <button class="btn-u btn-u-green btn-block btn-u-xs"><i
                                                     class="fa fa-sort-amount-desc margin-right-5"></i> Disponível
@@ -152,7 +149,7 @@ if (!isset($_GET['info'])):
 
                                         <?php endif; ?>
                                         <?php
-                                        if ($dds['status'] == 5):
+                                        if ($dds['status'] == 5 and $dds['type'] == 2):
                                             ?>
                                             <button class="btn-u btn-u-yellow btn-block btn-u-xs"><i
                                                     class="fa fa-sort-amount-desc margin-right-5"></i> Em disputa
@@ -161,7 +158,7 @@ if (!isset($_GET['info'])):
                                         <?php endif; ?>
 
                                         <?php
-                                        if ($dds['status'] == 6):
+                                        if ($dds['status'] == 6 and $dds['type'] == 2):
                                             ?>
                                             <button class="btn-u btn-u-red btn-block btn-u-xs"><i
                                                     class="fa fa-sort-amount-desc margin-right-5"></i> Devolvida
@@ -170,10 +167,20 @@ if (!isset($_GET['info'])):
                                         <?php endif; ?>
 
                                         <?php
-                                        if ($dds['status'] == 7):
+                                        if ($dds['status'] == 7 and $dds['type'] == 2):
                                             ?>
                                             <button class="btn-u btn-u-red btn-block btn-u-xs"><i
                                                     class="fa fa-sort-amount-desc margin-right-5"></i> Cancelada
+                                            </button>
+
+                                        <?php endif; ?>
+
+
+                                        <?php
+                                        if ($dds['status'] == 3 and $dds['type'] == 1):
+                                            ?>
+                                            <button class="btn-u btn-u-green btn-block btn-u-xs"><i
+                                                    class="fa fa-sort-amount-desc margin-right-5"></i> Pago
                                             </button>
 
                                         <?php endif; ?>
@@ -560,8 +567,10 @@ if (!isset($_GET['info'])):
                 ?>
             <li><strong>Tipo de envio: </strong>
                 <?php
+
+
                 if ($result41[0]['submit'] == 1):
-                    echo '<b class="text-info">Entraga em casa</b>';
+                    echo '<b class="text-info">Entrega por envio</b>';
                 endif;
 
 

@@ -583,7 +583,48 @@ class Models_model extends CI_Model
         return simplexml_load_string($xml);
     }
 
+public function addcredit($user){
 
+    $this->db->from('compras');
+    $this->db->where('id_user', $user);
+    $this->db->where('status', 1);
+    $this->db->or_where('status', 2);
+    $this->db->or_where('status', 5);
+    $query = $this->db->get();
+    if ($query->num_rows() > 0):
+        $result = $query->result_array();
+        foreach ($result as $dds) {
+            $check = $this->check_payment($dds['reference_code']);
+
+            if ($check !== 0):
+
+                $dados['status'] = @$check->transactions->transaction->status;
+                $dados['transaction_code'] = @$check->transactions->transaction->code;
+                $dados['data_payment'] = @$check->transactions->transaction->date;
+                if ($dds['type'] == 2 and $dds['submit'] < 3  and $check->transactions->transaction->status == 3 or $check->transactions->transaction->status == 4):
+
+
+                    $dados['submit'] = 3;
+                    $this->db->from('pacotes');
+                    $this->db->where('id', $dds['id_obj_compra']);
+                    $query = $this->db->get();
+                    if ($query->num_rows() > 0):
+                        $this->addcredito($dds['id_obj_compra']);
+                    endif;
+                endif;
+
+
+                $this->db->where('reference_code', @$check->transactions->transaction->reference);
+                $this->db->update('compras', $dados);
+
+            endif;
+        }
+        return $query->num_rows();
+    else:
+        return 0;
+    endif;
+
+}
     public function comprarPack($compra)
     {
         $this->db->from('pacotes');
@@ -1037,7 +1078,7 @@ public function winner($leilao,$winner,$valor){
                 $dados_cpm['value_pagseguro'] = $valor;
                 $dados_cpm['pre_approval'] = $payment -> code;
                 $dados_cpm['reference_code'] = $reference;
-                $dados_cpm['status'] = 1;
+                $dados_cpm['status'] = 3;
                 $dados_cpm['submit'] = 1;
                 $dados_cpm['url_payment'] = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' . $payment->code;
                 $dados_cpm['data_solicitation'] = date('d/m/Y H:i:s');
@@ -1117,8 +1158,58 @@ public function convertPrize($valor,$porcento){
     }
 
 
+    public function compraAPI($token, $code,$valor)
+    {
 
-    public function API($token,$code,$method){
+        if (empty($token) or empty($code)) {
+
+            return 0;
+
+        }
+
+        else {
+
+            if($token == 'pk221a'):
+
+
+                $valor = number_format($valor,2,'.',',');
+                $this->db->from('cupon_loja');
+                $this->db->where('token', $code);
+                $query = $this->db->get();
+                $count = $query->num_rows();
+                $result = $query->result_array();
+                if ($count > 0):
+
+                    $valoracs = $result[0]['valor'];
+                    $valor_show = number_format($result[0]['valor_show'],2,'.',',');
+                    $dado['valor'] = str_replace(',', '', $valoracs) - str_replace(',', '', $valor);
+                    $dado['valor_show'] = $valor_show - $valor;
+                    $this->db->where('id_user', $_SESSION['ID']);
+                    if($this->db->update('cupon_loja', $dado)){
+                        return 3;
+
+                    }else{
+                        return 2;
+
+                    }
+
+
+                else:
+
+                   return 1;
+
+                endif;
+
+
+else:
+    return 0;
+    endif;
+
+        }
+
+
+    }
+    public function API($token,$code,$method,$valor){
 
         if($token == 'pk221a'):
         $token = strip_tags($token);
@@ -1151,11 +1242,17 @@ public function convertPrize($valor,$porcento){
 
         endif;
         if($method == 2):
-            
+            if($this->compraAPI($token,$code,$valor) == 3):
+return 1;
+                else:
+return 0;
+                endif;
             endif;
         if($method <> 1 or $method <> 2 ):
-return 0;
-            
+
+
+
+
             endif;
 else:
     return 0;

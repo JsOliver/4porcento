@@ -132,7 +132,7 @@ if ($page == 'account'):
 
                                     <?php endif; ?>
                                     <?php
-                                    if ($dds['status'] == 1):
+                                    if ($dds['status'] == 1 and $dds['type'] == 2):
                                         ?>
                                         <button class="btn-u btn-u-blue btn-block btn-u-xs"><i
                                                 class="fa fa-sort-amount-desc margin-right-5"></i> Aguardando pagamento
@@ -141,7 +141,7 @@ if ($page == 'account'):
                                     <?php endif; ?>
 
                                     <?php
-                                    if ($dds['status'] == 2):
+                                    if ($dds['status'] == 2 and $dds['type'] == 2):
                                         ?>
                                         <button class="btn-u btn-u-blue btn-block btn-u-xs"><i
                                                 class="fa fa-sort-amount-desc margin-right-5"></i> Em análise
@@ -150,7 +150,7 @@ if ($page == 'account'):
                                     <?php endif; ?>
 
                                     <?php
-                                    if ($dds['status'] == 3):
+                                    if ($dds['status'] == 3 and $dds['type'] == 2):
                                         ?>
                                         <button class="btn-u btn-u-green btn-block btn-u-xs"><i
                                                 class="fa fa-sort-amount-desc margin-right-5"></i> Paga
@@ -158,7 +158,7 @@ if ($page == 'account'):
 
                                     <?php endif; ?>
                                     <?php
-                                    if ($dds['status'] == 4):
+                                    if ($dds['status'] == 4 and $dds['type'] == 2):
                                         ?>
                                         <button class="btn-u btn-u-green btn-block btn-u-xs"><i
                                                 class="fa fa-sort-amount-desc margin-right-5"></i> Disponível
@@ -166,7 +166,7 @@ if ($page == 'account'):
 
                                     <?php endif; ?>
                                     <?php
-                                    if ($dds['status'] == 5):
+                                    if ($dds['status'] == 5 and $dds['type'] == 2):
                                         ?>
                                         <button class="btn-u btn-u-yellow btn-block btn-u-xs"><i
                                                 class="fa fa-sort-amount-desc margin-right-5"></i> Em disputa
@@ -175,7 +175,7 @@ if ($page == 'account'):
                                     <?php endif; ?>
 
                                     <?php
-                                    if ($dds['status'] == 6):
+                                    if ($dds['status'] == 6 and $dds['type'] == 2):
                                         ?>
                                         <button class="btn-u btn-u-red btn-block btn-u-xs"><i
                                                 class="fa fa-sort-amount-desc margin-right-5"></i> Devolvida
@@ -184,10 +184,20 @@ if ($page == 'account'):
                                     <?php endif; ?>
 
                                     <?php
-                                    if ($dds['status'] == 7):
+                                    if ($dds['status'] == 7 and $dds['type'] == 2):
                                         ?>
                                         <button class="btn-u btn-u-red btn-block btn-u-xs"><i
                                                 class="fa fa-sort-amount-desc margin-right-5"></i> Cancelada
+                                        </button>
+
+                                    <?php endif; ?>
+
+
+                                    <?php
+                                    if ($dds['status'] == 3 and $dds['type'] == 1):
+                                        ?>
+                                        <button class="btn-u btn-u-green btn-block btn-u-xs"><i
+                                                class="fa fa-sort-amount-desc margin-right-5"></i> Pago
                                         </button>
 
                                     <?php endif; ?>
@@ -198,21 +208,21 @@ if ($page == 'account'):
                                 </td>
                                 <td style="text-align: center;">
                                     <?php
-                                    if ($dds['status'] == 1):
+                                    if ($dds['status'] == 1 and $dds['type'] == 2):
                                         echo '<a href="'.$dds['url_payment'].'" target="_blank" class=" btn btn-success">Realizar pagamento</a>';
                                     endif;
-                                    if ($dds['status'] == 5):
+                                    if ($dds['status'] == 5 and $dds['type'] == 2):
                                         echo '<span class=" btn btn-danger">Aguardando disputa</span>';
                                     endif;
 
-                                    if ($dds['status'] == 6 or $dds['status'] == 7):
+                                    if ($dds['status'] == 6 or $dds['status'] == 7 and $dds['type'] == 2):
                                         echo '<span class=" btn btn-danger">Cancelado/devolvido</span>';
                                     endif;
                                     if ($dds['submit']  == 1 and $dds['type'] == 1 and $dds['status'] == 3 or $dds['status'] == 4):
                                         echo '<a href="'.base_url('meus-arremates').'" class=" btn btn-warning">Rastrear pedido</a>';
                                     endif;
 
-                                    if ($dds['submit'] == 3 and $dds['type'] == 1 and $dds['status'] == 3 or $dds['status'] == 4):
+                                    if ($dds['submit'] == 3  and $dds['type'] == 1 and $dds['status'] == 3 or $dds['status'] == 4):
                                         echo '<span class=" btn btn-success">Pedido entregue</span>';
                                     endif;
 
@@ -223,6 +233,12 @@ if ($page == 'account'):
                                     if ($dds['submit'] == 1 and $dds['type'] == 2 and $dds['status'] == 3 or $dds['status'] == 4):
                                         echo '<span class=" btn btn-success">Crédito adicionado</span>';
                                     endif;
+
+
+                                    if($dds['submit'] == 2 and $dds['type'] == 1 and $dds['status'] <> 3 ):
+                                        echo '<span class=" btn btn-success">Aguardando retirada</span>';
+
+                                        endif;
 
 
                                     ?>

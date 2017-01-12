@@ -44,7 +44,7 @@ if ($page == 'compra'):
         </script>
         <div class="row margin-bottom-60">
             <?php
-            $max = 9;
+            $max = 6;
             if (!isset($_GET['pg'])) {
                 $page_atual = 1;
 
@@ -98,8 +98,7 @@ if ($page == 'compra'):
                         </div>
                         <div class="product-service-in">
                             <h3>R$ <?php echo number_format($dds['valor'], 2, '.', ','); ?> </h3>
-                            <p><b><?php echo explode('.', $dds['valor'])[0]; ?></b> reais em créditos para participar de
-                                leilões</p>
+                            <p><b><?php echo $this->Models_model->limitarTexto($dds['title'],30); ?></b></p>
                             <span id="respck<?php echo $dds['id']; ?>">
                         <a class="btn btn-success text-white" style="cursor:pointer;color: white;"
                            onclick="compra('<?php echo $dds['id']; ?>')">Comprar por <b>R$ <?php echo number_format($dds['valor'], 2, '.', ','); ?> </b></a>
