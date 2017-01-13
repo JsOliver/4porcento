@@ -493,7 +493,7 @@ if (!isset($_GET['info'])):
                 if ($result12[0]['lances_totais'] == 1): echo ' lance'; endif;
                 if ($result12[0]['lances_totais'] > 1): echo ' lances'; endif; ?> </li>
             <li><strong>Duração do
-                    leilão:</strong> <?php echo $result12[0]['duracao_segundos'] / 60; ?>
+                    leilão:</strong> <?php echo ceil($result12[0]['duracao_segundos'] / 60); ?>
                 min
             </li>
             <?php
@@ -565,7 +565,10 @@ if (!isset($_GET['info'])):
                 if($result41[0]['status'] == 1 or $result41[0]['status'] == 2 or $result41[0]['status'] == 3 or $result41[0]['status'] == 4):
 
                 ?>
-            <li><strong>Tipo de envio: </strong>
+
+                    <?php if($result41[0]['submit'] <> 3):?>
+
+                    <li><strong>Tipo de envio: </strong>
                 <?php
 
 
@@ -632,6 +635,7 @@ else:
 
 
                         <?php
+                endif;
 endif;
 
             if ($result41[0]['status'] == 1):

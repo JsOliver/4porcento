@@ -206,55 +206,41 @@ if ($page == 'sala'):
 
         function startCountdown(){
 
-            if(tempo == <?php echo ceil($result[0]['duracao_lance'] - 2);?> ){
+
+            <?php
+            $tempo =  $result[0]['duracao_lance'];
+            $vezes = ceil($tempo / 20);
+            for($i=0;$i<$vezes;$i++){
+          if($i == 0):
+              $tpn = $tempo - 20;
+            endif;
+            $tpn = $tempo - ceil($i * 20);
+            ?>
+            if(tempo == <?php echo ceil($tpn);?> ){
                 $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
 
                     if(res1){
+
                         tempo = res1;
 
                     }
 
                 });
             }
-            if(tempo == <?php echo ceil($result[0]['duracao_lance'] - 5);?> ){
-                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
+            <?php }?>
 
-                    if(res1){
-                        tempo = res1;
-
-                    }
-
-                });
-            }
-
-            if(tempo == <?php echo ceil($result[0]['duracao_lance'] - 10);?> ){
-                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res2) {
-
-                    if(res2){
-                        tempo = res2;
-                    }
-
-                });
-            }
-            if(tempo == <?php echo ceil($result[0]['duracao_lance'] / 2 - 1);?> ){
-                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res3) {
-
-                    if(res3){
-                        tempo = res3;
-                    }
-
-                });
-            }
             if(tempo == 10 ){
-                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res3) {
+                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
 
-                    if(res3){
-                        tempo = res3;
+                    if(res1){
+                        tempo = res1;
+
                     }
 
                 });
-            }
-            if(tempo == 5 ){
+            }  
+            
+            if(tempo == 7 ){
                 $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
 
                     if(res1){
@@ -275,8 +261,7 @@ if ($page == 'sala'):
                 });
             }
 
-
-            if(tempo == 1 ){
+        if(tempo == 1 ){
                 $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
 
                     if(res1){
@@ -287,14 +272,13 @@ if ($page == 'sala'):
                 });
             }
 
-
             // Se o tempo não for zerado
             if((tempo - 1) >= 0){
 
                 // Pega a parte inteira dos minutos
                 var min = parseInt(tempo/60);
                 // Calcula os segundos restantes
-                var seg = tempo%60;
+                var seg = tempo;
 
                 // Formata o número menor que dez, ex: 08, 07, ...
                 if(min < 10){

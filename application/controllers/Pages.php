@@ -172,14 +172,33 @@ class Pages extends CI_Controller
             $get = $this->db->get();
             $count = $get->num_rows();
             if ($count > 0):
+
                 $result = $get->result_array();
 
                 $data_inicio = $result[0]['inicio_data'];
 
 
                 if ($data_inicio < $data_atual_system):
-
                     $valor_in = $this->Models_model->convertPrize($result[0]['valor_leilao'], 4);
+
+
+                    $this->db->from('vangancy');
+                    $this->db->where('id_leilao', $_GET['p']);
+                    $this->db->where('id_user', $_SESSION['ID']);
+                    $query_count_US = $this->db->get();
+                    if($query_count_US->num_rows() > 0):
+
+                        $dado['user'] = $_SESSION['ID'];
+                        $dado['interact_type'] = 2;
+                        $this->db->insert('interact_report', $dado);
+
+                        $dados['status'] = $log;
+                        $dados['page'] = 'sala';
+                        $dados['desconto'] = $valor_in;
+                        $this->load->view('pages/user/sala', $dados);
+
+                        else:
+
                     $this->db->from('creditos');
                     $this->db->where('usuario', $_SESSION['ID']);
                     $query_credit = $this->db->get();
@@ -192,9 +211,11 @@ class Pages extends CI_Controller
                     $this->db->from('vangancy');
                     $this->db->where('id_leilao', $_GET['p']);
                     $query_count = $this->db->get();
-                    if ($query_count->num_rows() < $result[0]['minimo_users']):
 
-                        if ($query_count->num_rows() > 0):
+
+                    if ($query_count->num_rows() <= $result[0]['maximo_users']):
+
+                        if ($query_count->num_rows() > $result[0]['minimo_users']):
                             $vagas = false;
 
                         else:
@@ -210,9 +231,13 @@ class Pages extends CI_Controller
                     if ($my_credit >= str_replace(',','',$valor_in)):
 
                         if ($vagas == true):
+
+
                             $dos['credito'] = $my_credit - $valor_in;
                             $this->db->where('usuario', $_SESSION['ID']);
                             $this->db->update('creditos', $dos);
+
+
                             $ddos['id_leilao'] = $_GET['p'];
                             $ddos['id_user'] = $_SESSION['ID'];
                             $this->db->insert('vangancy', $ddos);
@@ -231,6 +256,14 @@ class Pages extends CI_Controller
                     else:
                         redirect(base_url('adicionar/creditos'), 'refresh');
                     endif;
+
+
+                    endif;
+
+
+
+
+
 
                 else:
                     redirect(base_url('home'), 'refresh');
@@ -1050,6 +1083,8 @@ class Pages extends CI_Controller
                                     } else {
                                         $("#btn-lanc").html('<a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a>');
                                     }
+
+
 
                                 });
                             }

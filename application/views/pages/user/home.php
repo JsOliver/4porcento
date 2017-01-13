@@ -135,8 +135,15 @@ if ($page == 'home'):
                                         class="full-width img-responsive"
                                         src="<?php echo base_url('pages/exibir?id=' . $dds['id']); ?>" alt=""
                                         style="height: 300px;object-fit: cover; object-position: center;"></a>
-                                <a class="product-review" href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>">0
-                                    pessoas online</a>
+                                <a class="product-review" href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>">
+                                    <?php
+
+                        if (!empty($dds['cidade']) and !empty($dds['estado'])):
+
+                        echo '<small>'.$dds['cidade'].' - <b>'.$dds['estado'].'</b> </small>';
+                        endif;
+                        ?>
+                                </a>
                             </div>
                             <div class="product-description product-description-brd">
                                 <div class="overflow-h margin-bottom-5">
@@ -144,12 +151,7 @@ if ($page == 'home'):
                                         <h4 class="title-price"><a
                                                 href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>"><?php echo $dds['title']; ?></a>
                                         </h4>
-                                        <?php
-                                        if (!empty($dds['cidade']) and !empty($dds['estado'])):
-                                            ?>
-                                            <span class="gender text-uppercase"><small><?php echo $dds['cidade']; ?>
-                                                    - <b><?php echo $dds['estado']; ?></b> </small></span>
-                                        <?php endif; ?>
+
                                         <span class="gender"
                                               title="<?php echo $dds['breve_descricao']; ?>"><?php echo $this->Models_model->limitarTexto($dds['breve_descricao'], 30); ?></span>
                                     </div>

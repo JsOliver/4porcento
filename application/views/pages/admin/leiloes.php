@@ -180,7 +180,7 @@ $data_atual_system = date('YmdHis');
                                                 if (isset($_GET['t']) and $_GET['t'] == 'disponiveis'):
                                                     $this->db->where('status', 1);
                                                 endif;
-                                                $this->db->where('done', 0);
+                                                //$this->db->where('done', 0);
 
                                                 $this->db->order_by('id', 'desc');
                                                 $this->db->limit($max, $atual);
@@ -222,19 +222,49 @@ $data_atual_system = date('YmdHis');
 
                                                             <?php
 
-                                                            if ($dds['status'] == 0):
-                                                                echo '<b class="text-danger">Finalizado</b>';
-                                                            endif;
-                                                            if ($dds['status'] == 1 and $data_atual_system > $ind):
-                                                                echo '<b class="text-success">Disponivel</b>';
-                                                            endif;
-                                                            if ($dds['status'] == 2555):
-                                                                echo '<a><b class="text-warning">Arrematado</b></a>';
-                                                            endif;
+                                                            $this->db->from('compras');
+                                                            $this->db->where('id_obj_compra',$dds['id']);
+                                                            $query = $this->db->get();
+                                                            $result = $query->result_array();
+                                                            if($query->num_rows() > 0):
+                                                                if($result[0]['submit'] == 3):
+                                                                    echo '<b class="text-info">Entregue</b>';
 
-                                                            if ($dds['status'] == 1 and $data_atual_system < $ind):
-                                                                echo '<a><b class="text-info">Aguardando</b></a>';
-                                                            endif;
+                                                                    endif;
+
+                                                                if ($dds['status'] == 0 and $result[0]['submit'] <> 3):
+                                                                    echo '<b class="text-danger">Finalizado</b>';
+                                                                endif;
+                                                                if ($dds['status'] == 1 and $data_atual_system > $ind and $result[0]['submit'] <> 3):
+                                                                    echo '<b class="text-success">Disponivel</b>';
+                                                                endif;
+                                                                if ($dds['status'] == 2555 and $result[0]['submit'] <> 3):
+                                                                    echo '<a><b class="text-warning">Arrematado</b></a>';
+                                                                endif;
+
+                                                                if ($dds['status'] == 1 and $data_atual_system < $ind and $result[0]['submit'] <> 3):
+                                                                    echo '<a><b class="text-info">Aguardando</b></a>';
+                                                                endif;
+
+                                                                else:
+                                                                    if ($dds['status'] == 0):
+                                                                        echo '<b class="text-danger">Finalizado</b>';
+                                                                    endif;
+                                                                    if ($dds['status'] == 1 and $data_atual_system > $ind):
+                                                                        echo '<b class="text-success">Disponivel</b>';
+                                                                    endif;
+                                                                    if ($dds['status'] == 2555):
+                                                                        echo '<a><b class="text-warning">Arrematado</b></a>';
+                                                                    endif;
+
+                                                                    if ($dds['status'] == 1 and $data_atual_system < $ind):
+                                                                        echo '<a><b class="text-info">Aguardando</b></a>';
+                                                                    endif;
+
+
+                                                                    endif;
+
+
                                                             ?>
                                                         </td>
 

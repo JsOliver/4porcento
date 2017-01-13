@@ -378,7 +378,7 @@ if ($page == 'leiloes'):
                                         endif;
 
                                         if ($dds['inicio_data'] <= $data_atual_system and $dds['status'] == 1):
-                                            echo '<b>0 pessoas online</b>';
+                                            echo '<b>Sala disponivel</b>';
                                         endif;
 
                                         if ($dds['status'] == 0):
@@ -415,7 +415,11 @@ if ($page == 'leiloes'):
                                             <?php
 
                                             if ($dds['status'] == 1):
-                                                echo '<span class="gender">Vencedor: <b>Jonhcash</b></span>';
+                                                if (!empty($dds['cidade']) and !empty($dds['estado'])):
+
+                                                    echo '<small>'.$dds['cidade'].' - <b>'.$dds['estado'].'</b> </small>';
+
+                                            endif;
                                             endif;
                                             if ($dds['status'] == 0):
                                                 echo '<span class="gender">Leilão finalizado sem nenhum vencedor.</span>';
@@ -447,7 +451,7 @@ if ($page == 'leiloes'):
                                             if ($dds['status'] <> 2555):
                                                 ?>
                                                 <span class="title-price"><small>R$ <?php echo $this->Models_model->convertPrize($dds['valor_leilao'],4); ?> </small></span>
-                                                <span class="title-price line-through">R$ <?php echo number_format($dds['valor_leilao'],2,'.',',');?></span>
+                                                <span class="title-price line-through">R$ <?php echo $dds['valor_leilao'];?></span>
                                             <?php endif; ?>
                                         </div>
                                     </div>
