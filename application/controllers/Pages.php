@@ -1363,9 +1363,7 @@ if(so == 0){
                             $this->Models_model->winner($_POST['leilao'], $query_prod2->result_array()[0]['id_user'], $this->Models_model->convertPrize($result[0]['valor_leilao'], 4));
 
                         } else {
-                            $dadoos['status'] = 0;
-                            $this->db->where('id', $_POST['leilao']);
-                            $this->db->update('leiloes', $dadoos);
+
                         }
 
 
