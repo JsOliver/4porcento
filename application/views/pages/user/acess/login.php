@@ -223,7 +223,7 @@ function login(){
 
                                 $("#recovercampo").html("Aguarde...");
 
-                                $.post("<?php base_url('pages/recovery'); ?>",{email:email},function(res) {
+                                $.post("<?php echo base_url('pages/recovery'); ?>",{email:email},function(res) {
 
                                     if(res){
                                         if(res == 11){
