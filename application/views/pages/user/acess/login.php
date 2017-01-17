@@ -212,19 +212,54 @@ function login(){
                     </form>
 <?php else: ?>
 
-                        <form id="sky-form1" class="log-reg-block sky-form" action="javascript:func();">
+                        <script>
+
+                            function recover() {
+
+
+                                var email = document.getElementById('recovermail').value;
+
+
+
+                                $("#recovercampo").html("Aguarde...");
+
+                                $.post("<?php base_url('pages/recovery'); ?>",{email:email},function(res) {
+
+                                    if(res){
+                                        if(res == 11){
+                                            $("#recovercampo").html("Nova senha enviada por email com sucesso.");
+
+                                        }else
+                                        {
+                                            $("#recovercampo").html("<span>Erro ao recuperar senha.</span>");
+
+                                        }
+                                    }else
+                                    {
+                                        $("#recovercampo").html("<span>Erro ao recuperar senha.</span>");
+
+                                    }
+
+                                });
+
+
+                            }
+
+                        </script>
+                        <form  class="log-reg-block sky-form" action="javascript:func();">
                             <h2>Recuperar</h2>
 
                             <section>
                                 <label class="input login-input">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                        <input type="email" placeholder="Email" name="email" class="form-control">
+                                        <input id="recovermail" type="email" placeholder="Email" name="email" class="form-control">
                                     </div>
                                 </label>
                             </section>
+                            <b id="recovercampo"></b>
                             <!-- Modal -->
-                            <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20" type="submit">Recuperar</button>
+                            <button class="btn-u btn-u-sea-shop btn-block margin-bottom-20" onclick="recover();">Recuperar</button>
 
                         </form>
     <?php endif;?>

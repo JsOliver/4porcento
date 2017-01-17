@@ -47,6 +47,44 @@ class Pages extends CI_Controller
 
     }
 
+    public function recovery(){
+
+        $newpass =  rand().date('Y');
+
+        $dataup['pass'] = hash('whirlpool',md5(sha1($newpass)));
+        $this->db->where('email', $_POST['email']);
+        if($this->db->update('user',$dataup)):
+            //Inicia o processo de configuração para o envio do email
+            $config['protocol'] = 'mail'; // define o protocolo utilizado
+            $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
+            $config['validate'] = TRUE; // define se haverá validação dos endereços de email
+            $config['mailtype'] = 'html';
+            $this->load->library('email');
+
+
+            // Define remetente e destinatário
+            $this->email->from('4porcento@4porcento.com.br','Recuperação de senha'); // Remetente
+            $this->email->to($_POST['email']); // Destinatário
+
+            $this->email->subject('4porcento - Recuperação de senha.');
+            $this->email->message('Sua nova senha e:
+        '.$newpass.'');
+
+            if($this->email->send()):
+
+                echo '11';
+            else:
+
+                echo '0';
+
+            endif;
+            else:
+
+                echo '0';
+                endif;
+
+
+    }
 
     public function EditText(){
 
