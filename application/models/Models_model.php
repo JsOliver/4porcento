@@ -382,7 +382,7 @@ class Models_model extends CI_Model
 
                 $data['image'] = file_get_contents(addslashes($filex));
 
-                if (strstr('jpg,gif,png', $extension)):
+                if (strstr('jpeg,jpge,jpg,png,gif', $extension)):
 
 
                     if ($size > 5 * 1000000):
@@ -453,7 +453,7 @@ class Models_model extends CI_Model
                     $extension = strtolower($extension);
 
 
-                    if (strstr('jpge,jpg,png,gif', $extension)):
+                    if (strstr('jpeg,jpge,jpg,png,gif', $extension)):
 
 
                         if ($size > 5 * 1000000):
@@ -538,8 +538,8 @@ class Models_model extends CI_Model
         if(!isset($xmlresult->transactions->transaction->status)):
 
             return 0;
-            else:
-                return simplexml_load_string($transactionCurl);
+        else:
+            return simplexml_load_string($transactionCurl);
 
         endif;
 
@@ -587,48 +587,48 @@ class Models_model extends CI_Model
         return simplexml_load_string($xml);
     }
 
-public function addcredit($user){
+    public function addcredit($user){
 
-    $this->db->from('compras');
-    $this->db->where('id_user', $user);
-    $this->db->where('status', 1);
-    $this->db->or_where('status', 2);
-    $this->db->or_where('status', 5);
-    $query = $this->db->get();
-    if ($query->num_rows() > 0):
-        $result = $query->result_array();
-        foreach ($result as $dds) {
-            $check = $this->check_payment($dds['reference_code']);
+        $this->db->from('compras');
+        $this->db->where('id_user', $user);
+        $this->db->where('status', 1);
+        $this->db->or_where('status', 2);
+        $this->db->or_where('status', 5);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0):
+            $result = $query->result_array();
+            foreach ($result as $dds) {
+                $check = $this->check_payment($dds['reference_code']);
 
-            if ($check !== 0):
+                if ($check !== 0):
 
-                $dados['status'] = @$check->transactions->transaction->status;
-                $dados['transaction_code'] = @$check->transactions->transaction->code;
-                $dados['data_payment'] = @$check->transactions->transaction->date;
-                if ($dds['type'] == 2 and $dds['submit'] < 3  and $check->transactions->transaction->status == 3 or $check->transactions->transaction->status == 4):
+                    $dados['status'] = @$check->transactions->transaction->status;
+                    $dados['transaction_code'] = @$check->transactions->transaction->code;
+                    $dados['data_payment'] = @$check->transactions->transaction->date;
+                    if ($dds['type'] == 2 and $dds['submit'] < 3  and $check->transactions->transaction->status == 3 or $check->transactions->transaction->status == 4):
 
 
-                    $dados['submit'] = 3;
-                    $this->db->from('pacotes');
-                    $this->db->where('id', $dds['id_obj_compra']);
-                    $query = $this->db->get();
-                    if ($query->num_rows() > 0):
-                        $this->addcredito($dds['id_obj_compra']);
+                        $dados['submit'] = 3;
+                        $this->db->from('pacotes');
+                        $this->db->where('id', $dds['id_obj_compra']);
+                        $query = $this->db->get();
+                        if ($query->num_rows() > 0):
+                            $this->addcredito($dds['id_obj_compra']);
+                        endif;
                     endif;
+
+
+                    $this->db->where('reference_code', @$check->transactions->transaction->reference);
+                    $this->db->update('compras', $dados);
+
                 endif;
+            }
+            return $query->num_rows();
+        else:
+            return 0;
+        endif;
 
-
-                $this->db->where('reference_code', @$check->transactions->transaction->reference);
-                $this->db->update('compras', $dados);
-
-            endif;
-        }
-        return $query->num_rows();
-    else:
-        return 0;
-    endif;
-
-}
+    }
     public function comprarPack($compra)
     {
         $this->db->from('pacotes');
@@ -942,221 +942,226 @@ public function addcredit($user){
 
     }
 
-public function messageChat($leilao, $user, $mesage)
-{
+    public function messageChat($leilao, $user, $mesage)
+    {
 
-    if(empty($leilao) or empty($user) or empty($mesage)){
+        if(empty($leilao) or empty($user) or empty($mesage)){
 
-        return 0;
-
-    }else{
-
-        $dados['data'] = date('YmdHis');
-        $dados['id_user'] = $user;
-        $dados['id_leilao'] = $leilao;
-        $dados['mensagem'] = $mesage;
-        $this->db->insert('chat',$dados);
-
-            return 1;
-
-    }
-
-
-}
-
-public function segundosDif($data){
-
-    $ind = $data;
-    $anoat = substr($ind, 0, 4);
-    $mesat = substr($ind, 4, 2);
-    $diaat = substr($ind, 6, 2);
-    $horaat = substr($ind, 8, 2);
-    $minutoat = substr($ind, 10, 2);
-    $segundoat = substr($ind, 12, 2);
-    $data_hora_inicial = mktime($horaat, $minutoat, $segundoat, $mesat, $diaat, $anoat);
-    $data_hora_final = mktime(date('H'), date('i'), date('s'), date('m'), date('d'), date('Y'));
-    return  $data_hora_final -  $data_hora_inicial;
-
-}
-public function SecsDataConvert($secs){
-
-    if($secs <= 1):
-        return $secs.' Seg';
-        endif;
-
-    if($secs < 60 and $secs > 2):
-        return $secs.' Segs';
-        endif;
-
-    if($secs > 60 and $secs < 120):
-        return ceil($secs / 60) - 1 .' Min';
-        endif;
-
-    if($secs > 60 and $secs > 120 and $secs < 3600):
-        return ceil($secs / 60) - 1 .' Mins';
-        endif;
-
-    if($secs > 3600 and $secs < 7200):
-        return ceil($secs / 60 / 60) - 1 .' Hr';
-        endif;
-
-    if($secs > 3600 and $secs > 7200):
-        return ceil($secs / 60 / 60) - 1 .' Hrs';
-        endif;
-
-}
-
-
-
-public function winner($leilao,$winner,$valor){
-
-    if(empty($leilao) and empty($winner) and empty($valor)){
-        return 0;
-    }else{
-        $reference = 'PKE-T1' . date('Y') . rand();
-
-        $this->db->from('user');
-        $this->db->where('id',$winner);
-        $this->db->where('type',1);
-        $this->db->or_where('type',54);
-        $query_us = $this->db->get();
-        $row_user = $query_us->num_rows();
-
-        $this->db->from('leiloes');
-        $this->db->where('id',$leilao);
-        $this->db->where('status',1);
-        $query_lei = $this->db->get();
-        $row_lei = $query_lei->num_rows();
-        $result_lei = $query_lei->result_array();
-
-        if($row_lei > 0 and $row_user > 0){
-
-            $dados_up['winner'] = $winner;
-            $dados_up['status'] = 2555;
-            $this->db->where('id',$leilao);
-            $this->db->update('leiloes',$dados_up);
-
-
-            $this->db->from('lances');
-            $this->db->where('id_leilao',$leilao);
-            $this->db->where('id_user',$winner);
-            $query_mlnc = $this->db->get();
-            $row_mlnc = $query_mlnc->num_rows();
-
-            $this->db->from('lances');
-            $this->db->where('id_leilao',$leilao);
-            $query_lnc = $this->db->get();
-            $row_lnc = $query_lnc->num_rows();
-            $duracao = $this->segundosDif($result_lei[0]['comeco_data']);
-
-           $payment =  $this->payment('1.'.$leilao,1,strip_tags($result_lei[0]['title']),number_format($valor, 2, '.', ''),$reference);
-
-
-
-            $dados_arr['id_user'] = $winner;
-            $dados_arr['title_arremate'] = $result_lei[0]['title'];
-            $dados_arr['description_arremate'] = $result_lei[0]['descricao_completa'];
-            $dados_arr['id_arremate'] = $leilao;
-            $dados_arr['valor_arremate'] = $valor;
-            $dados_arr['meus_lances'] = $row_mlnc;
-            $dados_arr['lances_totais'] = $row_lnc;
-            $dados_arr['duracao_segundos'] = $duracao;
-            $dados_arr['pre_approval'] = $payment -> code;
-            $dados_arr['reference_code'] = $reference;
-            $dados_arr['url_payment'] = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' . $payment->code;
-            $dados_arr['data_arremate'] = date('YmdHis');
-
-            $this->db->from('arremates');
-            $this->db->where('id_arremate',$leilao);
-            $query_arsr = $this->db->get();
-            if($query_arsr->num_rows() == 0):
-                $this->db->insert('arremates',$dados_arr);
-
-                $dados_cpm['type'] = 1;
-                $dados_cpm['id_user'] = $winner;
-                $dados_cpm['title'] = $result_lei[0]['title'];
-                $dados_cpm['description'] = strip_tags($result_lei[0]['descricao_completa']);
-                $dados_cpm['id_obj_compra'] = $leilao;
-                $dados_cpm['value_show'] = number_format($valor, 2, '.', ',');
-                $dados_cpm['value_pagseguro'] = $valor;
-                $dados_cpm['pre_approval'] = $payment -> code;
-                $dados_cpm['reference_code'] = $reference;
-                $dados_cpm['status'] = 3;
-                $dados_cpm['submit'] = 1;
-                $dados_cpm['url_payment'] = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' . $payment->code;
-                $dados_cpm['data_solicitation'] = date('d/m/Y H:i:s');
-                $this->db->insert('compras',$dados_cpm);
-                $arrematePsn = $this->db->insert_id();
-                if($arrematePsn > 0):
-
-                    $this->db->from('vangancy');
-                    $this->db->where('id_user !=',$winner);
-                    $this->db->where('id_leilao',$leilao);
-                    $queryVnc = $this->db->get();
-                    foreach ($queryVnc->result_array() as $dds){
-                        $this->cupon($dds['id_user'],$leilao,$leilao);
-                    }
-
-                    $dd_ntf['id_user'] = $_SESSION['ID'];
-                    $dd_ntf['title'] = utf8_decode('Leilão arrematado');
-                    $dd_ntf['image'] = $result_lei[0]['image'];
-                    $dd_ntf['text'] = utf8_decode('Parabéns <b>'.$_SESSION['NAME'].'</b>, você arrematou o leilão numero <b>'.$leilao.'</b>. Estamos aguardando a confirmação do pagamento para a liberação do produto.');
-                    $dd_ntf['link'] = base_url('meus-arremates');
-                    $this->db->insert('notificacao',$dd_ntf);
-                    $ddp['id_user'] = $_SESSION['ID'];
-                    $this->db->insert('notificacao_read',$ddp);
-
-                    return $winner;
-
-                else:
-
-                    return 0;
-
-                endif;
-
-
-
-                else:
-                return 0;
-                    endif;
+            return 0;
 
         }else{
 
-            return 0;
+            $dados['data'] = date('YmdHis');
+            $dados['id_user'] = $user;
+            $dados['id_leilao'] = $leilao;
+            $dados['mensagem'] = $mesage;
+            $this->db->insert('chat',$dados);
+
+            return 1;
 
         }
 
 
     }
 
+    public function segundosDif($data){
 
-}
+        $ind = $data;
+        $anoat = substr($ind, 0, 4);
+        $mesat = substr($ind, 4, 2);
+        $diaat = substr($ind, 6, 2);
+        $horaat = substr($ind, 8, 2);
+        $minutoat = substr($ind, 10, 2);
+        $segundoat = substr($ind, 12, 2);
+        $data_hora_inicial = mktime($horaat, $minutoat, $segundoat, $mesat, $diaat, $anoat);
+        $data_hora_final = mktime(date('H'), date('i'), date('s'), date('m'), date('d'), date('Y'));
+        return  $data_hora_final -  $data_hora_inicial;
 
-public function convertPrize($valor,$porcento){
-    if (strlen(str_replace(',', '', $valor) / 100) > 4):
+    }
+    public function SecsDataConvert($secs){
 
-        $explode = @explode('.', substr(str_replace(',', '', $valor) / 100, 0, -2) * $porcento);
-
-        if (@strlen($explode[0]) == 1 and @strlen($explode[1]) == 1):
-            $valor_in = number_format(substr(str_replace(',', '', $valor) / 100, 0, -2) * $porcento . '0', 2, '.', ',');
-        else:
-            $valor_in = number_format(substr(str_replace(',', '', $valor) / 100, 0, -2) * $porcento, 2, '.', ',');
-
+        if($secs <= 1):
+            return $secs.' Seg';
         endif;
 
-    else:
-        $explode = @explode('.', str_replace(',', '', $valor) / 100);
-
-
-        if (@strlen($explode[1]) == 1 and @strlen(@$explode[0]) >= 2):
-            $valor_in = number_format(str_replace(',', '', $valor) / 100 * $porcento . 0, 2, '.', ',');
-        else:
-            $valor_in = number_format(str_replace(',', '', $valor) / 100 * $porcento, 2, '.', ',');
+        if($secs < 60 and $secs > 2):
+            return $secs.' Segs';
         endif;
-    endif;
 
-    return $valor_in;
-}
+        if($secs > 60 and $secs < 120):
+            return ceil($secs / 60) - 1 .' Min';
+        endif;
+
+        if($secs > 60 and $secs > 120 and $secs < 3600):
+            return ceil($secs / 60) - 1 .' Mins';
+        endif;
+
+        if($secs > 3600 and $secs < 7200):
+            return ceil($secs / 60 / 60) - 1 .' Hr';
+        endif;
+
+        if($secs > 3600 and $secs > 7200):
+            return ceil($secs / 60 / 60) - 1 .' Hrs';
+        endif;
+
+    }
+
+
+
+    public function winner($leilao,$winner,$valor){
+
+        if(empty($leilao) and empty($winner) and empty($valor)){
+            return 0;
+        }else{
+
+
+
+
+
+            $reference = 'PKE-T1' . date('Y') . rand();
+
+            $this->db->from('user');
+            $this->db->where('id',$winner);
+            $this->db->where('type',1);
+            $this->db->or_where('type',54);
+            $query_us = $this->db->get();
+            $row_user = $query_us->num_rows();
+
+            $this->db->from('leiloes');
+            $this->db->where('id',$leilao);
+            $this->db->where('status',1);
+            $query_lei = $this->db->get();
+            $row_lei = $query_lei->num_rows();
+            $result_lei = $query_lei->result_array();
+
+            if($row_lei > 0 and $row_user > 0){
+
+                $dados_up['winner'] = $winner;
+                $dados_up['status'] = 2555;
+                $this->db->where('id',$leilao);
+                $this->db->update('leiloes',$dados_up);
+
+
+                $this->db->from('lances');
+                $this->db->where('id_leilao',$leilao);
+                $this->db->where('id_user',$winner);
+                $query_mlnc = $this->db->get();
+                $row_mlnc = $query_mlnc->num_rows();
+
+                $this->db->from('lances');
+                $this->db->where('id_leilao',$leilao);
+                $query_lnc = $this->db->get();
+                $row_lnc = $query_lnc->num_rows();
+                $duracao = $this->segundosDif($result_lei[0]['comeco_data']);
+
+                $payment =  $this->payment('1.'.$leilao,1,strip_tags($result_lei[0]['title']),number_format($valor, 2, '.', ''),$reference);
+
+
+
+                $dados_arr['id_user'] = $winner;
+                $dados_arr['title_arremate'] = $result_lei[0]['title'];
+                $dados_arr['description_arremate'] = $result_lei[0]['descricao_completa'];
+                $dados_arr['id_arremate'] = $leilao;
+                $dados_arr['valor_arremate'] = $valor;
+                $dados_arr['meus_lances'] = $row_mlnc;
+                $dados_arr['lances_totais'] = $row_lnc;
+                $dados_arr['duracao_segundos'] = $duracao;
+                $dados_arr['pre_approval'] = $payment -> code;
+                $dados_arr['reference_code'] = $reference;
+                $dados_arr['url_payment'] = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' . $payment->code;
+                $dados_arr['data_arremate'] = date('YmdHis');
+
+                $this->db->from('arremates');
+                $this->db->where('id_arremate',$leilao);
+                $query_arsr = $this->db->get();
+                if($query_arsr->num_rows() == 0):
+                    $this->db->insert('arremates',$dados_arr);
+
+                    $dados_cpm['type'] = 1;
+                    $dados_cpm['id_user'] = $winner;
+                    $dados_cpm['title'] = $result_lei[0]['title'];
+                    $dados_cpm['description'] = strip_tags($result_lei[0]['descricao_completa']);
+                    $dados_cpm['id_obj_compra'] = $leilao;
+                    $dados_cpm['value_show'] = number_format($valor, 2, '.', ',');
+                    $dados_cpm['value_pagseguro'] = $valor;
+                    $dados_cpm['pre_approval'] = $payment -> code;
+                    $dados_cpm['reference_code'] = $reference;
+                    $dados_cpm['status'] = 3;
+                    $dados_cpm['submit'] = 1;
+                    $dados_cpm['url_payment'] = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' . $payment->code;
+                    $dados_cpm['data_solicitation'] = date('d/m/Y H:i:s');
+                    $this->db->insert('compras',$dados_cpm);
+                    $arrematePsn = $this->db->insert_id();
+                    if($arrematePsn > 0):
+
+                        $this->db->from('vangancy');
+                        $this->db->where('id_user !=',$winner);
+                        $this->db->where('id_leilao',$leilao);
+                        $queryVnc = $this->db->get();
+                        foreach ($queryVnc->result_array() as $dds){
+                            $this->cupon($dds['id_user'],$leilao,$leilao);
+                        }
+
+                        $dd_ntf['id_user'] = $_SESSION['ID'];
+                        $dd_ntf['title'] = utf8_decode('Leilão arrematado');
+                        $dd_ntf['image'] = $result_lei[0]['image'];
+                        $dd_ntf['text'] = utf8_decode('Parabéns <b>'.$_SESSION['NAME'].'</b>, você arrematou o leilão numero <b>'.$leilao.'</b>. Estamos aguardando a confirmação do pagamento para a liberação do produto.');
+                        $dd_ntf['link'] = base_url('meus-arremates');
+                        $this->db->insert('notificacao',$dd_ntf);
+                        $ddp['id_user'] = $_SESSION['ID'];
+                        $this->db->insert('notificacao_read',$ddp);
+
+                        return $winner;
+
+                    else:
+
+                        return 0;
+
+                    endif;
+
+
+
+                else:
+                    return 0;
+                endif;
+
+            }else{
+
+                return 0;
+
+            }
+
+
+        }
+
+
+    }
+
+    public function convertPrize($valor,$porcento){
+        if (strlen(str_replace(',', '', $valor) / 100) > 4):
+
+            $explode = @explode('.', substr(str_replace(',', '', $valor) / 100, 0, -2) * $porcento);
+
+            if (@strlen($explode[0]) == 1 and @strlen($explode[1]) == 1):
+                $valor_in = number_format(substr(str_replace(',', '', $valor) / 100, 0, -2) * $porcento . '0', 2, '.', ',');
+            else:
+                $valor_in = number_format(substr(str_replace(',', '', $valor) / 100, 0, -2) * $porcento, 2, '.', ',');
+
+            endif;
+
+        else:
+            $explode = @explode('.', str_replace(',', '', $valor) / 100);
+
+
+            if (@strlen($explode[1]) == 1 and @strlen(@$explode[0]) >= 2):
+                $valor_in = number_format(str_replace(',', '', $valor) / 100 * $porcento . 0, 2, '.', ',');
+            else:
+                $valor_in = number_format(str_replace(',', '', $valor) / 100 * $porcento, 2, '.', ',');
+            endif;
+        endif;
+
+        return $valor_in;
+    }
 
     public function limitarTexto($texto, $limite)
     {
@@ -1208,14 +1213,14 @@ public function convertPrize($valor,$porcento){
 
                 else:
 
-                   return 1;
+                    return 1;
 
                 endif;
 
 
-else:
-    return 0;
-    endif;
+            else:
+                return 0;
+            endif;
 
         }
 
@@ -1224,58 +1229,58 @@ else:
     public function API($token,$code,$method,$valor){
 
         if($token == 'pk221a'):
-        $token = strip_tags($token);
-        $code = strip_tags($code);
-        $method = strip_tags($method);
+            $token = strip_tags($token);
+            $code = strip_tags($code);
+            $method = strip_tags($method);
 
-    $this->db->from('cupon_loja');
-    $this->db->where('token',$code);
-    $query = $this->db->get();
-    if($query->num_rows() > 0):
-
-        $result = $query->result_array();
-        if($method == 1):
-
-            $this->db->from('user');
-            $this->db->where('id',$result[0]['id_user']);
+            $this->db->from('cupon_loja');
+            $this->db->where('token',$code);
             $query = $this->db->get();
-            $resultu = $query->result_array();
-                if($query->num_rows() > 0):
+            if($query->num_rows() > 0):
 
-            $dado['userid'] = $result[0]['id_user'];
-            $dado['email'] = $resultu[0]['email'];
-            $dado['cpf'] = $resultu[0]['cpf'];
-            $dado['saldo'] = $result[0]['valor_show'];
-                return $dado;
+                $result = $query->result_array();
+                if($method == 1):
 
-            else:
-            return 0;
-            endif;
+                    $this->db->from('user');
+                    $this->db->where('id',$result[0]['id_user']);
+                    $query = $this->db->get();
+                    $resultu = $query->result_array();
+                    if($query->num_rows() > 0):
 
-        endif;
-        if($method == 2):
-            if($this->compraAPI($token,$code,$valor) == 3):
-return 1;
-                else:
-return 0;
+                        $dado['userid'] = $result[0]['id_user'];
+                        $dado['email'] = $resultu[0]['email'];
+                        $dado['cpf'] = $resultu[0]['cpf'];
+                        $dado['saldo'] = $result[0]['valor_show'];
+                        return $dado;
+
+                    else:
+                        return 0;
+                    endif;
+
                 endif;
+                if($method == 2):
+                    if($this->compraAPI($token,$code,$valor) == 3):
+                        return 1;
+                    else:
+                        return 0;
+                    endif;
+                endif;
+                if($method <> 1 or $method <> 2 ):
+
+
+
+
+                endif;
+            else:
+                return 0;
+
+
             endif;
-        if($method <> 1 or $method <> 2 ):
-
-
-
-
-            endif;
-else:
-    return 0;
-
-
-    endif;
         else:
 
             return 0;
-    endif;
-}
+        endif;
+    }
 }
 
 ?>

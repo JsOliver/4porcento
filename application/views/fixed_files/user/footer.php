@@ -8,33 +8,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <br>
 <?php
 if($page <> 'invice'):
-?>
-<!--=== Footer v4 ===-->
-<div class="footer-v4">
+    ?>
+    <!--=== Footer v4 ===-->
+    <div class="footer-v4">
 
-    <div class="copyright">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p>
-                        <?php echo date('Y'); ?> &copy; Todos os direitos reservados.
-                        Desenvolvido por <a href="http://rjcriacaodesites.com.br" target="_blank">RJ Criação de
-                            Sites</a>
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <ul class="list-inline sponsors-icons pull-right">
-                        <li><i class="fa fa-money"></i></li>
-                        <li><i class="fa fa-cc-visa"></i></li>
-                        <li><i class="fa fa-cc-mastercard"></i></li>
-                        <li><i class="fa fa-cc-discover"></i></li>
-                    </ul>
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            <?php echo date('Y'); ?> &copy; Todos os direitos reservados.
+                            Desenvolvido por <a href="http://rjcriacaodesites.com.br" target="_blank">RJ Criação de
+                                Sites</a>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-inline sponsors-icons pull-right">
+                            <li><i class="fa fa-money"></i></li>
+                            <li><i class="fa fa-cc-visa"></i></li>
+                            <li><i class="fa fa-cc-mastercard"></i></li>
+                            <li><i class="fa fa-cc-discover"></i></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div><!--/copyright-->
-</div>
-<!--=== End Footer v4 ===-->
+        </div><!--/copyright-->
+    </div>
+    <!--=== End Footer v4 ===-->
 
 <?php endif;?>
 <?php if($page == 'invice'):?>
@@ -44,7 +44,10 @@ if($page <> 'invice'):
     <br>
 
 <?php endif;?>
-</div><!--/wrapper-->
+</div>
+
+
+<!--/wrapper-->
 
 <!-- Wait Block
 <div class="g-popup-wrapper">
@@ -83,7 +86,6 @@ if ($page == 'sala' or $page == 'invice' or $page == 'sobre'):
     <script src="<?php echo base_url(); ?>/assets/plugins/scrollbar/js/jquery.mCustomScrollbar.concat.min.js"></script>
     <!-- Master Slider -->
     <script src="<?php echo base_url(); ?>/assets/plugins/master-slider/masterslider/masterslider.min.js"></script>
-    <script src="<?php echo base_url(); ?>/assets/plugins/master-slider/masterslider/jquery.easing.min.js"></script>
     <!-- JS Customization -->
     <script src="<?php echo base_url(); ?>/assets/js/custom.js"></script>
     <!-- JS Page Level -->

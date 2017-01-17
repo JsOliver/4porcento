@@ -20,6 +20,313 @@ if ($page == 'sala'):
 
     ?>
 
+    <script>
+
+
+        var leilao = '<?php echo $_GET['p'];?>';
+        var tempo = new Number();
+        // Tempo em segundos
+        tempo = <?php echo $result[0]['duracao_lance'];?>;
+
+        function startCountdown(){
+
+
+            <?php
+            $tempo =  $result[0]['duracao_lance'];
+            $vezes = ceil($tempo / 6);
+            for($i=0;$i<$vezes;$i++){
+            if($i == 0):
+                $tpn = $tempo - 6;
+            endif;
+            $tpn = $tempo - ceil($i * 6);
+            ?>
+            if(tempo == <?php echo ceil($tpn);?> ){
+                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
+
+                    if(res1){
+                        if(tempo !== res1){
+
+                            tempo = res1;
+
+
+                        }
+
+
+
+
+                    }
+
+                });
+            }
+            <?php }?>
+
+            if(tempo == 3 ){
+                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function () {
+
+                    if(res1){
+
+
+
+                        if(tempo !== res1){
+
+                            tempo = res1;
+
+
+                        }}
+
+                });
+            }
+
+            if(tempo == 1 ){
+                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
+
+                    if(res1){
+
+
+
+                        if(tempo !== res1){
+
+                            tempo = res1;
+
+
+                        }}
+
+                });
+            }
+
+            // Se o tempo não for zerado
+            if((tempo) >= 0){
+
+                // Pega a parte inteira dos minutos
+                var min = parseInt(tempo/60);
+                // Calcula os segundos restantes
+                var seg = tempo;
+
+                // Formata o número menor que dez, ex: 08, 07, ...
+                if(min < 10){
+                    min = "0"+min;
+                    min = min.substr(0, 2);
+                }
+
+                // Cria a variável para formatar no estilo hora/cronômetro
+                horaImprimivel = seg+ ' segundos';
+                //JQuery pra setar o valor
+                $("#segundosRest").html(horaImprimivel);
+
+                // Define que a função será executada novamente em 1000ms = 1 segundo
+                setTimeout('startCountdown()',1000);
+
+                // diminui o tempo
+                tempo--;
+
+                // Quando o contador chegar a zero faz esta ação
+            } else {
+
+
+
+
+
+                $("#script0").remove();
+                $("#script1").remove();
+                $("#script2").remove();
+                $("#script3").remove();
+                $("#chat_ast").remove();
+                $("#segundosRest").html('Finalizado');
+
+
+                $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #4752cb;">Aguarde...</button>');
+                $.post("<?php echo base_url('pages/winner');?>",{leilao:leilao,valor:<?php echo $desconto; ?>},function (res) {
+
+                    if(res > 0){
+
+                        <?php
+
+
+                        if(!empty($result[0]['cidade']) and !empty($result[0]['estado']) and !empty($result[0]['cep']) and !empty($result[0]['bairro']) and !empty($result[0]['rua'])):
+
+
+                        ?>
+
+                        $("#buttonTemp").html('<a href="<?php echo base_url('pages/sendWin?tp=2&&id='.$_GET['p']);?>" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #4c4ccb;">Retirar na loja</a>');
+
+                        $("#buttonLancep").html('<a href="<?php echo base_url('pages/sendWin?tp=1&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Enviar para mim</a>');
+                        $("#resgatess").html('<br><a href="<?php echo base_url('pages/sendWin?tp=3&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Sacar R$ <?php echo  number_format($desconto * 20 ,2,'.',','); ?></a>');
+                        <?php
+                        else:
+
+                        ?>
+
+                        $("#buttonTemp").html('<a href="<?php echo base_url('pages/sendWin?tp=2&&id='.$_GET['p']);?>" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cb0000;">Finalizado</a>');
+
+                        $("#buttonLancep").html('<a href="<?php echo base_url('pages/sendWin?tp=1&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Meus-arremates</a>');
+
+
+                        $("#resgatess").html('<br><a href="<?php echo base_url('pages/sendWin?tp=3&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Sacar R$ <?php echo  number_format($desconto * 20 ,2,'.',','); ?></a>');
+
+                        <?php
+                        endif;
+
+                        ?>
+
+                        $("#winner").html('<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" ><i class="fa fa-trophy" aria-hidden="true"></i> <b>Você venceu</b></button>');
+
+                    }else{
+
+                        $("#buttonLancep").html('<a  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Finalizado</a>');
+
+                        $.post("<?php echo base_url('pages/winnerName');?>",{leiloes:'<?php echo $_GET['p'];?>'},function(res){
+                            if(res)
+                            {
+                                $("#winner").html('<button type="button" class="btn-u btn-u-sea-shop btn-u-lg" ><i class="fa fa-trophy" aria-hidden="true"></i> Vencedor - <b>'+res+'</b></button>');
+                            }
+                        });
+
+
+                    }
+
+                });
+
+
+
+
+
+
+
+
+
+
+            }
+        }
+
+
+
+
+
+    </script>
+
+
+
+    <script id="script0">
+
+        <?php
+
+        if($rowss >= $result[0]['minimo_users']):
+
+            echo '
+    startCountdown();
+   var so = 1;
+    
+    ';else:
+            echo '    
+              var so = 0;
+';
+
+        endif;
+        ?>
+
+
+        $.post("<?php echo base_url('pages/atualizalance');?>",{leilao:leilao},function (res) {
+
+            if(res == 3 && so == 0){
+                startCountdown();
+                so++;
+            }
+        });
+        function inicio() {
+
+            var inicio = 0;
+            var leilao = '<?php echo $_GET['p'];?>';
+
+            $.post("<?php echo base_url('pages/atualizalance');?>",{leilao:leilao},function (res) {
+
+                if(res) {
+                    if (res == 1 && inicio == 0) {
+
+
+                        inicio++;
+                    }
+                    if (res == 2 && inicio == 1) {
+
+                        inicio++;
+                    }
+                    if (res == 3) {
+
+                        if(so == 0){
+                            startCountdown();
+
+                        }
+
+                        $.post("<?php echo base_url('pages/permissionButton');?>", {leilao:<?php echo $_GET['p'];?>}, function (res1) {
+
+                            if (res1 && so == 1) {
+                                $("#buttonLance").html(res1);
+                            }
+                            tempo = <?php echo $result[0]['duracao_lance'];?>;
+                            inicio = 1;
+
+                        });
+                    }
+                }});
+            setTimeout("inicio();", 1000);
+        }
+
+        $(function () {
+
+            inicio();
+        });
+
+        function button() {
+            $.post("<?php echo base_url('pages/permissionButton');?>", {leilao:<?php echo $_GET['p'];?>}, function (res1) {
+
+                if (res1) {
+                    $("#buttonLance").html(res1);
+                }
+
+
+            });
+            setTimeout("button();", 1000);
+
+        }
+
+
+        $(function () {
+
+            button();
+        });
+
+    </script>
+    <script>
+
+        var atualiza = 0;
+        function vezlance() {
+            $.post("<?php echo base_url('pages/atualizalance');?>", {leilao:<?php echo $_GET['p'];?>}, function (res) {
+                if (res == 1 && atualiza == 0) {
+                    $("#btn-lanc").html('<a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a>');
+                    atualiza++;
+                }
+            });
+            setTimeout("vezlance()", 1000);
+
+        }
+
+        $(function () {
+
+            vezlance();
+        });
+
+
+    </script>
+
+    <script id="script1">
+        $.post("<?php echo base_url('pages/permissionButton');?>", {leilao:<?php echo $_GET['p'];?>}, function (res1) {
+
+            if (res1) {
+                $("#buttonLance").html(res1);
+
+            }
+
+        });
+    </script>
 
     <!--=== Shop Product ===-->
     <div class="shop-product" xmlns="http://www.w3.org/1999/html">
@@ -54,6 +361,11 @@ if ($page == 'sala'):
                                      data-src="<?php echo base_url('pages/exibir?id=' . $_GET['p']); ?>"
                                      alt="lorem ipsum dolor sit">
                             </div>
+                            <?php if(!empty($result[0]['rua']) and !empty($result[0]['bairro']) and !empty($result[0]['cidade']) and !empty($result[0]['estado']) and !empty($result[0]['cep'])):?>
+                                <span>
+
+                                <br><br>
+				<small><strong>Rua - </strong><?php echo $result[0]['rua']; ?> <strong>Bairro - </strong><?php echo $result[0]['bairro']; ?>  <strong>Cidade - </strong><?php echo $result[0]['cidade']; ?>  <strong>Estado - </strong><?php echo $result[0]['estado']; ?>  <strong>CEP - </strong><?php echo $result[0]['cep']; ?> </small><br><br></span><?php endif;?>
                             <br>
                         </div>
                         <!-- End Master Slider -->
@@ -94,6 +406,9 @@ if ($page == 'sala'):
                         <span id="resgatess">
 
                         </span>
+                        <br>
+                        <span id="winner"></span>
+
                     </div><!--/end product quantity-->
 
 
@@ -196,291 +511,9 @@ if ($page == 'sala'):
     </div>
     <!--=== End Shop Product ===-->
 
-    <script>
-
-
-        var leilao = '<?php echo $_GET['p'];?>';
-        var tempo = new Number();
-        // Tempo em segundos
-        tempo = <?php echo $result[0]['duracao_lance'];?>;
-
-        function startCountdown(){
-
-
-            <?php
-            $tempo =  $result[0]['duracao_lance'];
-            $vezes = ceil($tempo / 20);
-            for($i=0;$i<$vezes;$i++){
-          if($i == 0):
-              $tpn = $tempo - 20;
-            endif;
-            $tpn = $tempo - ceil($i * 20);
-            ?>
-            if(tempo == <?php echo ceil($tpn);?> ){
-                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
-
-                    if(res1){
-
-                        tempo = res1;
-
-                    }
-
-                });
-            }
-            <?php }?>
-
-            if(tempo == 10 ){
-                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
-
-                    if(res1){
-                        tempo = res1;
-
-                    }
-
-                });
-            }  
-            
-            if(tempo == 7 ){
-                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
-
-                    if(res1){
-                        tempo = res1;
-
-                    }
-
-                });
-            }
-            if(tempo == 3 ){
-                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
-
-                    if(res1){
-                        tempo = res1;
-
-                    }
-
-                });
-            }
-
-        if(tempo == 1 ){
-                $.post("<?php echo base_url('pages/checkTimeSin')?>",{leilao:leilao},function (res1) {
-
-                    if(res1){
-                        tempo = res1;
-
-                    }
-
-                });
-            }
-
-            // Se o tempo não for zerado
-            if((tempo - 1) >= 0){
-
-                // Pega a parte inteira dos minutos
-                var min = parseInt(tempo/60);
-                // Calcula os segundos restantes
-                var seg = tempo;
-
-                // Formata o número menor que dez, ex: 08, 07, ...
-                if(min < 10){
-                    min = "0"+min;
-                    min = min.substr(0, 2);
-                }
-
-                // Cria a variável para formatar no estilo hora/cronômetro
-                horaImprimivel = seg+ ' segundos';
-                //JQuery pra setar o valor
-                $("#segundosRest").html(horaImprimivel);
-
-                // Define que a função será executada novamente em 1000ms = 1 segundo
-                setTimeout('startCountdown()',1000);
-
-                // diminui o tempo
-                tempo--;
-
-                // Quando o contador chegar a zero faz esta ação
-            } else {
-
-                $("#script0").remove();
-                $("#script1").remove();
-                $("#script2").remove();
-                $("#script3").remove();
-$("#segundosRest").html('Finalizado');
-
-
-$("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #4752cb;">Aguarde...</button>');
-                $.post("<?php echo base_url('pages/winner');?>",{leilao:leilao,valor:<?php echo $desconto; ?>},function (res) {
-
-                    if(res){
-                    if(res > 0){
-                        <?php
-
-
-                        if(!empty($result[0]['cidade']) and !empty($result[0]['estado']) and !empty($result[0]['cep']) and !empty($result[0]['bairro']) and !empty($result[0]['rua'])):
-
-
-                        ?>
-
-                        $("#buttonTemp").html('<a href="<?php echo base_url('pages/sendWin?tp=2&&id='.$_GET['p']);?>" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #4c4ccb;">Retirar na loja</a>');
-
-                        $("#buttonLancep").html('<a href="<?php echo base_url('pages/sendWin?tp=1&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Enviar para mim</a>');
-                        $("#resgatess").html('<br><a href="<?php echo base_url('pages/sendWin?tp=3&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Retirar como créditos</a>');
-                        <?php
-                        else:
-
-                        ?>
-
-                        $("#buttonTemp").html('<a href="<?php echo base_url('pages/sendWin?tp=2&&id='.$_GET['p']);?>" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cb0000;">Finalizado</a>');
-
-                        $("#buttonLancep").html('<a href="<?php echo base_url('pages/sendWin?tp=1&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cbb038;">Meus-arremates</a>');
-
-
-                        $("#resgatess").html('<br><a href="<?php echo base_url('pages/sendWin?tp=3&&id='.$_GET['p']);?>"  class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #3C3DCB;">Retirar como créditos</a>');
-
-                        <?php
-                        endif;
-
-                        ?>
-
-
-                    }else{
-
-
-                        $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u-lg"  style="background: #cb0000;">Finalizado</button>');
-
-
-                    }
-                    }
-                });
-
-
-
-            }
-
-        }
-
-        </script>
-
-    <script id="script0">
-
-
-        <?php
-
-        if($rowss >= $result[0]['minimo_users']):
-
-            echo '
-    startCountdown();
-   var so = 1;
-    
-    ';else:
-            echo '    
-              var so = 0;
-';
-
-        endif;
-        ?>
-
-        $.post("<?php echo base_url('pages/atualizalance');?>",{leilao:leilao},function (res) {
-
-            if(res == 3 && so == 0){
-                startCountdown();
-                so++;
-            }
-        });
-        function inicio() {
-
-            var inicio = 0;
-            var leilao = '<?php echo $_GET['p'];?>';
-
-            $.post("<?php echo base_url('pages/atualizalance');?>",{leilao:leilao},function (res) {
-
-                if(res) {
-                    if (res == 1 && inicio == 0) {
-
-
-                        inicio++;
-                    }
-                    if (res == 2 && inicio == 1) {
-
-                        inicio++;
-                    }
-                    if (res == 3) {
-
-                        if(so == 0){
-                            startCountdown();
-
-                        }
-
-                        $.post("<?php echo base_url('pages/permissionButton');?>", {leilao:<?php echo $_GET['p'];?>}, function (res1) {
-
-                            if (res1) {
-                                $("#buttonLance").html(res1);
-                            }
-                            tempo = <?php echo $result[0]['duracao_lance'];?>;
-                            inicio = 1;
-
-                        });
-                    }
-                }});}
-        setInterval("inicio();", 1000);
-
-        $(function () {
-
-            inicio();
-        });
-
-        function button() {
-            $.post("<?php echo base_url('pages/permissionButton');?>", {leilao:<?php echo $_GET['p'];?>}, function (res1) {
-
-                if (res1) {
-                    $("#buttonLance").html(res1);
-                }
-
-
-            });
-        }
-
-        setInterval("button();", 1000);
-
-        $(function () {
-
-            button();
-        });
-
-    </script>
-
-    <script id="script1">
-        $.post("<?php echo base_url('pages/permissionButton');?>", {leilao:<?php echo $_GET['p'];?>}, function (res1) {
-
-            if (res1) {
-                $("#buttonLance").html(res1);
-
-            }
-
-        });
-    </script>
     <script id="script2">
 
-        function atualizar1() {
 
-
-            $.post('<?php echo base_url('pages/chat');?>', {leilao: '<?php echo $_GET['p'];?>'}, function (resp) {
-
-
-                if(resp !== 0){
-                    $('#chat_ast').html(resp);
-                }
-
-
-            });
-
-        }
-
-        setInterval("atualizar1()", 20000);
-
-        $(function () {
-
-            atualizar1();
-        });
 
 
         $.post('<?php echo base_url('pages/chat');?>', {leilao: '<?php echo $_GET['p'];?>'}, function (resp) {
@@ -492,38 +525,8 @@ $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u
             }
         });
 
-        function atualizar() {
 
 
-            $.post('<?php echo base_url('pages/checkverMessage');?>', {leilao: '<?php echo $_GET['p'];?>'}, function (resp) {
-                if (resp == 1) {
-
-                    $.post('<?php echo base_url('pages/chat');?>', {leilao: '<?php echo $_GET['p'];?>'}, function (res) {
-
-                        if(res !== 0) {
-
-                            $('#chat_ast').html(res);
-
-                        }
-                    });
-
-                }
-                else {
-
-
-                }
-
-            });
-
-
-        }
-
-        setInterval("atualizar()", 2000);
-
-        $(function () {
-
-            atualizar();
-        });
     </script>
     <script id="script3">
         $("#txtArea").on("keypress", function (e) {
@@ -545,16 +548,90 @@ $("#buttonLancep").html('<button type="button" class="btn-u btn-u-sea-shop btn-u
 
                 $("#txtArea").val('');
 
-                $.post('<?php echo base_url('pages/chat');?>', {leilao: '<?php echo $_GET['p'];?>'}, function (resp) {
-                    $('#chat_ast').html(resp);
 
-                });
                 return false;
             }
             else {
                 return true;
             }
         });
+        function lance() {
+            tempo = <?php echo $result[0]['duracao_lance'];?>;
+
+            $("#btn-lanc").html('<a style="cursor: pointer;" class="btn-u btn-u-sea-shop btn-u-lg" >Aguarde...</a>');
+            $.post("<?php echo base_url('pages/lance');?>", {leilao:<?php echo  $_GET['p'];?>}, function (res) {
+                if (res == 1) {
+                    $("#btn-lanc").html('<a style="cursor: pointer;" class="btn-u btn-u-sea-shop btn-u-lg" >Na frente</a>');
+                    atualiza = 0;
+
+                } else {
+                    $("#btn-lanc").html('<a style="cursor: pointer;" onclick="lance();" class="btn-u btn-u-sea-shop btn-u-lg" >Dar lance</a>');
+                }
+
+
+
+            });
+        }
+
+    </script>
+    <script>
+
+        function checkln() {
+
+            $.post("<?php echo base_url('pages/checkln');?>", {leilao:<?php echo $_GET['p'];?>}, function (res11) {
+
+
+                if(res11)
+                {
+                    if(res11 == 1){
+
+                        tempo = <?php echo $result[0]['duracao_lance'];?>;
+
+
+
+                        $.post('<?php echo base_url('pages/chat');?>', {leilao: '<?php echo $_GET['p'];?>'}, function (res) {
+
+                            if(res !== 0) {
+
+                                $('#chat_ast').html(res);
+
+                            }
+                        });
+
+                        $.post("<?php echo base_url('pages/permissionButton');?>", {leilao:<?php echo $_GET['p'];?>}, function (res1) {
+
+                            if (res1) {
+                                $("#buttonLance").html(res1);
+                            }
+
+
+                        });
+
+
+
+
+
+
+                    }
+
+
+
+                }
+
+
+            });
+            setTimeout("checkln();", 1000);
+
+
+        }
+
+        $(function () {
+
+            checkln();
+        });
+
+
+
     </script>
 
     <?php

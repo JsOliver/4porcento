@@ -13,89 +13,89 @@ if ($page == 'home'):
     $query = $this->db->get();
     $row = $query->num_rows();
     if($row > 0):
-    ?>
-    <!--=== Slider ===-->
-    <div class="tp-banner-container">
-        <div class="tp-banner">
-            <ul>
+        ?>
+        <!--=== Slider ===-->
+        <div class="tp-banner-container">
+            <div class="tp-banner">
+                <ul>
 
-                <?php
+                    <?php
 
 
-                $result = $query->result_array();
-                foreach ($result as $dds){
+                    $result = $query->result_array();
+                    foreach ($result as $dds){
 
-                ?>
-                <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000"
-                    >
-                    <!-- MAIN IMAGE -->
-                    <img src="<?php echo base_url('pages/exibirCr?id='.$dds['id']);?>" alt="darkblurbg" data-bgfit="cover" data-bgposition="left top"
-                         data-bgrepeat="no-repeat">
-
-                    <div class="tp-caption revolution-ch3 sft start"
-                         data-x="center"
-                         data-hoffset="0"
-                         data-y="140"
-                         data-speed="1500"
-                         data-start="500"
-                         data-easing="Back.easeInOut"
-                         data-endeasing="Power1.easeIn"
-                         data-endspeed="300">
-                        <?php echo strip_tags($this->Models_model->limitarTexto($dds['titulo'],60))?>
-                    </div>
-
-                    <!-- LAYER -->
-                    <div class="tp-caption revolution-ch4 sft"
-                         data-x="center"
-                         data-hoffset="-14"
-                         data-y="210"
-                         data-speed="1400"
-                         data-start="2000"
-                         data-easing="Power4.easeOut"
-                         data-endspeed="300"
-                         data-endeasing="Power1.easeIn"
-                         data-captionhidden="off"
-                         style="z-index: 6">
-                        <?php
-                        echo str_replace('.','<br>',$dds['texto']);
                         ?>
+                        <li class="revolution-mch-1" data-transition="fade" data-slotamount="5" data-masterspeed="1000"
+                        >
+                            <!-- MAIN IMAGE -->
+                            <img src="<?php echo base_url('pages/exibirCr?id='.$dds['id']);?>" alt="darkblurbg" data-bgfit="cover" data-bgposition="left top"
+                                 data-bgrepeat="no-repeat">
 
-                    </div>
-<?php if(!empty($dds['link_texto_1']) and !empty($dds['link_1'])):?>
-                    <!-- LAYER -->
-                    <div class="tp-caption sft"
-                         data-x="center"
-                         data-hoffset="0"
-                         data-y="300"
-                         data-speed="1600"
-                         data-start="1800"
-                         data-easing="Power4.easeOut"
-                         data-endspeed="300"
-                         data-endeasing="Power1.easeIn"
-                         data-captionhidden="off"
-                         style="z-index: 6">
-                        <a href="<?php echo $dds['link_1'];?>" target="_blank" class="btn-u btn-brd btn-brd-hover btn-u-light"><?php echo $dds['link_texto_1'];?></a>
-                    </div>
+                            <div class="tp-caption revolution-ch3 sft start"
+                                 data-x="center"
+                                 data-hoffset="0"
+                                 data-y="140"
+                                 data-speed="1500"
+                                 data-start="500"
+                                 data-easing="Back.easeInOut"
+                                 data-endeasing="Power1.easeIn"
+                                 data-endspeed="300">
+                                <?php echo strip_tags($this->Models_model->limitarTexto($dds['titulo'],60))?>
+                            </div>
 
-                        <?php endif;?>
-                </li>
+                            <!-- LAYER -->
+                            <div class="tp-caption revolution-ch4 sft"
+                                 data-x="center"
+                                 data-hoffset="-14"
+                                 data-y="210"
+                                 data-speed="1400"
+                                 data-start="2000"
+                                 data-easing="Power4.easeOut"
+                                 data-endspeed="300"
+                                 data-endeasing="Power1.easeIn"
+                                 data-captionhidden="off"
+                                 style="z-index: 6">
+                                <?php
+                                echo str_replace('.','<br>',$dds['texto']);
+                                ?>
 
-                <?php }?>
+                            </div>
+                            <?php if(!empty($dds['link_texto_1']) and !empty($dds['link_1'])):?>
+                                <!-- LAYER -->
+                                <div class="tp-caption sft"
+                                     data-x="center"
+                                     data-hoffset="0"
+                                     data-y="300"
+                                     data-speed="1600"
+                                     data-start="1800"
+                                     data-easing="Power4.easeOut"
+                                     data-endspeed="300"
+                                     data-endeasing="Power1.easeIn"
+                                     data-captionhidden="off"
+                                     style="z-index: 6">
+                                    <a href="<?php echo $dds['link_1'];?>" target="_blank" class="btn-u btn-brd btn-brd-hover btn-u-light"><?php echo $dds['link_texto_1'];?></a>
+                                </div>
 
-            </ul>
-            <div class="tp-bannertimer tp-bottom"></div>
+                            <?php endif;?>
+                        </li>
+
+                    <?php }?>
+
+                </ul>
+                <div class="tp-bannertimer tp-bottom"></div>
+            </div>
         </div>
-    </div>
-    <!--=== End Slider ===-->
+        <!--=== End Slider ===-->
 
-        <?php endif;?>
+    <?php endif;?>
 
     <!--=== Inicio - Leilões ===-->
     <div class="container content-md">
 
         <?php
 
-        $sql = "SELECT * FROM leiloes WHERE inicio_data < ? AND status=? LIMIT 0,15";
+        $sql = "SELECT * FROM leiloes WHERE inicio_data < ? AND status=? ORDER BY id DESC  LIMIT 0,15";
         $query = $this->db->query($sql, array($data_atual_system, 1));
         $count = $query->num_rows();
 
@@ -138,11 +138,26 @@ if ($page == 'home'):
                                 <a class="product-review" href="<?php echo base_url('sala?p=' . $dds['id'] . ''); ?>">
                                     <?php
 
-                        if (!empty($dds['cidade']) and !empty($dds['estado'])):
+                                    $this->db->from('vangancy');
+                                    $this->db->where('id_leilao', $dds['id']);
+                                    $query_vagancy = $this->db->get();
+                                    $row_vagancy = $query_vagancy->num_rows();
+                                    if($row_vagancy >= $dds['maximo_users']):
+                                        $ver = false;
+                                    else:
+                                        $ver = true;
+                                    endif;
+                                    if ($ver == false):
 
-                        echo '<small>'.$dds['cidade'].' - <b>'.$dds['estado'].'</b> </small>';
-                        endif;
-                        ?>
+                                        echo 'Sala cheia';
+                                    endif;
+
+
+                                    if ($ver == true and !empty($dds['cidade']) and !empty($dds['estado'])):
+
+                                        echo '<small>'.$dds['cidade'].' - <b>'.$dds['estado'].'</b> </small>';
+                                    endif;
+                                    ?>
                                 </a>
                             </div>
                             <div class="product-description product-description-brd">
@@ -175,7 +190,7 @@ if ($page == 'home'):
         <?php endif; ?>
 
         <?php
-        $sql = "SELECT * FROM leiloes WHERE inicio_data > ? AND status=? LIMIT 0,15";
+        $sql = "SELECT * FROM leiloes WHERE inicio_data > ? AND status=? ORDER BY id DESC LIMIT 0,15";
         $query = $this->db->query($sql, array($data_atual_system, 1));
         $count = $query->num_rows();
 
@@ -254,7 +269,7 @@ if ($page == 'home'):
 
         <?php endif; ?>
         <?php
-        $sql = "SELECT * FROM leiloes WHERE status=? OR status=? LIMIT 0,15";
+        $sql = "SELECT * FROM leiloes WHERE status=? OR status=? ORDER BY id DESC  LIMIT 0,15";
         $query = $this->db->query($sql, array(0, 2555));
         $count = $query->num_rows();
         if ($count > 0):

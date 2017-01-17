@@ -419,7 +419,7 @@ if ($page == 'leiloes'):
 
                                                     echo '<small>'.$dds['cidade'].' - <b>'.$dds['estado'].'</b> </small>';
 
-                                            endif;
+                                                endif;
                                             endif;
                                             if ($dds['status'] == 0):
                                                 echo '<span class="gender">Leilão finalizado sem nenhum vencedor.</span>';
@@ -460,12 +460,12 @@ if ($page == 'leiloes'):
 
                         <?php } ?>
 
-<?php
+                        <?php
 
-if($countnl == 0):
-echo '<br><br><br>';
-endif;
-?>
+                        if($countnl == 0):
+                            echo '<br><br><br>';
+                        endif;
+                        ?>
                     </div>
 
 

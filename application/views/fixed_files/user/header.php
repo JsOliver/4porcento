@@ -22,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="author" content="">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="<?php echo base_url('assets/img/icon.png');?>">
 
     <!-- Web Fonts -->
     <link rel='stylesheet' type='text/css'
@@ -45,7 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/revolution-slider/rs-plugin/css/settings.css">
 
     <!-- CSS Theme -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/theme-colors/default.css" id="style_color">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/theme-colors/purple.css" id="style_color">
 
     <!-- CSS Customization -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/custom.css">
@@ -209,138 +209,138 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         <?php
         if($page <> 'invice'):
-        ?>
-        <!-- Navbar -->
-        <div class="navbar navbar-default mega-menu" role="navigation">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse"
-                            data-target=".navbar-responsive-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?php echo base_url('home'); ?>">
-                        <img id="logo-header" style="width: 60px" src="<?php echo base_url(); ?>assets/img/logo-3.png"
-                             alt="Logo">
-                    </a>
-                </div>
+            ?>
+            <!-- Navbar -->
+            <div class="navbar navbar-default mega-menu" role="navigation">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                                data-target=".navbar-responsive-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="<?php echo base_url('home'); ?>">
+                            <img id="logo-header" style="width: 80px;margin: -10% 0 0 0;" src="<?php echo base_url(); ?>assets/img/logo-3.png"
+                                 alt="Logo">
+                        </a>
+                    </div>
 
 
 
-                <div class="collapse navbar-collapse navbar-responsive-collapse">
-                    <!-- Nav Menu -->
-                    <ul class="nav navbar-nav">
-                        <!-- Pages -->
-                        <li class="dropdown <?php if($page == 'home'): echo 'active'; endif;?>">
-                            <a href="<?php echo base_url('home'); ?>">
-                                Inicio
-                            </a>
+                    <div class="collapse navbar-collapse navbar-responsive-collapse">
+                        <!-- Nav Menu -->
+                        <ul class="nav navbar-nav">
+                            <!-- Pages -->
+                            <li class="dropdown <?php if($page == 'home'): echo 'active'; endif;?>">
+                                <a href="<?php echo base_url('home'); ?>">
+                                    Inicio
+                                </a>
 
-                        </li>
-                        <li class="dropdown <?php if($page == 'sobre'): echo 'active'; endif;?>">
+                            </li>
+                            <li class="dropdown <?php if($page == 'sobre'): echo 'active'; endif;?>">
 
-                            <a href="<?php echo base_url('sobre'); ?>">
-                                Sobre
-                            </a>
+                                <a href="<?php echo base_url('sobre'); ?>">
+                                    Sobre
+                                </a>
 
-                        </li>
-                        <!-- End Pages -->
+                            </li>
+                            <!-- End Pages -->
 
-                        <!-- Promotion -->
-                        <li class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle" data-hover="dropdown"
-                               data-toggle="dropdown">
-                                Leilões
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-submenu">
-                                    <a href="javascript:void(0);">Salas</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="<?php echo base_url('leiloes?t=disponiveis'); ?>">Disponíveis</a>
-                                        </li>
-                                        <li><a href="<?php echo base_url('leiloes?t=proximos'); ?>">Próximos</a></li>
-
-                                        <!-- Inicio - Aparece para quem tem créditos -->
-                                        <li><a href="<?php echo base_url('leiloes?t=finalizados'); ?>">Finalizados</a>
-                                        </li>
-                                        <!-- Fim - Aparece para quem tem créditos -->
-
-
-                                    </ul>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a href="javascript:void(0);">Adicionar</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="<?php echo base_url('adicionar/creditos'); ?>">Créditos</a></li>
-                                        <!-- <li><a href="<?php echo base_url('leiloes/leiloes'); ?>">Leilões</a></li> -->
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- End Promotion -->
-                        <?php
-                        $this->db->from('leiloes');
-                        $this->db->where('status', 1);
-                        $this->db->where('inicio_data < ', $data_atual_system);
-                        $this->db->limit(4, 0);
-                        $query = $this->db->get();
-                        $count = $query->num_rows();
-                        $result = $query->result_array();
-                        if ($count > 0):
-
-                            ?>
-                            <!-- Gifts -->
-                            <li class="dropdown mega-menu-fullwidth">
+                            <!-- Promotion -->
+                            <li class="dropdown">
                                 <a href="javascript:void(0);" class="dropdown-toggle" data-hover="dropdown"
                                    data-toggle="dropdown">
-                                    Ultimos leilões
+                                    Leilões
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li>
-                                        <div class="mega-menu-content">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <?php
+                                    <li class="dropdown-submenu">
+                                        <a href="javascript:void(0);">Salas</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="<?php echo base_url('leiloes?t=disponiveis'); ?>">Disponíveis</a>
+                                            </li>
+                                            <li><a href="<?php echo base_url('leiloes?t=proximos'); ?>">Próximos</a></li>
 
-                                                    foreach ($result as $dds) {
-                                                        ?>
+                                            <!-- Inicio - Aparece para quem tem créditos -->
+                                            <li><a href="<?php echo base_url('leiloes?t=finalizados'); ?>">Finalizados</a>
+                                            </li>
+                                            <!-- Fim - Aparece para quem tem créditos -->
 
-                                                        <div class="col-md-3 col-sm-4 col-xs-4 md-margin-bottom-30">
-                                                            <a href="#"><img
-                                                                    style="height: 200px;object-fit: cover; object-position: center;"
-                                                                    class="product-offers img-responsive"
-                                                                    src="<?php echo base_url('pages/exibir?id=' . $dds['id']); ?>"
-                                                                    alt=""></a>
-                                                            <b><?php echo $this->Models_model->limitarTexto($dds['title'], 30); ?></b>
-                                                        </div>
-                                                    <?php } ?>
-                                                </div><!--/end row-->
-                                            </div><!--/end container-->
-                                        </div><!--/end mega menu content-->
+
+                                        </ul>
                                     </li>
-                                </ul><!--/end dropdown-menu-->
+                                    <li class="dropdown-submenu">
+                                        <a href="javascript:void(0);">Adicionar</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="<?php echo base_url('adicionar/creditos'); ?>">Créditos</a></li>
+                                            <!-- <li><a href="<?php echo base_url('leiloes/leiloes'); ?>">Leilões</a></li> -->
+                                        </ul>
+                                    </li>
+                                </ul>
                             </li>
-                            <!-- End Gifts -->
-                        <?php endif; ?>
-                        <?php
+                            <!-- End Promotion -->
+                            <?php
+                            $this->db->from('leiloes');
+                            $this->db->where('status', 1);
+                            $this->db->where('inicio_data < ', $data_atual_system);
+                            $this->db->limit(4, 0);
+                            $query = $this->db->get();
+                            $count = $query->num_rows();
+                            $result = $query->result_array();
+                            if ($count > 0):
 
-                        if ($status == true):
+                                ?>
+                                <!-- Gifts -->
+                                <li class="dropdown mega-menu-fullwidth">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-hover="dropdown"
+                                       data-toggle="dropdown">
+                                        Ultimos leilões
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <div class="mega-menu-content">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <?php
 
-                            ?>
-                            <!-- Main Demo -->
-                            <li><a href="<?php echo base_url('pages/logout'); ?>">Sair</a></li>
-                            <!-- Main Demo -->
+                                                        foreach ($result as $dds) {
+                                                            ?>
 
-                        <?php endif; ?>
-                    </ul>
-                    <!-- End Nav Menu -->
+                                                            <div class="col-md-3 col-sm-4 col-xs-4 md-margin-bottom-30">
+                                                                <a href="#"><img
+                                                                        style="height: 200px;object-fit: cover; object-position: center;"
+                                                                        class="product-offers img-responsive"
+                                                                        src="<?php echo base_url('pages/exibir?id=' . $dds['id']); ?>"
+                                                                        alt=""></a>
+                                                                <b><?php echo $this->Models_model->limitarTexto($dds['title'], 30); ?></b>
+                                                            </div>
+                                                        <?php } ?>
+                                                    </div><!--/end row-->
+                                                </div><!--/end container-->
+                                            </div><!--/end mega menu content-->
+                                        </li>
+                                    </ul><!--/end dropdown-menu-->
+                                </li>
+                                <!-- End Gifts -->
+                            <?php endif; ?>
+                            <?php
+
+                            if ($status == true):
+
+                                ?>
+                                <!-- Main Demo -->
+                                <li><a href="<?php echo base_url('pages/logout'); ?>">Sair</a></li>
+                                <!-- Main Demo -->
+
+                            <?php endif; ?>
+                        </ul>
+                        <!-- End Nav Menu -->
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- End Navbar -->
+            <!-- End Navbar -->
         <?php endif;?>
     </div>
     <!--=== End Header v5 ===-->
@@ -392,20 +392,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <!--Left Sidebar-->
             <div class="col-md-3 md-margin-bottom-40">
 
-<?php
-$this->db->from('user');
-$this->db->where('id',$_SESSION['ID']);
-$query = $this->db->get();
-if(empty($query->result_array()[0]['image'])):
-?>
-                <img id="profileimg" class="img-responsive profile-img margin-bottom-20"
-                     src="<?php echo base_url('assets/img/user.jpg'); ?>"
-                     style="height: 250px; object-fit: cover; object-position: center;" alt="">
+                <?php
+                $this->db->from('user');
+                $this->db->where('id',$_SESSION['ID']);
+                $query = $this->db->get();
+                if(empty($query->result_array()[0]['image'])):
+                    ?>
+                    <img id="profileimg" class="img-responsive profile-img margin-bottom-20"
+                         src="<?php echo base_url('assets/img/user.jpg'); ?>"
+                         style="height: 250px; object-fit: cover; object-position: center;" alt="">
 
                 <?php else: ?>
-    <img id="profileimg" class="img-responsive profile-img margin-bottom-20"
-         src="<?php echo base_url('pages/exibirUs?id=' . $_SESSION['ID']); ?>"
-         style="height: 250px; object-fit: cover; object-position: center;" alt="">
+                    <img id="profileimg" class="img-responsive profile-img margin-bottom-20"
+                         src="<?php echo base_url('pages/exibirUs?id=' . $_SESSION['ID']); ?>"
+                         style="height: 250px; object-fit: cover; object-position: center;" alt="">
                 <?php endif;?>
                 <br>
                 <b id="errorData"></b>
