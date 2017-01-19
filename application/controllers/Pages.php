@@ -1867,8 +1867,62 @@ if(so == 0){
     {
 
         if (isset($_GET['token']) and isset($_GET['method']) and isset($_GET['code']) and !empty($_GET['token']) and !empty($_GET['code']) and !empty($_GET['method'])):
-            var_dump($this->Models_model->API($_GET['token'], $_GET['code'], $_GET['method']));
 
+            if(!isset($_GET['token'])){
+               $valor =  0;
+            }else{
+                $valor =  $_GET['token'];
+
+
+            }
+
+
+            if($_GET['method'] == 1):
+        $dados =  $this->Models_model->API($_GET['token'], $_GET['code'], $_GET['method'],$valor);
+
+        echo '<?xml version="1.0" encoding="iso-8859-1"?>
+
+<dados>
+
+      <id>
+      '.$dados['userid'].'
+      </id>
+
+      <email>
+ '.$dados['email'].'
+
+      </email>
+
+      <cpf>
+
+          '.$dados['cpf'].'
+
+      </cpf>
+
+      <saldo>
+
+          '.$dados['saldo'].'
+      </saldo>
+
+</dados>';
+
+            endif;
+
+            if($_GET['method'] == 2):
+                $dados =  $this->Models_model->API($_GET['token'], $_GET['code'], $_GET['method'],$valor);
+                echo '<?xml version="1.0" encoding="iso-8859-1"?>
+
+<dados>
+
+     
+
+      <autorizacao>
+
+          '.$dados['saldo'].'
+      </autorizacao>
+
+</dados>';
+            endif;
         else:
             echo 0;
         endif;
@@ -1959,7 +2013,21 @@ if(so == 0){
 
     public function teste()
     {
-        echo $this->Models_model->cupon(5,114,114);
+        //echo $this->Models_model->cupon(5,114,114);
+
+
+
+        $url = 'http://4porcento.com.br/pages/api/code?token=pk221a&code=PKE-5403117449&method=1';
+
+
+        $curl = curl_init($url);
+
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $transactionCurl = curl_exec($curl);
+        curl_close($curl);
+        var_dump(simplexml_load_string($transactionCurl));
+
 
     }
 }

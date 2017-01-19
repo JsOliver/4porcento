@@ -1260,25 +1260,20 @@ class Models_model extends CI_Model
                 endif;
                 if($method == 2):
                     if($this->compraAPI($token,$code,$valor) == 3):
-                        return 1;
+                        $dado['auth'] = 1;
+
+                        return $dado;
                     else:
-                        return 0;
+                        $dado['auth'] = 0;
+
+                        return $dado;
                     endif;
                 endif;
-                if($method <> 1 or $method <> 2 ):
 
-
-
-
-                endif;
-            else:
-                return 0;
-
-
-            endif;
         else:
 
             return 0;
+        endif;
         endif;
     }
 }
