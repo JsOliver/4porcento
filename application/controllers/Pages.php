@@ -14,6 +14,7 @@ class Pages extends CI_Controller
     }
 
 
+
     public function admin()
     {
         $this->load->library('functions');
@@ -78,10 +79,10 @@ class Pages extends CI_Controller
                 echo '0';
 
             endif;
-            else:
+        else:
 
-                echo '0';
-                endif;
+            echo '0';
+        endif;
 
 
     }
@@ -1667,6 +1668,22 @@ if(so == 0){
 
     }
 
+    public function lugares(){
+        if (isset($_SESSION['ID'])):
+            if (isset($_POST['leilao']) and !empty($_POST['leilao'])):
+
+                $this->db->from('vangancy');
+                $this->db->where('id_leilao',$_POST['leilao']);
+                $queryVnc = $this->db->get();
+                 echo $queryVnc->num_rows();
+
+                endif;
+
+            endif;
+
+
+    }
+
     public function winner()
     {
 
@@ -1698,10 +1715,19 @@ if(so == 0){
 
                             else:
 
+
+
                                 echo 0;
 
                             endif;
                         } else {
+
+                            $this->db->from('vangancy');
+                            $this->db->where('id_leilao',$_POST['leilao']);
+                            $queryVnc = $this->db->get();
+                            foreach ($queryVnc->result_array() as $dds){
+                                $this->Models_model->cupon($dds['id_user'],$_POST['leilao'],$_POST['leilao']);
+                            }
 
                             $dpos['status'] = 0;
                             $this->db->where('id', $_POST['leilao']);
@@ -1711,7 +1737,12 @@ if(so == 0){
                         }
 
                     else:
-
+                        $this->db->from('vangancy');
+                        $this->db->where('id_leilao',$_POST['leilao']);
+                        $queryVnc = $this->db->get();
+                        foreach ($queryVnc->result_array() as $dds){
+                            $this->Models_model->cupon($dds['id_user'],$_POST['leilao'],$_POST['leilao']);
+                        }
                         $dpos['status'] = 0;
                         $this->db->where('id', $_POST['leilao']);
                         $this->db->update('leiloes',$dpos);
@@ -1868,7 +1899,6 @@ if(so == 0){
                     $query = $this->db->get();
                     if($query->num_rows()):
 
-                        $this->Models_model->cupon($_SESSION['ID'],$_GET['id'],$_GET['id']);
 
                         $dp['status'] = 4;
                         $this->db->where('id',$_GET['id']);
@@ -1929,7 +1959,7 @@ if(so == 0){
 
     public function teste()
     {
+        echo $this->Models_model->cupon(5,114,114);
 
-        echo $this->Models_model->addcredit($_SESSION['ID']);
     }
 }

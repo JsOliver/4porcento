@@ -22,6 +22,21 @@ if ($page == 'sala'):
 
     <script>
 
+        <?php
+
+        if($rowss >= $result[0]['minimo_users']):
+
+            echo '
+    startCountdown();
+   var so = 1;
+    
+    ';else:
+            echo '    
+              var so = 0;
+';
+
+        endif;
+        ?>
 
         var leilao = '<?php echo $_GET['p'];?>';
         var tempo = new Number();
@@ -31,6 +46,11 @@ if ($page == 'sala'):
         function startCountdown(){
 
 
+            if(so == 0){
+
+                $("#mininav").remove();
+                so++;
+            }
             <?php
             $tempo =  $result[0]['duracao_lance'];
             $vezes = ceil($tempo / 6);
@@ -208,21 +228,7 @@ if ($page == 'sala'):
 
     <script id="script0">
 
-        <?php
 
-        if($rowss >= $result[0]['minimo_users']):
-
-            echo '
-    startCountdown();
-   var so = 1;
-    
-    ';else:
-            echo '    
-              var so = 0;
-';
-
-        endif;
-        ?>
 
 
         $.post("<?php echo base_url('pages/atualizalance');?>",{leilao:leilao},function (res) {
@@ -327,6 +333,37 @@ if ($page == 'sala'):
 
         });
     </script>
+    <script>
+
+        function lugares() {
+
+            $.post("<?php echo base_url('pages/lugares');?>", {leilao:<?php echo $_GET['p'];?>}, function (res) {
+
+                if(res){
+
+                    if(res < <?php echo $result[0]['minimo_users'];?>){
+
+                        $("#lugares").html('<span class="text-danger" style="color:#8e0000;">'+res+'</span>');
+
+                    }else{
+                        $("#lugares").html('<span class="text-success" style="color:#3fbc3c;">'+res+'</span>');
+
+                    }
+
+                }
+
+            });
+            setTimeout("lugares()", 2000);
+
+        }
+
+        $(function () {
+
+            lugares();
+        });
+
+
+    </script>
 
     <!--=== Shop Product ===-->
     <div class="shop-product" xmlns="http://www.w3.org/1999/html">
@@ -365,8 +402,12 @@ if ($page == 'sala'):
                                 <span>
 
                                 <br><br>
-				<small><strong>Rua - </strong><?php echo $result[0]['rua']; ?> <strong>Bairro - </strong><?php echo $result[0]['bairro']; ?>  <strong>Cidade - </strong><?php echo $result[0]['cidade']; ?>  <strong>Estado - </strong><?php echo $result[0]['estado']; ?>  <strong>CEP - </strong><?php echo $result[0]['cep']; ?> </small><br><br></span><?php endif;?>
+				<small><strong>Rua - </strong><?php echo $result[0]['rua']; ?> <strong>Bairro - </strong><?php echo $result[0]['bairro']; ?>  <strong>Cidade - </strong><?php echo $result[0]['cidade']; ?>  <strong>Estado - </strong><?php echo $result[0]['estado']; ?>  <strong>CEP - </strong><?php echo $result[0]['cep']; ?> </small><br><br></span>
+
+                            <?php endif;?>
                             <br>
+
+
                         </div>
                         <!-- End Master Slider -->
 
@@ -391,6 +432,10 @@ if ($page == 'sala'):
                         <li class="line-through"> R$ <?php echo $result[0]['valor_leilao']; ?></li>
 
                     </ul><!--/end shop product prices-->
+                    <h3> <b>Lugares: </b><span id="lugares">0</span> <b><small>de</small></b>  <?php echo $result[0]['maximo_users']; ?></h3>
+                 <?php if(empty($result[0]['comeco_data'])):?>
+                   <span id="mininav"> <b>Minimo para inicio: </b> <b><?php echo $result[0]['minimo_users'];?></b> <?php if($result[0]['minimo_users'] <= 1){echo 'lugar ocupado';}else{echo 'lugares ocupados';}?> <br><br></span><?php endif;?>
+
 
 
                     <h3 class="shop-product-title">Tempo restante</h3>

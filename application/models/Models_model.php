@@ -725,15 +725,15 @@ class Models_model extends CI_Model
         } else {
 
 
-            $this->db->from('arremates');
-            $this->db->where('id_arremate', $arremate);
+            $this->db->from('leiloes');
+            $this->db->where('id', $arremate);
             $query = $this->db->get();
             $count = $query->num_rows();
             $result = $query->result_array();
 
             if ($count > 0) {
 
-                $valor = $result[0]['valor_arremate'];
+                $valor = $this->convertPrize($result[0]['valor_leilao'], 4);
                 $this->db->from('cupon_loja');
                 $this->db->where('id_user',$user);
                 $query = $this->db->get();
@@ -741,7 +741,7 @@ class Models_model extends CI_Model
                 $result = $query->result_array();
                 if ($count > 0):
 
-                    $valoracs = $result[0]['valor'];
+                    $valoracs =  $result[0]['valor'];
                     $valor_show = $result[0]['valor_show'];
                     $dado['valor'] = str_replace(',', '', $valoracs) + str_replace(',', '', $valor);
                     $dado['valor_show'] = number_format(str_replace(',', '', $valor_show) + str_replace(',', '', $valor), 2, '.', ',');
